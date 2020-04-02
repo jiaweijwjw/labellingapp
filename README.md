@@ -29,5 +29,5 @@ quasar build
 
 ## Component Branches
 
-* [Trending/SandDance](tree/nhs-test) - Visualise individual datapoints, not aggregates, all at once in 3D and transit between layouts.
-* [Graph/CytoscapeJS](tree/rying) - A graph visualisation that implements temporal playback on a concentric CytoscapeJS layout.
+* [Trending/SandDance](https://github.com/eugenesiow/dso-viz/tree/nhs-test) - Visualise individual datapoints, not aggregates, all at once in 3D and transit between layouts.
+* [Graph/CytoscapeJS](https://github.com/eugenesiow/dso-viz/tree/rying) - A graph visualisation that implements temporal playback on a concentric CytoscapeJS layout.
