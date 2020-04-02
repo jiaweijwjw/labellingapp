@@ -7,6 +7,14 @@ A fast, modern, reactive visualisation toolkit. The DSOViz Toolkit puts together
 
 ## Getting Started
 
+To get started follow the following steps to get a hot-reloading development server up and running. 
+There's a [guide](docs/setup_dev_environment.md) to setup the pre-getting-started development environment required if you're lost at this stage.
+
+### Check out the code
+```bash
+git clone https://github.com/eugenesiow/dso-viz.git
+```
+
 ### Install the dependencies
 ```bash
 npm install
@@ -29,5 +37,13 @@ quasar build
 
 ## Component Branches
 
+Projects that implement rich visualisation components and visualisation full stacks that haven't yet been integrated into the master.
+
 * [Trending/SandDance](https://github.com/eugenesiow/dso-viz/tree/nhs-test) - Visualise individual datapoints, not aggregates, all at once in 3D and transit between layouts.
 * [Graph/CytoscapeJS](https://github.com/eugenesiow/dso-viz/tree/rying) - A graph visualisation that implements temporal playback on a concentric CytoscapeJS layout.
+
+## Open Projects
+
+Potential project options for IA students.
+
+* [Trending/Perspective](docs/project_trending_perspective.md)
