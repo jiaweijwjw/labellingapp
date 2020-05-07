@@ -47,3 +47,4 @@ Projects that implement rich visualisation components and visualisation full sta
 Potential project options for IA students.
 
 * [Trending/Perspective](docs/project_trending_perspective.md)
+* [Trending/MillionDatapoints](docs/project_million_datapoints.md)
