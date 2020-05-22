@@ -48,3 +48,4 @@ Potential project options for IA students.
 
 * [Trending/Perspective](docs/project_trending_perspective.md)
 * [Trending/MillionDatapoints](docs/project_million_datapoints.md)
+* [Graph/VisualKG](docs/project_visual_kg.md)
