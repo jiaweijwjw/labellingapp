@@ -12,10 +12,11 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.2",
     "@quasar/extras": "^1.0.0",
-    "axios": "^0.18.1",
-    "quasar": "^1.0.0",
+    "axios": "^0.21.1",
     "chart.js": "^2.8.0",
+    "quasar": "^1.0.0",
     "vue-chartjs": "^3.4.2"
   },
   "devDependencies": {

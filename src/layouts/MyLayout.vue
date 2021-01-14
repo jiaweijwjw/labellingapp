@@ -65,6 +65,15 @@
           label="Geospatial"
         >
         </q-expansion-item>
+        <q-item clickable class="app-menu-item" to="/labelling" exact="true">
+          <q-item-section avatar>
+            <q-icon name="colorize" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Labelling</q-item-label>
+            <q-item-label caption>Text Annotation</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
     <q-page-container>
