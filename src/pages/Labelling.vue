@@ -1,24 +1,59 @@
 <template>
-  <q-page class="flex flex-center text-white">
-    <div style="width: 60vw; max-width: 90vw;">
-      <h2 class="doc-h2">DSOViz Toolkit</h2>
-      <p>A fast, modern, reactive visualisation toolkit. The DSOViz Toolkit puts together a comprehensive suite of visualisation and visual analytics components.</p>
-      <h2 class="doc-h2">Getting Started</h2>
-      <p>The best way to get started with the toolkit is to follow the installation guide and then work through the examples for each of the components.</p>
-      <h2 class="doc-h2">Contributors</h2>
-      <ul>
-        <li>Eugene Siow</li>
-        <li>Desmond Soh</li>
-        <li>Wong Qin Jiang</li>
-        <li>hi</li>
-      </ul>
+  <q-page>
+    <div style="width: 70vw; max-width: 90vw;" class="flex flex-center row">
+      <h2 class="doc-h2 col-12">DSOViz Data Labelling</h2>
+      <p class="text-white col-12">A text annotation tool for NLP.</p>
     </div>
+    <div class="col-12 text-black" style="width: 70vw; max-width: 90vw;">
+    <q-editor
+      v-model="editor"
+      :definitions="{
+        save: {
+          tip: 'Save your work',
+          icon: 'save',
+          label: 'Save',
+          handler: saveWork
+        },
+        upload: {
+          tip: 'Upload to cloud',
+          icon: 'cloud_upload',
+          label: 'Upload',
+          handler: uploadIt
+        }
+      }"
+      :toolbar="[
+        ['bold', 'italic', 'strike', 'underline'],
+        ['upload', 'save']
+      ]"
+    />
+  </div>
   </q-page>
 </template>
 
 <script>
 export default {
-  name: 'PageIndex'
+  name: 'Labelling',
+  data () {
+    return { editor: '  Input text here to be annotated.' }
+  },
+  methods: {
+    saveWork () {
+      this.$q.notify({
+        message: 'Saved your text to local storage',
+        color: 'green-4',
+        textColor: 'white',
+        icon: 'cloud_done'
+      })
+    },
+    uploadIt () {
+      this.$q.notify({
+        message: 'Server unavailable. Check connectivity.',
+        color: 'red-5',
+        textColor: 'white',
+        icon: 'warning'
+      })
+    }
+  }
 }
 </script>
 
