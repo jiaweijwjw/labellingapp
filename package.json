@@ -11,6 +11,9 @@
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0"
   },
+  "resolutions": {
+    "eslint-loader": "2.1.2"
+  },
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@quasar/extras": "^1.0.0",
