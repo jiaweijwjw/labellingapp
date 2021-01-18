@@ -1,34 +1,38 @@
 <template>
-  <q-page class="flex flex-center text-white">
-    <div style="width: 60vw; max-width: 90vw;">
-      <h2 class="doc-h2">DSOViz Toolkit</h2>
-      <p>A fast, modern, reactive visualisation toolkit. The DSOViz Toolkit puts together a comprehensive suite of visualisation and visual analytics components.</p>
-      <h2 class="doc-h2">Getting Started</h2>
-      <p>The best way to get started with the toolkit is to follow the installation guide and then work through the examples for each of the components.</p>
-      <h2 class="doc-h2">Contributors</h2>
-      <ul>
-        <li>Eugene Siow</li>
-        <li>Desmond Soh</li>
-        <li>Wong Qin Jiang</li>
-        <li>hi</li>
-      </ul>
+  <q-page>
+    <div class="labellingpage flex column">
+      <h2 class="doc-h2 col-12">DSOViz Data Labelling</h2>
+      <p class="text-white col-12">A text annotation tool for NLP.</p>
+    </div>
+    <div class="labellingpage col-12">
+      <labels> </labels>
+    </div>
+    <div class="labellingpage col-12">
+      <texteditor> </texteditor>
     </div>
   </q-page>
 </template>
 
 <script>
 export default {
-  name: 'PageIndex'
+  name: 'Labelling',
+  components: {
+    texteditor: require('components/TextEditor.vue').default,
+    labels: require('components/Labels.vue').default
+  }
 }
 </script>
 
 <style lang="sass">
-  .doc-h2
-    border-bottom: 1px solid #ccc
-    font-size: 1.5rem
-    line-height: 1.5rem
-    padding: 0.5rem 0
-    font-weight: 400
-    color: $primary
-    margin: 4rem 0 1.5rem
+.doc-h2
+  border-bottom: 1px solid #ccc
+  font-size: 1.5rem
+  line-height: 1.5rem
+  padding: 0.5rem 0
+  font-weight: 400
+  color: $primary
+  margin: 4rem 0 1.5rem
+.labellingpage
+  width: 70vw
+  max-width: 90vw
 </style>

@@ -12,7 +12,7 @@ Vue.use(VueRouter)
 
 export default function (/* { store, ssrContext } */) {
   const Router = new VueRouter({
-    scrollBehavior: () => ({ x: 0, y: 0 }),
+    scrollBehavior: () => ({ x: 0, y: 0 }), // make the page scroll to top for all route navigations
     routes,
 
     // Leave these as is and change from quasar.conf.js instead!

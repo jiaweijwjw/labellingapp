@@ -11,9 +11,9 @@
     <q-drawer v-model="leftDrawerOpen" :mini="miniState" :width="250" :breakpoint="500" show-if-above>
       <q-list dark>
         <q-item-label header></q-item-label>
-        <q-item clickable to="/" exact="true">
+        <q-item clickable to="/">
           <q-item-section avatar>
-            <q-icon name="home" />
+            <q-icon name="home"/>
           </q-item-section>
           <q-item-section>
             <q-item-label>Home</q-item-label>
@@ -65,7 +65,7 @@
           label="Geospatial"
         >
         </q-expansion-item>
-        <q-item clickable class="app-menu-item" to="/labelling" exact="true">
+        <q-item clickable class="app-menu-item" to="/labelling">
           <q-item-section avatar>
             <q-icon name="colorize" />
           </q-item-section>
@@ -76,6 +76,7 @@
         </q-item>
       </q-list>
     </q-drawer>
+    <!-- pages will be inserted here -->
     <q-page-container>
       <router-view />
     </q-page-container>
