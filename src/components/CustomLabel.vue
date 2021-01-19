@@ -23,11 +23,10 @@
         <q-card-section>
           <q-input
             dark filled
-            ref="labelname"
-            v-model="customLabelToSubmit.customLabelName"
+            ref="name"
+            v-model="customLabelToSubmit.name"
             label="Label Name"
             placeholder="E.g: Location"
-            lazy-rules
             :rules="[ val => val && val.length > 0 || 'Please input label name.']"
           />
         </q-card-section>
@@ -35,8 +34,8 @@
         <q-card-section>
           <q-input
             dark filled
-            ref="labelcolor"
-            v-model="customLabelToSubmit.customLabelColor"
+            ref="color"
+            v-model="customLabelToSubmit.color"
             :rules="[val => val !== null && val !== '' || 'Please select a color.']"
             label="Label Color"
             placeholder="E.g: #26A69A"
@@ -45,7 +44,7 @@
             <template v-slot:append>
               <q-icon name="colorize" class="cursor-pointer">
                 <q-popup-proxy transition-show="scale" transition-hide="scale">
-                  <q-color v-model="customLabelToSubmit.customLabelColor" />
+                  <q-color v-model="customLabelToSubmit.color" />
                 </q-popup-proxy>
               </q-icon>
             </template>
@@ -63,30 +62,33 @@
 </template>
 
 <script>
-// import { mapActions } from 'vuex'
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
-      dialog: true,
+      dialog: false,
       secondDialog: false,
       customLabelToSubmit: {
-        customLabelName: '',
-        customLabelColor: ''
+        name: '',
+        color: ''
       }
     }
   },
   methods: {
     // ...mapActions('labels', ['newLabel']),
+    ...mapActions('labels', ['addCustomLabel']),
     submitNewLabel () {
-      this.$refs.labelname.validate()
-      this.$refs.labelcolor.validate()
-      if (!this.$refs.labelname.hasError && !this.$refs.labelcolor.hasError) {
+      this.$refs.name.validate()
+      this.$refs.color.validate()
+      if (!this.$refs.name.hasError && !this.$refs.color.hasError) {
         this.submitLabel()
       }
     },
     submitLabel () {
       console.log('submitted successfully')
-      // this.addTask(this.taskToSubmit)
+      let cloneLabelToSubmit = { ...this.customLabelToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
+      this.addCustomLabel(cloneLabelToSubmit)
       // this.$emit('close')
     }
   }

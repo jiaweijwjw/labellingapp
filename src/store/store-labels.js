@@ -1,55 +1,60 @@
+import Vue from 'vue'
+import { uid } from 'quasar'
+
 const state = {
-  LabelBtns: [
-    {
-      id: 1,
+  LabelBtns: {
+    'id1': {
       name: 'Person',
-      btncolor: 'pink'
+      color: 'pink'
     },
-    {
-      id: 2,
+    'id2': {
       name: 'Location',
-      btncolor: 'pink-2'
+      color: 'pink-2'
     },
-    {
-      id: 3,
+    'id3': {
       name: 'Date',
-      btncolor: 'pink-3'
+      color: 'pink-3'
     },
-    {
-      id: 4,
+    'id4': {
       name: 'Organisation',
-      btncolor: 'pink-4'
+      color: 'pink-4'
     },
-    {
-      id: 5,
+    'id5': {
       name: 'Filler1',
-      btncolor: 'pink-5'
+      color: 'pink-5'
     },
-    {
-      id: 6,
+    'id6': {
       name: 'Filler2',
-      btncolor: 'pink-6'
+      color: 'pink-6'
     }
-  ],
-  NewLabelBtn: {
-    name: '',
-    btncolor: ''
-  }
+  },
+  CustomLabelBtns: {}
 }
 
 const mutations = {
-
+  addCustomLabel (state, payload) {
+    Vue.set(state.CustomLabelBtns, payload.id, payload.label)
+    // Vue.set(object, propertyName, value)
+  }
 }
 
 const actions = {
-  newLabel () {
-    console.log('test')
+  addCustomLabel ({ commit }, newLabel) {
+    let labelId = uid()
+    let payload = {
+      id: labelId,
+      label: newLabel
+    }
+    commit('addCustomLabel', payload)
   }
 }
 
 const getters = {
   labels: (state) => {
     return state.LabelBtns
+  },
+  customLabels: (state) => {
+    return state.CustomLabelBtns
   }
 }
 
