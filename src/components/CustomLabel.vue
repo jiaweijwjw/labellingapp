@@ -89,7 +89,9 @@ export default {
       console.log('submitted successfully')
       let cloneLabelToSubmit = { ...this.customLabelToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
       this.addCustomLabel(cloneLabelToSubmit)
-      // this.$emit('close')
+      this.dialog = false
+      this.customLabelToSubmit.name = ''
+      this.customLabelToSubmit.color = ''
     }
   }
 }
