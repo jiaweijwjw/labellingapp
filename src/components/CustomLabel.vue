@@ -13,16 +13,16 @@
     </q-btn>
     <q-form @submit="submitNewLabel">
     <q-dialog v-model="dialog">
-      <q-card style="width: 40vw" class="bg-white">
+      <q-card style="width: 40vw" bordered>
         <q-card-section class="row">
-          <div class="text-h6">New Label</div>
+          <div class="text-h6 text-white">New Label</div>
           <q-space />
-          <q-btn v-close-popup flat round dense icon="close" />
+          <q-btn v-close-popup flat round dense icon="close" color="primary"/>
         </q-card-section>
         <!-- CUSTOM LABEL NAME -->
         <q-card-section>
           <q-input
-            filled
+            dark filled
             ref="labelname"
             v-model="customLabelToSubmit.customLabelName"
             label="Label Name"
@@ -34,7 +34,7 @@
         <!-- COLOR PICKER -->
         <q-card-section>
           <q-input
-            filled
+            dark filled
             ref="labelcolor"
             v-model="customLabelToSubmit.customLabelColor"
             :rules="[val => val !== null && val !== '' || 'Please select a color.']"
@@ -67,7 +67,7 @@
 export default {
   data () {
     return {
-      dialog: false,
+      dialog: true,
       secondDialog: false,
       customLabelToSubmit: {
         customLabelName: '',
@@ -96,6 +96,8 @@ export default {
 <style lang="sass">
 .my-card
     width: 100%
+.q-card
+    background-color: $popover-background
 .q-toolbar
     background-color: $toolbar-color
 .q-drawer__content
