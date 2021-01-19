@@ -30,8 +30,21 @@
             :rules="[ val => val && val.length > 0 || 'Please input label name.']"
           />
         </q-card-section>
-        <!-- COLOR PICKER -->
         <q-card-section>
+            <q-select
+            dark filled
+            max-height="130px"
+            ref="color"
+            v-model="customLabelToSubmit.color"
+            :options="options"
+            label="Label Color"
+            :rules="[val => val !== null && val !== '' || 'Please select a color.']"
+            placeholder="E.g: pink-1"
+            hint="Select a color from the dropdown list."
+            :options-dense="true" />
+        </q-card-section>
+        <!-- COLOR PICKER -->
+        <!-- <q-card-section>
           <q-input
             dark filled
             ref="color"
@@ -49,7 +62,7 @@
               </q-icon>
             </template>
           </q-input>
-        </q-card-section>
+        </q-card-section> -->
 
         <q-card-actions align="right" class="text-primary">
           <q-btn flat type="submit" label="Create" @click="submitNewLabel"/>
@@ -72,7 +85,10 @@ export default {
       customLabelToSubmit: {
         name: '',
         color: ''
-      }
+      },
+      options: [
+        'pink', 'cyan', 'grey', 'deep-purple', 'indigo', 'red', 'blue', 'light-blue', 'teal', 'green', 'orange', 'brown', 'blue-grey'
+      ]
     }
   },
   methods: {
