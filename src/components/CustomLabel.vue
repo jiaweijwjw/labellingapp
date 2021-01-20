@@ -33,10 +33,25 @@
         <q-card-section>
             <q-select
             dark filled
+            ref="shortcutkey"
+            placeholder="E.g: K"
+            v-model="customLabelToSubmit.shortcutkey"
+            :options="shortKeyOptions"
+            :options-dense="true"
+            :rules="[val => val !== null && val !== '' || 'Please select a short cut.']"
+            label="Short Cut Key">
+        <!-- <template v-slot:append>
+          <q-icon name="event" color="orange" />
+        </template> -->
+      </q-select>
+        </q-card-section>
+        <q-card-section>
+            <q-select
+            dark filled
             max-height="130px"
             ref="color"
             v-model="customLabelToSubmit.color"
-            :options="options"
+            :options="colorOptions"
             label="Label Color"
             :rules="[val => val !== null && val !== '' || 'Please select a color.']"
             placeholder="E.g: pink-1"
@@ -89,8 +104,11 @@ export default {
         shortcutkey: '',
         color: ''
       },
-      options: [
+      colorOptions: [
         'pink', 'cyan', 'grey', 'deep-purple', 'indigo', 'red', 'blue', 'light-blue', 'teal', 'green', 'orange', 'brown', 'blue-grey'
+      ],
+      shortKeyOptions: [
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
       ]
     }
   },
@@ -100,7 +118,8 @@ export default {
     submitNewLabel () {
       this.$refs.name.validate()
       this.$refs.color.validate()
-      if (!this.$refs.name.hasError && !this.$refs.color.hasError) {
+      this.$refs.shortcutkey.validate()
+      if (!this.$refs.name.hasError && !this.$refs.color.hasError && !this.$refs.shortcutkey.hasError) {
         this.submitLabel()
       }
     },
@@ -110,6 +129,7 @@ export default {
       this.addCustomLabel(cloneLabelToSubmit)
       this.$emit('close')
       this.customLabelToSubmit.name = ''
+      this.customLabelToSubmit.shortcutkey = ''
       this.customLabelToSubmit.color = ''
     },
     close () {
