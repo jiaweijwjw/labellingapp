@@ -8,7 +8,8 @@ const routes = [
       { path: '/charts/', redirect: '/charts/radar' },
       { path: '/charts/radar', name: 'Radar', component: () => import('pages/charts/Radar.vue') },
       { path: '/charts/polar', name: 'Polar', component: () => import('pages/charts/Polar.vue') },
-      { path: '/labelling', name: 'Labelling', component: () => import('pages/Labelling.vue') } // lazy loading could have more overhead if the app is small
+      { path: '/annotate', name: 'Annotate', component: () => import('pages/Annotate.vue') }, // lazy loading could have more overhead if the app is small
+      { path: '/labels', name: 'Labels', component: () => import('pages/Labels.vue') }
     ]
   }
 ]

@@ -26,14 +26,6 @@ export default {
     return {
     }
   },
-  // computed: {
-  //   LabelBtns () {
-  //     return this.$store.getters['labels/labels'] // labels module (index.js) and labels getter (store-labels.js)
-  //   },
-  //   CustomLabelBtns () {
-  //     return this.$store.getters['labels/customLabels']
-  //   }
-  // }
   computed: {
     ...mapGetters('labels', ['labels', 'customLabels'])
   }

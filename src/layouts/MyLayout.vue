@@ -65,15 +65,24 @@
           label="Geospatial"
         >
         </q-expansion-item>
-        <q-item clickable class="app-menu-item" to="/labelling">
+        <!-- LABELLING -->
+        <q-expansion-item
+          expand-separator
+          icon="colorize"
+          label="Annotate"
+          to="/annotate/"
+          default-opened
+          caption="Sequence labelling"
+        >
+        <q-item clickable class="app-menu-item" to="/labels">
           <q-item-section avatar>
-            <q-icon name="colorize" />
+            <q-icon name="label" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Labelling</q-item-label>
-            <q-item-label caption>Text Annotation</q-item-label>
+            <q-item-label>Labels</q-item-label>
           </q-item-section>
         </q-item>
+        </q-expansion-item>
       </q-list>
     </q-drawer>
     <!-- pages will be inserted here -->
