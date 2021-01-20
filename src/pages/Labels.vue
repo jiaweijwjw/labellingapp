@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="labelspage flex row q-pa-md">
-      <q-btn-dropdown color=$dropdown text-color="primary" label="Actions" class="col-2 max-width=20vw">
+      <q-btn-dropdown flat color=$dropdown text-color="primary" label="Actions" class="col-2 max-width=20vw">
       <q-list separator>
         <q-item clickable v-close-popup @click="dialog = true">
           <q-item-section>

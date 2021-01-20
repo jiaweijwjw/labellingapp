@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     // ...mapActions('labels', ['newLabel']),
-    ...mapActions('labels', ['addCustomLabel']),
+    ...mapActions('labels', ['addLabel']),
     submitNewLabel () {
       this.$refs.name.validate()
       this.$refs.color.validate()
@@ -126,7 +126,7 @@ export default {
     submitLabel () {
       console.log('submitted successfully')
       let cloneLabelToSubmit = { ...this.customLabelToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
-      this.addCustomLabel(cloneLabelToSubmit)
+      this.addLabel(cloneLabelToSubmit)
       this.$emit('close')
       this.customLabelToSubmit.name = ''
       this.customLabelToSubmit.shortcutkey = ''

@@ -1,11 +1,12 @@
 <template>
   <div>
 <q-table
-      :data="[...labels,...customLabels]"
+      :data="labels"
       :columns="columns"
       row-key="name"
       dark
-      color="amber"
+      color="primary"
+      rows-per-page-label="Labels per page"
     />
   </div>
 </template>
@@ -22,7 +23,7 @@ export default {
           required: true,
           label: 'Label Name',
           align: 'left',
-          field: labels => labels.name,
+          field: value => value.name,
           format: val => `${val}`,
           sortable: true
         },
@@ -62,7 +63,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('labels', ['labels', 'customLabels'])
+    ...mapGetters('labels', ['labels'])
   }
 }
 </script>

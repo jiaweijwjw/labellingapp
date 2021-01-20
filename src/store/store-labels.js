@@ -23,36 +23,32 @@ const state = {
       shortcutkey: 'o',
       color: 'blue'
     }
-  ],
-  CustomLabelBtns: []
+  ]
 }
 
 const mutations = {
-  addCustomLabel (state, payload) {
-    state.CustomLabelBtns.push(payload.label)
+  addLabel (state, payload) {
+    state.LabelBtns.push(payload.label)
     // Vue.set(state.CustomLabelBtns, payload.id, payload.label)
     // Vue.set(object, propertyName, value)
   }
 }
 
 const actions = {
-  addCustomLabel ({ commit }, newLabel) {
+  addLabel ({ commit }, newLabel) {
     // let labelId = uid()
     newLabel.id = uid()
     let payload = {
       // id: labelId,
       label: newLabel
     }
-    commit('addCustomLabel', payload)
+    commit('addLabel', payload)
   }
 }
 
 const getters = {
   labels: (state) => {
     return state.LabelBtns
-  },
-  customLabels: (state) => {
-    return state.CustomLabelBtns
   }
 }
 
