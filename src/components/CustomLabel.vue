@@ -84,7 +84,9 @@ export default {
     //   dialog: false,
       secondDialog: false,
       customLabelToSubmit: {
+        id: '',
         name: '',
+        shortcutkey: '',
         color: ''
       },
       options: [

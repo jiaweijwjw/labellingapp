@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="labelspage flex row q-pa-md">
-      <q-btn-dropdown color="primary" label="Actions" class="col-2 max-width=20vw">
+      <q-btn-dropdown color=$dropdown text-color="primary" label="Actions" class="col-2 max-width=20vw">
       <q-list separator>
         <q-item clickable v-close-popup @click="dialog = true">
           <q-item-section>
@@ -25,13 +25,7 @@
     </div>
     <!-- TABLE -->
     <div class="labelspage q-pa-md">
-    <q-table
-      :data="data"
-      :columns="columns"
-      row-key="name"
-      dark
-      color="amber"
-    />
+        <labeltable/>
   </div>
   <div>
       <customlabel v-if="dialog" :dialog="dialog" @close="dialog = false"></customlabel>
@@ -43,56 +37,18 @@
 export default {
   name: 'Annotate',
   components: {
-    customlabel: require('components/CustomLabel.vue').default
+    customlabel: require('components/CustomLabel.vue').default,
+    labeltable: require('components/LabelTable.vue').default
   },
   data () {
     return {
-      dialog: false,
-      columns: [
-        {
-          name: 'labelname',
-          required: true,
-          label: 'Label Name',
-          align: 'left',
-          field: row => row.name,
-          format: val => `${val}`,
-          sortable: true
-        },
-        { name: 'shortcutkey', align: 'left', label: 'Short Cut Key', field: 'shortcutkey', sortable: true },
-        { name: 'color', align: 'left', label: 'Color', field: 'color', sortable: true }
-        // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-      ],
-      data: [
-        {
-          name: 'Person',
-          shortcutkey: 'p',
-          color: 159
-        },
-        {
-          name: 'Location',
-          shortcutkey: 'l',
-          color: 237
-        },
-        {
-          name: 'Organization',
-          shortcutkey: 'o',
-          color: 262
-        }
-      ]
+      dialog: false
     }
   }
 }
 </script>
 
 <style lang="sass">
-.doc-h2
-  border-bottom: 1px solid #ccc
-  font-size: 1.5rem
-  line-height: 1.5rem
-  padding: 0.5rem 0
-  font-weight: 400
-  color: $primary
-  margin: 4rem 0 1.5rem
 .labelspage
   width: 80vw
   max-width: 90vw

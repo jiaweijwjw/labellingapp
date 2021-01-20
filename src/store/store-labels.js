@@ -1,48 +1,46 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 import { uid } from 'quasar'
 
 const state = {
-  LabelBtns: {
-    'id1': {
+  LabelBtns: [
+    {
       name: 'Person',
+      shortcutkey: 'p',
       color: 'pink'
     },
-    'id2': {
+    {
       name: 'Location',
-      color: 'pink-2'
+      shortcutkey: 'l',
+      color: 'purple'
     },
-    'id3': {
+    {
       name: 'Date',
-      color: 'pink-3'
+      shortcutkey: 'd',
+      color: 'black'
     },
-    'id4': {
+    {
       name: 'Organisation',
-      color: 'pink-4'
-    },
-    'id5': {
-      name: 'Filler1',
-      color: 'pink-5'
-    },
-    'id6': {
-      name: 'Filler2',
-      color: 'pink-6'
+      shortcutkey: 'o',
+      color: 'blue'
     }
-  },
-  CustomLabelBtns: {}
+  ],
+  CustomLabelBtns: []
 }
 
 const mutations = {
   addCustomLabel (state, payload) {
-    Vue.set(state.CustomLabelBtns, payload.id, payload.label)
+    state.CustomLabelBtns.push(payload.label)
+    // Vue.set(state.CustomLabelBtns, payload.id, payload.label)
     // Vue.set(object, propertyName, value)
   }
 }
 
 const actions = {
   addCustomLabel ({ commit }, newLabel) {
-    let labelId = uid()
+    // let labelId = uid()
+    newLabel.id = uid()
     let payload = {
-      id: labelId,
+      // id: labelId,
       label: newLabel
     }
     commit('addCustomLabel', payload)
