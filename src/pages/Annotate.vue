@@ -1,13 +1,13 @@
 <template>
   <q-page>
-    <div class="labellingpage flex column">
+    <div class="annotatingpage flex column">
       <h2 class="doc-h2 col-12">DSOViz Data Labelling</h2>
       <p class="text-white col-12">A text annotation tool for NLP.</p>
     </div>
-    <div class="labellingpage col-12">
+    <div class="annotatingpage col-12">
       <labels> </labels>
     </div>
-    <div class="labellingpage col-12">
+    <div class="annotatingpage col-12">
       <texteditor> </texteditor>
     </div>
   </q-page>
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'Labelling',
+  name: 'Annotate',
   components: {
     texteditor: require('components/TextEditor.vue').default,
     labels: require('components/Labels.vue').default
@@ -32,7 +32,7 @@ export default {
   font-weight: 400
   color: $primary
   margin: 4rem 0 1.5rem
-.labellingpage
+.annotatingpage
   width: 70vw
   max-width: 90vw
 </style>

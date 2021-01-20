@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-btn
+    <!-- <q-btn
       flat
       color="primary"
       label="Custom Label"
@@ -10,14 +10,14 @@
       <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]"
         >Add your own label to the list of labels below.</q-tooltip
       >
-    </q-btn>
+    </q-btn> -->
     <q-form @submit="submitNewLabel">
-    <q-dialog v-model="dialog">
+    <q-dialog :value="dialog" persistent>
       <q-card style="width: 40vw" bordered>
         <q-card-section class="row">
           <div class="text-h6 text-white">New Label</div>
           <q-space />
-          <q-btn v-close-popup flat round dense icon="close" color="primary"/>
+          <q-btn v-close-popup flat round dense icon="close" color="primary" @click="close"/>
         </q-card-section>
         <!-- CUSTOM LABEL NAME -->
         <q-card-section>
@@ -78,9 +78,10 @@
 import { mapActions } from 'vuex'
 
 export default {
+  props: ['dialog'],
   data () {
     return {
-      dialog: false,
+    //   dialog: false,
       secondDialog: false,
       customLabelToSubmit: {
         name: '',
@@ -105,9 +106,12 @@ export default {
       console.log('submitted successfully')
       let cloneLabelToSubmit = { ...this.customLabelToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
       this.addCustomLabel(cloneLabelToSubmit)
-      this.dialog = false
+      this.$emit('close')
       this.customLabelToSubmit.name = ''
       this.customLabelToSubmit.color = ''
+    },
+    close () {
+      this.$emit('close')
     }
   }
 }
