@@ -27,7 +27,8 @@
             v-model="customLabelToSubmit.name"
             label="Label Name"
             placeholder="E.g: Location"
-            :rules="[ val => val && val.length > 0 || 'Please input label name.']"
+            :rules="[ val => val && val.length > 0 || 'Please input label name.',
+            val => !val.includes(' ') || 'Please input only a single word. Spaces are not allowed']"
           />
         </q-card-section>
         <q-card-section>
@@ -91,6 +92,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { format } from 'quasar'
+const { capitalize } = format
 
 export default {
   props: ['dialog'],
@@ -125,6 +128,8 @@ export default {
     },
     submitLabel () {
       console.log('submitted successfully')
+      // let name = this.toTitleCase(this.customLabelToSubmit.name)[0]
+      console.log(this.customLabelToSubmit.name = capitalize(this.customLabelToSubmit.name))
       let cloneLabelToSubmit = { ...this.customLabelToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
       this.addLabel(cloneLabelToSubmit)
       this.$emit('close')
@@ -135,6 +140,15 @@ export default {
     close () {
       this.$emit('close')
     }
+    // toTitleCase (string) {
+    //   var sentence = string.toLowerCase().split(' ')
+    //   for (var i = 0; i < sentence.length; i++) {
+    //     sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1)
+    //   }
+    //   document.write(sentence.join(' '))
+    //   console.log(sentence)
+    //   return sentence
+    // }
   }
 }
 </script>
