@@ -28,7 +28,8 @@
             label="Label Name"
             placeholder="E.g: Location"
             :rules="[ val => val && val.length > 0 || 'Please input label name.',
-            val => !val.includes(' ') || 'Please input only a single word. Spaces are not allowed']"
+            val => !val.includes(' ') || 'Please input only a single word. Spaces are not allowed.',
+            val => checkAvailability(unavailableNames()) || 'cant']"
           />
         </q-card-section>
         <q-card-section>
@@ -150,6 +151,18 @@ export default {
       const usedKeys = this.labels.map(item => item.shortcutkey)
       const unusedKeys = this.shortcutkeys.filter(item => !usedKeys.includes(item))
       return unusedKeys
+    },
+    unavailableNames () {
+      const usedNames = this.labels.map(item => item.name)
+      return usedNames
+    },
+    checkAvailability (usedNames) {
+      for (var i = 0; i < usedNames.length; i++) {
+        if (toTitleCase(this.customLabelToSubmit.name).includes(usedNames[i])) {
+          return false
+        }
+      }
+      return true
     }
   }
 }
