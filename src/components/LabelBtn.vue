@@ -7,13 +7,13 @@
         v-ripple
         :label="labelbtn.name"
         :color="labelbtn.color" />
-      <q-btn class="q-ma-xs col-2"
+      <!-- <q-btn class="q-ma-xs col-2"
       v-for="(customlabelbtn, key) in customLabels"
         :key="key"
         clickable
         v-ripple
         :label="customlabelbtn.name"
-        :color="customlabelbtn.color" />
+        :color="customlabelbtn.color" /> -->
       <!-- <q-btn class="q-ma-xs col-2" color="secondary" icon-right="mail" label="On Right" /> -->
   </div>
 </template>
@@ -35,7 +35,7 @@ export default {
   //   }
   // }
   computed: {
-    ...mapGetters('labels', ['labels', 'customLabels'])
+    ...mapGetters('labels', ['labels'])
   }
 }
 </script>
