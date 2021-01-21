@@ -29,7 +29,7 @@
             placeholder="E.g: Location"
             :rules="[ val => val && val.length > 0 || 'Please input label name.',
             val => !val.includes(' ') || 'Please input only a single word. Spaces are not allowed.',
-            val => checkAvailability(unavailableNames()) || 'cant']"
+            val => checkAvailability(unavailableNames()) || 'Please input another name. Duplicated label names are not allowed.']"
           />
         </q-card-section>
         <q-card-section>
@@ -46,7 +46,7 @@
         </template> -->
       </q-select>
         </q-card-section>
-        <q-card-section>
+        <!-- <q-card-section>
             <q-select
             dark filled
             max-height="130px"
@@ -58,27 +58,32 @@
             placeholder="E.g: pink-1"
             hint="Select a color from the dropdown list."
             :options-dense="true" />
-        </q-card-section>
+        </q-card-section> -->
         <!-- COLOR PICKER -->
-        <!-- <q-card-section>
+        <q-card-section>
           <q-input
             dark filled
             ref="color"
             v-model="customLabelToSubmit.color"
-            :rules="[val => val !== null && val !== '' || 'Please select a color.']"
+            :rules="[val => val !== null && val !== '' || 'Please select a color.',
+            val => isHex(val) && val.length < 8 || 'Input value is not a HEX value.']"
             label="Label Color"
             placeholder="E.g: #26A69A"
             hint="Input desired HEX color or select from the color picker."
           >
             <template v-slot:append>
-              <q-icon name="colorize" class="cursor-pointer">
+              <q-icon color="primary" name="colorize" class="cursor-pointer">
                 <q-popup-proxy transition-show="scale" transition-hide="scale">
-                  <q-color v-model="customLabelToSubmit.color" />
+                  <q-color
+                  dark bordered
+                  default-value="#000000"
+                  format-model="hex"
+                  v-model="customLabelToSubmit.color" />
                 </q-popup-proxy>
               </q-icon>
             </template>
           </q-input>
-        </q-card-section> -->
+        </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
           <q-btn flat type="submit" label="Create" @click="submitNewLabel"/>
@@ -92,6 +97,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+// import { patterns } from 'quasar'
+// const { hexColor } = patterns
 
 function toTitleCase (str) {
   return str.replace(
@@ -163,6 +170,14 @@ export default {
         }
       }
       return true
+    },
+    isHex (str) {
+      let regexp = /^#[0-9A-F]{6}$/i
+      if (regexp.test(str)) {
+        return true
+      } else {
+        return false
+      }
     }
   }
 }
