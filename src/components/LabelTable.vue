@@ -3,10 +3,11 @@
 <q-table
       :data="labels"
       :columns="columns"
-      row-key="name"
+      row-key="id"
       dark
       color="primary"
       rows-per-page-label="Labels per page"
+      :rows-per-page-options="[20, 50, 0]"
     />
   </div>
 </template>
@@ -23,7 +24,8 @@ export default {
           required: true,
           label: 'Label Name',
           align: 'left',
-          field: value => value.name,
+          // field: 'value => value.name',
+          field: 'name',
           format: val => `${val}`,
           sortable: true
         },

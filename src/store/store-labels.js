@@ -19,7 +19,7 @@ const state = {
       color: 'black'
     },
     {
-      name: 'Organisation',
+      name: 'Organization',
       shortcutkey: 'o',
       color: 'blue'
     }

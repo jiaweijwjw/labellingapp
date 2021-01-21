@@ -40,7 +40,8 @@
             :options="shortKeyOptions"
             :options-dense="true"
             :rules="[val => val !== null && val !== '' || 'Please select a short cut.']"
-            label="Short Cut Key">
+            label="Short Cut Key"
+            @input="removeUsedKey">
         <!-- <template v-slot:append>
           <q-icon name="event" color="orange" />
         </template> -->
@@ -92,8 +93,15 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { format } from 'quasar'
-const { capitalize } = format
+
+function toTitleCase (str) {
+  return str.replace(
+    /\w\S*/g,
+    function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    }
+  )
+}
 
 export default {
   props: ['dialog'],
@@ -116,7 +124,6 @@ export default {
     }
   },
   methods: {
-    // ...mapActions('labels', ['newLabel']),
     ...mapActions('labels', ['addLabel']),
     submitNewLabel () {
       this.$refs.name.validate()
@@ -128,8 +135,7 @@ export default {
     },
     submitLabel () {
       console.log('submitted successfully')
-      // let name = this.toTitleCase(this.customLabelToSubmit.name)[0]
-      console.log(this.customLabelToSubmit.name = capitalize(this.customLabelToSubmit.name))
+      this.customLabelToSubmit.name = toTitleCase(this.customLabelToSubmit.name)
       let cloneLabelToSubmit = { ...this.customLabelToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
       this.addLabel(cloneLabelToSubmit)
       this.$emit('close')
@@ -139,16 +145,17 @@ export default {
     },
     close () {
       this.$emit('close')
+    },
+    removeUsedKey () {
+      console.log(this.shortKeyOptions.length)
+      console.log(typeof this.customLabelToSubmit.shortcutkey)
+      let index = this.shortKeyOptions.indexOf(this.customLabelToSubmit.shortcutkey)
+      console.log(index)
+      if (index > -1) {
+        this.shortKeyOptions.splice(index, 1)
+      }
+      console.log(this.shortKeyOptions.length)
     }
-    // toTitleCase (string) {
-    //   var sentence = string.toLowerCase().split(' ')
-    //   for (var i = 0; i < sentence.length; i++) {
-    //     sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1)
-    //   }
-    //   document.write(sentence.join(' '))
-    //   console.log(sentence)
-    //   return sentence
-    // }
   }
 }
 </script>
