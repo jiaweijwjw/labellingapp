@@ -1,6 +1,6 @@
 <template>
   <div>
-<q-table
+    <q-table
       :data="labels"
       :columns="columns"
       row-key="name"
@@ -10,16 +10,20 @@
       :rows-per-page-options="[20, 50, 0]"
       :pagination="{rowsPerPage: 10}"
     >
-<!-- <template v-slot:body="props">
-        <q-tr :props="props">
-          <q-td key="color" :props="props">
-            <q-badge color="green">
-              {{ props.row.color }}
-            </q-badge>
-          </q-td>
-        </q-tr>
-          </template> -->
-      </q-table>
+      <template v-slot:body-cell-color="props">
+        <q-td :props="props">
+          <div>
+            <q-badge
+              color="#783434"
+              :label="props.value"
+            />
+          </div>
+          <div>
+            {{ props.row.details }}
+          </div>
+        </q-td>
+      </template>
+    </q-table>
   </div>
 </template>
 
@@ -31,12 +35,12 @@ export default {
     return {
       columns: [
         {
-          name: 'labelname',
+          name: 'name',
           required: true,
           label: 'Label Name',
           align: 'left',
           // field: row => row.some.nested.prop,
-          field: 'name',
+          field: row => row.name,
           format: val => `${val}`,
           sortable: true
         },
@@ -66,10 +70,10 @@ export default {
 
 <style lang="sass" scoped>
 .my-table-details
-  font-size: 0.85em
-  font-style: italic
-  max-width: 200px
-  white-space: normal
-  color: #555
-  margin-top: 4px
+    font-size: 0.85em
+    font-style: italic
+    max-width: 200px
+    white-space: normal
+    color: #555
+    margin-top: 4px
 </style>

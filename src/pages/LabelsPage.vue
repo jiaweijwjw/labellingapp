@@ -24,7 +24,7 @@
     </q-btn-dropdown>
     </div>
     <!-- TABLE -->
-    <div class="labelspage q-pa-md">
+    <div class="width=70vw max-width=80vw q-pa-md">
         <labeltable/>
   </div>
   <div>
