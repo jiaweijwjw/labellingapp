@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  name: 'Annotate',
+  name: 'LabelsPage',
   components: {
     customlabel: require('components/CustomLabel.vue').default,
     labeltable: require('components/LabelTable.vue').default

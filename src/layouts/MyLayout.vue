@@ -74,7 +74,7 @@
           default-opened
           caption="Sequence labelling"
         >
-        <q-item clickable class="app-menu-item" to="/labels">
+        <q-item clickable class="app-menu-item" to="/labelspage">
           <q-item-section avatar>
             <q-icon name="label" />
           </q-item-section>

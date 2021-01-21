@@ -35,13 +35,11 @@
             <q-select
             dark filled
             ref="shortcutkey"
-            placeholder="E.g: K"
             v-model="customLabelToSubmit.shortcutkey"
-            :options="shortKeyOptions"
+            :options="availableShortkeys()"
             :options-dense="true"
             :rules="[val => val !== null && val !== '' || 'Please select a short cut.']"
-            label="Short Cut Key"
-            @input="removeUsedKey">
+            label="Short Cut Key">
         <!-- <template v-slot:append>
           <q-icon name="event" color="orange" />
         </template> -->
@@ -92,7 +90,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 function toTitleCase (str) {
   return str.replace(
@@ -123,6 +121,9 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapGetters('labels', ['labels', 'shortcutkeys'])
+  },
   methods: {
     ...mapActions('labels', ['addLabel']),
     submitNewLabel () {
@@ -141,20 +142,14 @@ export default {
       this.$emit('close')
       this.customLabelToSubmit.name = ''
       this.customLabelToSubmit.shortcutkey = ''
-      this.customLabelToSubmit.color = ''
     },
     close () {
       this.$emit('close')
     },
-    removeUsedKey () {
-      console.log(this.shortKeyOptions.length)
-      console.log(typeof this.customLabelToSubmit.shortcutkey)
-      let index = this.shortKeyOptions.indexOf(this.customLabelToSubmit.shortcutkey)
-      console.log(index)
-      if (index > -1) {
-        this.shortKeyOptions.splice(index, 1)
-      }
-      console.log(this.shortKeyOptions.length)
+    availableShortkeys () {
+      const usedKeys = this.labels.map(item => item.shortcutkey)
+      const unusedKeys = this.shortcutkeys.filter(item => !usedKeys.includes(item))
+      return unusedKeys
     }
   }
 }

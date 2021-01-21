@@ -4,21 +4,25 @@ import { uid } from 'quasar'
 const state = {
   LabelBtns: [
     {
+      id: '1',
       name: 'Person',
       shortcutkey: 'p',
       color: 'pink'
     },
     {
+      id: '2',
       name: 'Location',
       shortcutkey: 'l',
       color: 'purple'
     },
     {
+      id: '3',
       name: 'Date',
       shortcutkey: 'd',
       color: 'black'
     },
     {
+      id: '4',
       name: 'Organization',
       shortcutkey: 'o',
       color: 'blue'
@@ -49,6 +53,9 @@ const actions = {
 const getters = {
   labels: (state) => {
     return state.LabelBtns
+  },
+  shortcutkeys () {
+    return 'abcdefghijklmnopqrstuvwxyz0123456789'.split('')
   }
 }
 

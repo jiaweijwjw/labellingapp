@@ -9,7 +9,7 @@ const routes = [
       { path: '/charts/radar', name: 'Radar', component: () => import('pages/charts/Radar.vue') },
       { path: '/charts/polar', name: 'Polar', component: () => import('pages/charts/Polar.vue') },
       { path: '/annotate', name: 'Annotate', component: () => import('pages/Annotate.vue') }, // lazy loading could have more overhead if the app is small
-      { path: '/labels', name: 'Labels', component: () => import('pages/Labels.vue') }
+      { path: '/labelspage', name: 'LabelsPage', component: () => import('pages/LabelsPage.vue') }
     ]
   }
 ]

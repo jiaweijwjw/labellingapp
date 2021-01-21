@@ -3,12 +3,23 @@
 <q-table
       :data="labels"
       :columns="columns"
-      row-key="id"
+      row-key="name"
       dark
       color="primary"
       rows-per-page-label="Labels per page"
       :rows-per-page-options="[20, 50, 0]"
-    />
+      :pagination="{rowsPerPage: 10}"
+    >
+<!-- <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td key="color" :props="props">
+            <q-badge color="green">
+              {{ props.row.color }}
+            </q-badge>
+          </q-td>
+        </q-tr>
+          </template> -->
+      </q-table>
   </div>
 </template>
 
@@ -24,7 +35,7 @@ export default {
           required: true,
           label: 'Label Name',
           align: 'left',
-          // field: 'value => value.name',
+          // field: row => row.some.nested.prop,
           field: 'name',
           format: val => `${val}`,
           sortable: true
@@ -44,23 +55,6 @@ export default {
           sortable: true
         }
         // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-      ],
-      data: [
-        {
-          name: 'Person',
-          shortcutkey: 'p',
-          color: 159
-        },
-        {
-          name: 'Location',
-          shortcutkey: 'l',
-          color: 237
-        },
-        {
-          name: 'Organization',
-          shortcutkey: 'o',
-          color: 262
-        }
       ]
     }
   },
@@ -71,4 +65,11 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.my-table-details
+  font-size: 0.85em
+  font-style: italic
+  max-width: 200px
+  white-space: normal
+  color: #555
+  margin-top: 4px
 </style>
