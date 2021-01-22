@@ -29,7 +29,7 @@
             placeholder="E.g: Location"
             :rules="[ val => val && val.length > 0 || 'Please input label name.',
             val => !val.includes(' ') || 'Please input only a single word. Spaces are not allowed.',
-            val => checkAvailability(unavailableNames()) || 'Please input another name. Duplicated label names are not allowed.']"
+            val => checkNameAvailability(unavailableNames()) || 'Label name is already in use. Please choose another name.']"
           />
         </q-card-section>
         <q-card-section>
@@ -66,7 +66,8 @@
             ref="color"
             v-model="customLabelToSubmit.color"
             :rules="[val => val !== null && val !== '' || 'Please select a color.',
-            val => isHex(val) && val.length < 8 || 'Input value is not a HEX value.']"
+            val => isHex(val) && val.length < 8 || 'Input value is not a HEX value.',
+            val => checkColorAvailability(unavailableColors()) || 'Label color is already in use. Please choose another color.']"
             label="Label Color"
             placeholder="E.g: #26A69A"
             hint="Input desired HEX color or select from the color picker."
@@ -163,9 +164,21 @@ export default {
       const usedNames = this.labels.map(item => item.name)
       return usedNames
     },
-    checkAvailability (usedNames) {
+    unavailableColors () {
+      const usedColors = this.labels.map(item => item.color)
+      return usedColors
+    },
+    checkNameAvailability (usedNames) {
       for (var i = 0; i < usedNames.length; i++) {
         if (toTitleCase(this.customLabelToSubmit.name).includes(usedNames[i])) {
+          return false
+        }
+      }
+      return true
+    },
+    checkColorAvailability (usedColors) {
+      for (var i = 0; i < usedColors.length; i++) {
+        if (this.customLabelToSubmit.color.includes(usedColors[i])) {
           return false
         }
       }

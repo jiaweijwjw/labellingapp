@@ -14,7 +14,7 @@
         <q-td :props="props">
           <div>
             <q-badge
-              color="#783434"
+              color=pink
               :label="props.value"
             />
           </div>

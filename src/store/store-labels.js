@@ -7,25 +7,25 @@ const state = {
       id: '1',
       name: 'Person',
       shortcutkey: 'p',
-      color: 'pink'
+      color: '#d600d6'
     },
     {
       id: '2',
       name: 'Location',
       shortcutkey: 'l',
-      color: 'purple'
+      color: '#0000a3'
     },
     {
       id: '3',
       name: 'Date',
       shortcutkey: 'd',
-      color: 'black'
+      color: '#005c2e'
     },
     {
       id: '4',
       name: 'Organization',
       shortcutkey: 'o',
-      color: 'blue'
+      color: '#000000'
     }
   ]
 }
