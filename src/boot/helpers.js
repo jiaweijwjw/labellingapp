@@ -1,4 +1,5 @@
 // import Vue from 'vue'
+import { colors } from 'quasar'
 
 const helperFunctions = {
   // Name validation
@@ -33,6 +34,13 @@ const helperFunctions = {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
       }
     )
+  },
+  autoChooseTextColor (color) {
+    if (colors.luminosity(color) < 0.5) {
+      return 'white'
+    } else {
+      return 'black'
+    }
   }
 }
 

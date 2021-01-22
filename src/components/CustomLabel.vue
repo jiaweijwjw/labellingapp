@@ -98,19 +98,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { colors } from 'quasar'
-const { brightness } = colors
-// import { patterns } from 'quasar'
-// const { hexColor } = patterns
-
-// function toTitleCase (str) {
-//   return str.replace(
-//     /\w\S*/g,
-//     function (txt) {
-//       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-//     }
-//   )
-// }
 
 export default {
   props: ['dialog'],
@@ -161,13 +148,6 @@ export default {
       const usedKeys = this.labels.map(item => item.shortcutkey)
       const unusedKeys = this.shortcutkeys.filter(item => !usedKeys.includes(item))
       return unusedKeys
-    },
-    autoChooseTextColor (color) {
-      if (brightness(color) < 128) {
-        return 'white'
-      } else {
-        return 'black'
-      }
     }
   }
 }
