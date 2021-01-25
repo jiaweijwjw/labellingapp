@@ -43,8 +43,8 @@ export default {
     }
   },
   components: {
-    labelbtn: require('components/LabelBtn.vue').default,
-    customlabel: require('components/CustomLabel.vue').default
+    labelbtn: require('components/datalabelling/labels/LabelBtn.vue').default,
+    customlabel: require('components/datalabelling/labels/CustomLabel.vue').default
   }
 }
 </script>

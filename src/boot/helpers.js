@@ -1,5 +1,5 @@
 // import Vue from 'vue'
-import { colors } from 'quasar'
+// import { colors } from 'quasar'
 
 const helperFunctions = {
   // Name validation
@@ -35,12 +35,19 @@ const helperFunctions = {
       }
     )
   },
-  autoChooseTextColor (color) {
-    if (colors.luminosity(color) < 0.5) {
-      return 'white'
-    } else {
-      return 'black'
-    }
+  // autoChooseTextColor (hexColor) {
+  //   if (colors.luminosity(hexColor) < 0.5) {
+  //     return 'white'
+  //   } else {
+  //     return 'black'
+  //   }
+  // }
+  autoChooseTextColor (hexColor) {
+    // https://www.w3.org/TR/AERT/#color-contrast
+    const r = parseInt(hexColor.substr(1, 2), 16)
+    const g = parseInt(hexColor.substr(3, 2), 16)
+    const b = parseInt(hexColor.substr(5, 2), 16)
+    return ((((r * 299) + (g * 587) + (b * 114)) / 1000) < 128) ? '#ffffff' : '#000000'
   }
 }
 
