@@ -6,7 +6,7 @@
         clickable
         v-ripple
         :label="labelbtn.name"
-        :color="labelbtn.color" />
+        :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';'" />
       <!-- <q-btn class="q-ma-xs col-2"
       v-for="(customlabelbtn, key) in customLabels"
         :key="key"
@@ -36,9 +36,14 @@ export default {
   // }
   computed: {
     ...mapGetters('labels', ['labels'])
+  },
+  methods: {
+    autoTextColor (color) {
+      return this.$hf.autoChooseTextColor(color)
+    }
   }
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 </style>

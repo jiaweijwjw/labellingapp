@@ -37,8 +37,8 @@
 export default {
   name: 'LabelsPage',
   components: {
-    customlabel: require('components/CustomLabel.vue').default,
-    labeltable: require('components/LabelTable.vue').default
+    customlabel: require('components/datalabelling/labels/CustomLabel.vue').default,
+    labeltable: require('components/datalabelling/labels/LabelTable.vue').default
   },
   data () {
     return {

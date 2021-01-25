@@ -14,7 +14,7 @@
         <q-td :props="props">
           <div>
             <q-badge
-              color="#783434"
+              :style="'background-color:'+props.value+';'+'color:'+autoTextColor(props.value)+';'"
               :label="props.value"
             />
           </div>
@@ -64,6 +64,11 @@ export default {
   },
   computed: {
     ...mapGetters('labels', ['labels'])
+  },
+  methods: {
+    autoTextColor (color) {
+      return this.$hf.autoChooseTextColor(color)
+    }
   }
 }
 </script>

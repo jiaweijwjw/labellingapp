@@ -70,16 +70,24 @@
           expand-separator
           icon="colorize"
           label="Annotate"
-          to="/annotate/"
+          to="/datalabelling/annotate/"
           default-opened
           caption="Sequence labelling"
         >
-        <q-item clickable class="app-menu-item" to="/labelspage">
+        <q-item clickable class="app-menu-item" to="/datalabelling/labelspage">
           <q-item-section avatar>
             <q-icon name="label" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Labels</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable class="app-menu-item" to="/datalabelling/documentspage">
+          <q-item-section avatar>
+            <q-icon name="description" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Documents</q-item-label>
           </q-item-section>
         </q-item>
         </q-expansion-item>

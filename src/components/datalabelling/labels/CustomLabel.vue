@@ -29,7 +29,7 @@
             placeholder="E.g: Location"
             :rules="[ val => val && val.length > 0 || 'Please input label name.',
             val => !val.includes(' ') || 'Please input only a single word. Spaces are not allowed.',
-            val => checkAvailability(unavailableNames()) || 'Please input another name. Duplicated label names are not allowed.']"
+            val => this.$hf.checkAvailability(this.$hf.unavailableNames(labels), this.customLabelToSubmit.name) || 'Label name is already in use. Please choose another name.']"
           />
         </q-card-section>
         <q-card-section>
@@ -66,7 +66,8 @@
             ref="color"
             v-model="customLabelToSubmit.color"
             :rules="[val => val !== null && val !== '' || 'Please select a color.',
-            val => isHex(val) && val.length < 8 || 'Input value is not a HEX value.']"
+            val => this.$hf.isHex(val) && val.length < 8 || 'Input value is not a HEX value.',
+            val => this.$hf.checkAvailability(this.$hf.unavailableColors(labels), this.customLabelToSubmit.color) || 'Label color is already in use. Please choose another color.']"
             label="Label Color"
             placeholder="E.g: #26A69A"
             hint="Input desired HEX color or select from the color picker."
@@ -97,17 +98,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-// import { patterns } from 'quasar'
-// const { hexColor } = patterns
-
-function toTitleCase (str) {
-  return str.replace(
-    /\w\S*/g,
-    function (txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-    }
-  )
-}
 
 export default {
   props: ['dialog'],
@@ -144,7 +134,7 @@ export default {
     },
     submitLabel () {
       console.log('submitted successfully')
-      this.customLabelToSubmit.name = toTitleCase(this.customLabelToSubmit.name)
+      this.customLabelToSubmit.name = this.$hf.toTitleCase(this.customLabelToSubmit.name)
       let cloneLabelToSubmit = { ...this.customLabelToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
       this.addLabel(cloneLabelToSubmit)
       this.$emit('close')
@@ -158,26 +148,6 @@ export default {
       const usedKeys = this.labels.map(item => item.shortcutkey)
       const unusedKeys = this.shortcutkeys.filter(item => !usedKeys.includes(item))
       return unusedKeys
-    },
-    unavailableNames () {
-      const usedNames = this.labels.map(item => item.name)
-      return usedNames
-    },
-    checkAvailability (usedNames) {
-      for (var i = 0; i < usedNames.length; i++) {
-        if (toTitleCase(this.customLabelToSubmit.name).includes(usedNames[i])) {
-          return false
-        }
-      }
-      return true
-    },
-    isHex (str) {
-      let regexp = /^#[0-9A-F]{6}$/i
-      if (regexp.test(str)) {
-        return true
-      } else {
-        return false
-      }
     }
   }
 }
