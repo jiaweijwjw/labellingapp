@@ -5,10 +5,27 @@
       <p class="text-white col-12">A text annotation tool for NLP.</p>
     </div>
     <div class="annotatingpage col-12">
+      <!-- LABELS -->
       <labels> </labels>
-      <!-- <entitynaming
-        :documents="documents">
-      </entitynaming> -->
+      <!-- ANNOTATOR -->
+      <div class="q-pa-md">
+      <q-card class="q-toolbar text-white" bordered>
+        <q-card-section>
+          <div class="color: white">
+            <entitynaming
+              :labels="labels"
+              :text="currentDoc.text"
+              :entities="currentDoc.annotations"
+              :delete-annotation="removeEntity"
+              :update-entity="updateEntity"
+              :add-entity="addEntity"
+            >
+      </entitynaming>
+          </div>
+        </q-card-section>
+      </q-card>
+  </div>
+      <!-- TEXT INPUT -->
       <texteditor> </texteditor>
       <div class="row">
       <q-space/><submitbtn @submit="addToDocuments"/>
@@ -25,7 +42,7 @@ export default {
   data () {
     return {
       documentToSubmit: {
-        id: '1',
+        id: '',
         text: '',
         annotations: [
           // {
@@ -44,23 +61,64 @@ export default {
   components: {
     texteditor: require('components/datalabelling/annotate/TextEditor.vue').default,
     labels: require('components/datalabelling/annotate/Labels.vue').default,
-    // entitynaming: require('components/datalabelling/annotate/EntityNaming.vue').default,
+    entitynaming: require('components/datalabelling/annotate/EntityNaming.vue').default,
     submitbtn: require('components/datalabelling/annotate/SubmitBtn.vue').default
   },
   computed: {
-    ...mapGetters('documents', ['documents']),
-    ...mapState('documents', ['InputText'])
+    ...mapGetters('documents', ['currentDoc']),
+    ...mapGetters('labels', ['labels']),
+    ...mapState('documents', ['inputText'])
   },
   methods: {
-    ...mapActions('documents', ['addDocument', 'updateInputText']),
+    ...mapActions('documents', ['addDocument', 'updateInputText', 'deleteAnnotation']),
     addToDocuments () {
       console.log('submitted document successfully')
       let cloneDocumentToSubmit = { ...this.documentToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
-      cloneDocumentToSubmit.text = this.InputText
+      cloneDocumentToSubmit.text = this.inputText
       this.addDocument(cloneDocumentToSubmit)
       this.documentToSubmit.text = ''
       this.documentToSubmit.annotations = []
       this.updateInputText('') // clear the textfield after user submission
+    },
+    // removeEntity (annotationId) {
+    //   this.currentDoc.annotations = this.currentDoc.annotations.filter(item => item.id !== annotationId)
+    // },
+    // updateEntity (labelId, annotationId) {
+    //   const index = this.currentDoc.annotations.findIndex(item => item.id === annotationId)
+    //   this.currentDoc.annotations[index].label = labelId
+    // },
+    // addEntity (startOffset, endOffset, labelId) {
+    //   const payload = {
+    //     id: Math.floor(Math.random() * Math.floor(Number.MAX_SAFE_INTEGER)),
+    //     start_offset: startOffset,
+    //     end_offset: endOffset,
+    //     label: labelId
+    //   }
+    //   this.currentDoc.annotations.push(payload)
+    // },
+    removeEntity (annotationId) {
+      // const payload = {
+      //   annotationId
+      //   // projectId: this.$route.params.id
+      // }
+      this.deleteAnnotation(annotationId)
+    },
+    updateEntity (labelId, annotationId) {
+      const payload = {
+        annotationId,
+        label: labelId,
+        projectId: this.$route.params.id
+      }
+      this.updateAnnotation(payload)
+    },
+    addEntity (startOffset, endOffset, labelId) {
+      const payload = {
+        start_offset: startOffset,
+        end_offset: endOffset,
+        label: labelId,
+        projectId: this.$route.params.id
+      }
+      this.addAnnotation(payload)
     }
   }
 }

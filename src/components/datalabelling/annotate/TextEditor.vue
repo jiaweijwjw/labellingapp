@@ -40,11 +40,11 @@ export default {
 
   },
   computed: {
-    ...mapState('documents', ['InputText']), // v-model a computed property requires a setter.
+    ...mapState('documents', ['inputText']), // v-model a computed property requires a setter.
     text: {
       // getter
       get: function () {
-        return this.InputText
+        return this.inputText
       },
       // setter
       set: function (userInputValue) {

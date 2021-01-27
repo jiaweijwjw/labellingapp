@@ -20,7 +20,8 @@
     "axios": "^0.21.1",
     "chart.js": "^2.8.0",
     "quasar": "^1.0.0",
-    "vue-chartjs": "^3.4.2"
+    "vue-chartjs": "^3.4.2",
+    "vue-shortkey": "^3.1.7"
   },
   "devDependencies": {
     "@quasar/app": "^1.0.0",

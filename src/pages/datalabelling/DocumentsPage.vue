@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="labelspage flex row q-pa-md">
+    <div class="documentspage flex row q-pa-md">
       <documentlist/>
   </div>
   </q-page>

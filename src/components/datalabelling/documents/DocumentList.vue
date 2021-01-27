@@ -1,8 +1,8 @@
 <template>
   <div>
-      <q-card>
+      <q-card class="q-toolbar text-white">
           <q-card-section
-          v-for="(document, index, key) in documents" :key="key" style="background-color: black; color: white">
+          v-for="(document, index, key) in documents" :key="key">
           {{document.text}}
           <q-separator spaced color="primary" v-if="index != documents.length-1"/>
           </q-card-section>
