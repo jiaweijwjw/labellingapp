@@ -1,16 +1,8 @@
 <template>
   <div
-    v-if='entities'
     class="highlight-container highlight-container--bottom-labels"
     @click="open"
   >
-  <!-- <q-menu v-model="showMenu" context-menu>
-    <q-list>
-      <q-item>
-        hello
-      </q-item>
-    </q-list>
-  </q-menu> -->
     <entityitem
       v-for="(chunk, i) in chunks"
       :key="i"
@@ -45,14 +37,14 @@
           <q-item-section class="col-10">
             <q-item-label v-text="label.name" />
           </q-item-section>
-          <q-item-section class="col-2">
+          <q-item-section class="col-2 flex-center" :style="'background-color:'+label.color+';'+'color:'+autoTextColor(label.color)+';'">
             <q-item-label v-text="label.shortcutkey" />
           </q-item-section>
         </q-item>
       </q-list>
     </q-menu>
   </div>
-<div v-else>{{text}}</div>
+<!-- <div v-else>{{text}}</div> -->
 </template>
 
 <script>
@@ -115,7 +107,6 @@ export default {
         // add non-entities to chunks.
         chunks = chunks.concat(this.makeChunks(this.text.slice(startOffset, entity.start_offset)))
         startOffset = entity.end_offset
-
         // add entities to chunks.
         const label = this.labelObject[entity.label] // find the matching label that entity is having in the labelobject
         chunks.push({
@@ -139,9 +130,13 @@ export default {
     }
   },
   methods: {
+    autoTextColor (color) {
+      return this.$hf.autoChooseTextColor(color)
+    },
     makeChunks (text) {
       const chunks = []
       const snippets = text.split('\n')
+      console.log(snippets)
       for (const snippet of snippets.slice(0, -1)) {
         chunks.push({
           label: null,
@@ -215,6 +210,7 @@ export default {
       return true
     },
     open (e) {
+      console.log(this.start, this.end)
       console.log('clicked')
       this.setSpanInfo()
       if (this.validateSpan()) {
@@ -225,6 +221,7 @@ export default {
     assignLabel (labelId) {
       if (this.validateSpan()) {
         this.addEntity(this.start, this.end, labelId)
+        console.log(this.start, this.end)
         this.showMenu = false
         this.start = 0
         this.end = 0
@@ -239,7 +236,7 @@ export default {
   align-items: flex-start;
 }
 .highlight-container {
-  line-height: 42px !important;
+  line-height: 38px !important;
   display: flex;
   flex-wrap: wrap;
   white-space: pre-wrap;

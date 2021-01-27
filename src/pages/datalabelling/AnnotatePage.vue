@@ -11,7 +11,6 @@
       <div class="q-pa-md">
       <q-card class="q-toolbar text-white" bordered>
         <q-card-section>
-          <div class="color: white">
             <entitynaming
               :labels="labels"
               :text="currentDoc.text"
@@ -21,7 +20,6 @@
               :add-entity="addEntity"
             >
       </entitynaming>
-          </div>
         </q-card-section>
       </q-card>
   </div>

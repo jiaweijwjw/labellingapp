@@ -9,24 +9,24 @@ const state = {
       id: '1',
       text: 'Batman is a superhero who appears in American comic books published by DC Comics. Batman was created by artist Bob Kane and writer Bill Finger, and debuted in the 27th issue of the comic book Detective Comics on March 30, 1939. In the DC Universe continuity, Batman is the alias of Bruce Wayne, a wealthy American playboy, philanthropist, and owner of Wayne Enterprises based in Gotham City.',
       annotations: [
-        {
-          id: 1,
-          prob: 0.0,
-          label: '1',
-          start_offset: 0,
-          end_offset: 10,
-          user: 1,
-          document: 8
-        },
-        {
-          id: 2,
-          prob: 0.0,
-          label: '2',
-          start_offset: 11,
-          end_offset: 30,
-          user: 1,
-          document: 8
-        }
+        // {
+        //   id: 1,
+        //   prob: 0.0,
+        //   label: '1',
+        //   start_offset: 0,
+        //   end_offset: 10,
+        //   user: 1,
+        //   document: 8
+        // },
+        // {
+        //   id: 2,
+        //   prob: 0.0,
+        //   label: '2',
+        //   start_offset: 11,
+        //   end_offset: 30,
+        //   user: 1,
+        //   document: 8
+        // }
       ]
     }
   ]

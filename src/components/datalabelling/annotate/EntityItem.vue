@@ -32,14 +32,13 @@
   </q-menu> -->
   <div v-if="label">
     <span :style="{ borderColor: color }" class="highlight bottom">
-        <span class="highlight__content">{{ content }}<q-btn flat round dense icon="close" color="primary" @click="remove"/></span><span :data-label="label" :style="{ backgroundColor: color, color: textColor }" class="highlight__label" />
+        <span class="highlight__content" @click="remove">{{ content }}</span><span :data-label="label" :style="{ backgroundColor: color, color: textColor }" class="highlight__label" />
       </span>
   </div>
   <span v-else :class="[newline ? 'newline' : '']">{{ content }}</span>
 </template>
 
 <script>
-// import { idealColor } from '~/plugins/utils.js'
 
 export default {
   props: {
@@ -145,7 +144,7 @@ export default {
 .highlight__label::after {
   content: attr(data-label);
   display: block;
-  font-size: 14px;
+  font-size: 12px;
   -webkit-font-smoothing: subpixel-antialiased;
   letter-spacing: .1em;
 }
