@@ -2,7 +2,15 @@
   <div
     v-if='entities'
     class="highlight-container highlight-container--bottom-labels"
+    @click="open"
   >
+  <!-- <q-menu v-model="showMenu" context-menu>
+    <q-list>
+      <q-item>
+        hello
+      </q-item>
+    </q-list>
+  </q-menu> -->
     <entityitem
       v-for="(chunk, i) in chunks"
       :key="i"
@@ -14,8 +22,9 @@
       @remove="deleteAnnotation(chunk.id)"
       @update="updateEntity($event.id, chunk.id)"
     />
-    <!-- <q-menu
+    <q-menu
       v-model="showMenu"
+      context-menu
     >
       <q-list
         dense
@@ -41,7 +50,7 @@
           </q-item-section>
         </q-item>
       </q-list>
-    </q-menu> -->
+    </q-menu>
   </div>
 <div v-else>{{text}}</div>
 </template>
@@ -158,7 +167,7 @@ export default {
     show (e) {
       e.preventDefault()
       console.log('entered show()')
-      this.showMenu = false
+      this.showMenu = true
       // this.x = e.clientX || e.changedTouches[0].clientX
       // this.y = e.clientY || e.changedTouches[0].clientY
       // this.$nextTick(() => {

@@ -70,7 +70,7 @@ export default {
     ...mapState('documents', ['inputText'])
   },
   methods: {
-    ...mapActions('documents', ['addDocument', 'updateInputText', 'deleteAnnotation']),
+    ...mapActions('documents', ['addDocument', 'updateInputText', 'deleteAnnotation', 'addAnnotation']),
     addToDocuments () {
       console.log('submitted document successfully')
       let cloneDocumentToSubmit = { ...this.documentToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
@@ -115,8 +115,8 @@ export default {
       const payload = {
         start_offset: startOffset,
         end_offset: endOffset,
-        label: labelId,
-        projectId: this.$route.params.id
+        label: labelId
+        // projectId: this.$route.params.id
       }
       this.addAnnotation(payload)
     }

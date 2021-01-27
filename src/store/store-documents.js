@@ -44,18 +44,25 @@ const mutations = {
   deleteAnnotation (state, payload) {
     console.log(payload.annotationId)
     console.log(payload.documentId)
-    // let document = state.documents.find(o => o.name === payload.documentID)
-    // let index = state.documents.indexOf(document)
-    // console.log(document.annotations)
-    // console.log(state.documents[index].annotations)
-    // state.documents[payload.documentId].annotations = state.documents[payload.documentId].annotations.filter(item => item.id !== payload.annotationId)
     var index = state.documents.map(item => item.id).indexOf(payload.documentId)
     console.log(index)
     var annotationIndex = state.documents[index].annotations.map(item => item.id).indexOf(payload.annotationId)
     console.log(annotationIndex)
     ~annotationIndex && state.documents[index].annotations.splice(annotationIndex, 1)
-    // state.documents[index].annotations.filter(item => item.id !== payload.annotationId)
-    // this.currentDoc.annotations = this.currentDoc.annotations.filter(item => item.id !== annotationId)
+  },
+  addAnnotation (state, payload) {
+    var index = state.documents.map(item => item.id).indexOf(payload.documentId)
+    console.log(index)
+    let annotation = {
+      id: payload.annotationId,
+      prob: 0.0,
+      label: payload.label,
+      start_offset: payload.start_offset,
+      end_offset: payload.end_offset
+      // user: 1,
+      // document: 8
+    }
+    state.documents[index].annotations.push(annotation)
   }
 }
 
@@ -80,6 +87,18 @@ const actions = {
       documentId: documentId
     }
     commit('deleteAnnotation', payload)
+  },
+  addAnnotation ({ commit, state }, details) {
+    const documentId = state.documents[state.current].id
+    let annotationId = uid()
+    let payload = {
+      start_offset: details.start_offset,
+      end_offset: details.end_offset,
+      label: details.label,
+      documentId: documentId,
+      annotationId: annotationId
+    }
+    commit('addAnnotation', payload)
   }
 }
 
