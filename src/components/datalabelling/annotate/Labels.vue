@@ -25,7 +25,11 @@
     <!-- DEFAULT LABEL OPTIONS -->
     <q-card class="col-12 my-card bg-grey-4">
       <q-card-section>
-        <labelbtn> </labelbtn>
+        <labelbtn
+        :labels="labels"
+        :add-entity="addEntity"
+        :entities="entities">
+        </labelbtn>
       </q-card-section>
     </q-card>
   </div>
@@ -33,6 +37,23 @@
 
 <script>
 export default {
+  props: {
+    labels: {
+      type: Array,
+      default: () => ([]),
+      required: true
+    },
+    entities: { // annotations
+      type: Array,
+      default: () => ([]),
+      required: true
+    },
+    addEntity: {
+      type: Function,
+      default: () => ([]),
+      required: true
+    }
+  },
   data () {
     return {}
   },

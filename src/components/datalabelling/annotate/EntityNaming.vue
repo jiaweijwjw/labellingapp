@@ -48,7 +48,7 @@
 </template>
 
 <script>
-
+import { mapActions } from 'vuex'
 export default {
   components: {
     entityitem: require('components/datalabelling/annotate/EntityItem.vue').default
@@ -130,6 +130,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('documents', ['updateStartEnd']),
     autoTextColor (color) {
       return this.$hf.autoChooseTextColor(color)
     },
@@ -188,6 +189,11 @@ export default {
       this.start = [...preSelectionRange.toString()].length
       this.end = this.start + [...range.toString()].length
       console.log('start: ' + this.start + ' end: ' + this.end)
+      let startEnd = {
+        start: this.start,
+        end: this.end
+      }
+      this.updateStartEnd(startEnd)
     },
     validateSpan () {
       if ((typeof this.start === 'undefined') || (typeof this.end === 'undefined')) {

@@ -6,7 +6,8 @@
         clickable
         v-ripple
         :label="labelbtn.name"
-        :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';'" />
+        :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';'"
+        @click="assignLabel(labelbtn.id)"/>
       <!-- <q-btn class="q-ma-xs col-2"
       v-for="(customlabelbtn, key) in customLabels"
         :key="key"
@@ -19,9 +20,26 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
+  props: {
+    labels: {
+      type: Array,
+      default: () => ([]),
+      required: true
+    },
+    entities: { // annotations
+      type: Array,
+      default: () => ([]),
+      required: true
+    },
+    addEntity: {
+      type: Function,
+      default: () => ([]),
+      required: true
+    }
+  },
   data () {
     return {
     }
@@ -35,11 +53,44 @@ export default {
   //   }
   // }
   computed: {
-    ...mapGetters('labels', ['labels'])
+    ...mapState('documents', ['start', 'end'])
   },
   methods: {
+    ...mapActions('documents', ['updateStartEnd']),
     autoTextColor (color) {
       return this.$hf.autoChooseTextColor(color)
+    },
+    validateSpan () {
+      if ((typeof this.start === 'undefined') || (typeof this.end === 'undefined')) {
+        return false
+      }
+      if (this.start === this.end) {
+        return false
+      }
+      for (const entity of this.entities) {
+        if ((entity.start_offset <= this.start) && (this.start < entity.end_offset)) {
+          return false
+        }
+        if ((entity.start_offset < this.end) && (this.end <= entity.end_offset)) {
+          return false
+        }
+        if ((this.start < entity.start_offset) && (entity.end_offset < this.end)) {
+          return false
+        }
+      }
+      return true
+    },
+    assignLabel (labelId) {
+      if (this.validateSpan()) {
+        this.addEntity(this.start, this.end, labelId)
+        console.log(this.start, this.end)
+        this.showMenu = false
+        let startEnd = {
+          start: 0,
+          end: 0
+        }
+        this.updateStartEnd(startEnd)
+      }
     }
   }
 }

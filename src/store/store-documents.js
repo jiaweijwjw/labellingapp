@@ -2,6 +2,8 @@
 import { uid } from 'quasar'
 
 const state = {
+  start: 0, // start of selection
+  end: 0, // end of selection
   inputText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
   current: 0,
   documents: [
@@ -41,6 +43,10 @@ const mutations = {
   updateInputText (state, payload) {
     state.inputText = payload
   },
+  updateStartEnd (state, payload) {
+    state.start = payload.start
+    state.end = payload.end
+  },
   deleteAnnotation (state, payload) {
     console.log(payload.annotationId)
     console.log(payload.documentId)
@@ -78,6 +84,9 @@ const actions = {
   },
   updateInputText ({ commit }, userInputText) {
     commit('updateInputText', userInputText)
+  },
+  updateStartEnd ({ commit }, selectionStartEnd) {
+    commit('updateStartEnd', selectionStartEnd)
   },
   deleteAnnotation ({ commit, state }, annotationId) {
     const documentId = state.documents[state.current].id

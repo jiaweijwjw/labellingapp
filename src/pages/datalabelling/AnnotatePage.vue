@@ -6,7 +6,11 @@
     </div>
     <div class="annotatingpage col-12">
       <!-- LABELS -->
-      <labels> </labels>
+      <labels
+        :labels="labels"
+        :entities="currentDoc.annotations"
+        :add-entity="addEntity"
+      > </labels>
       <!-- ANNOTATOR -->
       <div class="q-pa-md">
       <q-card class="q-toolbar text-white" bordered>
