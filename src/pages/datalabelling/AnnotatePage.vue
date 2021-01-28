@@ -11,6 +11,12 @@
       <div class="q-pa-md">
       <q-card class="q-toolbar text-white" bordered>
         <q-card-section>
+            <annotationbar/>
+          <q-space/>
+          <q-menu>
+          </q-menu>
+        </q-card-section>
+        <q-card-section>
             <entitynaming
               :labels="labels"
               :text="currentDoc.text"
@@ -60,7 +66,8 @@ export default {
     texteditor: require('components/datalabelling/annotate/TextEditor.vue').default,
     labels: require('components/datalabelling/annotate/Labels.vue').default,
     entitynaming: require('components/datalabelling/annotate/EntityNaming.vue').default,
-    submitbtn: require('components/datalabelling/annotate/SubmitBtn.vue').default
+    submitbtn: require('components/datalabelling/annotate/SubmitBtn.vue').default,
+    annotationbar: require('components/datalabelling/annotate/AnnotationBar.vue').default
   },
   computed: {
     ...mapGetters('documents', ['currentDoc']),
