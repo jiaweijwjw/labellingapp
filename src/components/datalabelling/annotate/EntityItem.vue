@@ -1,41 +1,12 @@
 <template>
-  <!-- <q-menu
-    v-if="label"
-    v-model="showMenu"
-  >
-    <template v-slot:activator="{ on }">
-      <span :style="{ borderColor: color }" class="highlight bottom" v-on="on">
-        <span class="highlight__content">{{ content }}<v-icon class="delete" @click.stop="remove">mdi-close-circle</v-icon></span><span :data-label="label" :style="{ backgroundColor: color, color: textColor }" class="highlight__label" />
-      </span>
-    </template>
-    <q-list
-      dense
-      min-width="150"
-      max-height="400"
-      class="overflow-y-auto"
-    >
-      <q-item
-        v-for="(label, i) in labels"
-        :key="i"
-        v-shortkey.once="[label.shortcutkey]"
-        @shortkey="update(label)"
-        @click="update(label)"
-      >
-        <q-item-section>
-          <q-item-label v-text="label.name" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label v-text="label.shortcutkey" />
-        </q-item-section>
-      </q-item>
-    </q-list>
-  </q-menu> -->
-  <div v-if="label">
+<div>
+  <div ref="target" v-if="label">
     <span :style="{ borderColor: color }" class="highlight bottom">
-        <span class="highlight__content" @click="remove">{{ content }}</span><span :data-label="label" :style="{ backgroundColor: color, color: textColor }" class="highlight__label" />
+        <span class="highlight__content" @click="remove" v-shortkey="['space']" @shortkey="openDialog(labelId)">{{ content }}</span><span :data-label="label" :style="{ backgroundColor: color, color: textColor }" class="highlight__label" />
       </span>
   </div>
   <span v-else :class="[newline ? 'newline' : '']">{{ content }}</span>
+</div>
 </template>
 
 <script>
@@ -62,6 +33,10 @@ export default {
     },
     newline: {
       type: Boolean
+    },
+    labelId: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -77,10 +52,17 @@ export default {
   methods: {
     update (label) {
       this.$emit('update', label)
-      this.showMenu = false
+      // this.showMenu = false
     },
     remove () {
       this.$emit('remove')
+    },
+    autoTextColor (color) {
+      return this.$hf.autoChooseTextColor(color)
+    },
+    openDialog (labelId) {
+      console.log('openDialog' + labelId)
+      this.$emit('opendialog', labelId)
     }
   }
 }

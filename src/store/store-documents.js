@@ -19,15 +19,6 @@ const state = {
         //   end_offset: 10,
         //   user: 1,
         //   document: 8
-        // },
-        // {
-        //   id: 2,
-        //   prob: 0.0,
-        //   label: '2',
-        //   start_offset: 11,
-        //   end_offset: 30,
-        //   user: 1,
-        //   document: 8
         // }
       ]
     }
@@ -69,6 +60,10 @@ const mutations = {
       // document: 8
     }
     state.documents[index].annotations.push(annotation)
+  },
+  updateAnnotation (state, payload) {
+    const document = state.documents[state.current].annotations.find(item => item.id === payload.annotationId)
+    Object.assign(document, payload)
   }
 }
 
@@ -108,6 +103,15 @@ const actions = {
       annotationId: annotationId
     }
     commit('addAnnotation', payload)
+  },
+  updateAnnotation ({ commit, state }, obj) {
+    // const documentId = state.documents[state.current].id
+    let payload = {
+      // documentId: documentId,
+      label: obj.labelId,
+      annotationId: obj.annotationId
+    }
+    commit('updateAnnotation', payload)
   }
 }
 

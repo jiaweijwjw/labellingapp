@@ -1,7 +1,7 @@
 <template>
 <div>
     <q-bar class="row">
-        <q-btn class="col-2" @click="dialog = true"><q-icon name="menubook"/></q-btn>
+        <q-btn flat class="col-2" @click="dialog = true"><q-icon name="menubook"/></q-btn>
     </q-bar>
     <div>
     <q-dialog v-model="dialog">

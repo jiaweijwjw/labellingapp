@@ -9,11 +9,20 @@
       :content="chunk.text"
       :newline="chunk.newline"
       :label="chunk.label"
+      :labelId="chunk.labelId"
       :color="chunk.color"
       :labels="labels"
       @remove="deleteAnnotation(chunk.id)"
       @update="updateEntity($event.id, chunk.id)"
-    />
+      @opendialog="openDialog($event)"
+    >
+    </entityitem>
+    <switchlabel
+    :dialog="dialog"
+    :labels="labels"
+    :currentlabelId="labelToEdit"
+    @close="dialog = false">
+    </switchlabel>
     <q-menu
       v-model="showMenu"
       context-menu
@@ -51,7 +60,8 @@
 import { mapActions } from 'vuex'
 export default {
   components: {
-    entityitem: require('components/datalabelling/annotate/EntityItem.vue').default
+    entityitem: require('components/datalabelling/annotate/EntityItem.vue').default,
+    switchlabel: require('components/datalabelling/annotate/SwitchLabelDialog.vue').default
   },
   props: {
     text: {
@@ -88,6 +98,8 @@ export default {
   data () {
     return {
       showMenu: false,
+      dialog: false,
+      labelToEdit: '',
       x: 0,
       y: 0,
       start: 0,
@@ -98,7 +110,6 @@ export default {
     sortedEntities () { // sort the entities by which come first in the paragraph
       return this.entities.slice().sort((a, b) => a.start_offset - b.start_offset)
     },
-
     chunks () {
       let chunks = []
       const entities = this.sortedEntities
@@ -111,6 +122,7 @@ export default {
         const label = this.labelObject[entity.label] // find the matching label that entity is having in the labelobject
         chunks.push({
           id: entity.id,
+          labelId: label.id,
           label: label.name,
           color: label.color,
           text: this.text.slice(entity.start_offset, entity.end_offset)
@@ -131,6 +143,16 @@ export default {
   },
   methods: {
     ...mapActions('documents', ['updateStartEnd']),
+    // openDialog (labelId, chunkId) {
+    //   this.dialog = true
+    //   this.updateEntity(labelId, chunkId)
+    // },
+    openDialog (labelId) {
+      this.dialog = true
+      this.labelToEdit = labelId
+      console.log(this.labelToEdit)
+      console.log(labelId)
+    },
     autoTextColor (color) {
       return this.$hf.autoChooseTextColor(color)
     },

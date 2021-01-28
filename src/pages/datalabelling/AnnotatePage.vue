@@ -79,7 +79,7 @@ export default {
     ...mapState('documents', ['inputText'])
   },
   methods: {
-    ...mapActions('documents', ['addDocument', 'updateInputText', 'deleteAnnotation', 'addAnnotation']),
+    ...mapActions('documents', ['addDocument', 'updateInputText', 'deleteAnnotation', 'addAnnotation', 'updateAnnotation']),
     addToDocuments () {
       console.log('submitted document successfully')
       let cloneDocumentToSubmit = { ...this.documentToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
@@ -115,8 +115,8 @@ export default {
     updateEntity (labelId, annotationId) {
       const payload = {
         annotationId,
-        label: labelId,
-        projectId: this.$route.params.id
+        label: labelId
+        // projectId: this.$route.params.id
       }
       this.updateAnnotation(payload)
     },
@@ -144,5 +144,5 @@ export default {
   margin: 4rem 0 1.5rem
 .annotatingpage
   width: 70vw
-  max-width: 90vw
+  max-width: 100vw
 </style>

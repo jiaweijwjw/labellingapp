@@ -18,12 +18,12 @@
         @click="assignLabel(labelbtn.id)">
         <q-item class="no-margin no-padding">
         <q-item-section class="q-px-sm" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';'">
-          {{labelbtn.name}}
+          <q-item-label v-text="labelbtn.name" />
           </q-item-section>
         </q-item>
         <q-item class="no-margin no-padding">
         <q-item-section class="q-px-xs" :style="'background-color: white'">
-          {{labelbtn.shortcutkey}}
+          <q-item-label v-text="labelbtn.shortcutkey" />
         </q-item-section>
         </q-item>
         </q-btn>
