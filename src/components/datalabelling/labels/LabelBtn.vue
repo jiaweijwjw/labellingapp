@@ -13,6 +13,8 @@
         :key="key"
         clickable
         v-ripple
+        v-shortkey="[labelbtn.shortcutkey]"
+        @shortkey="assignLabel(labelbtn.id)"
         @click="assignLabel(labelbtn.id)">
         <q-item class="no-margin no-padding">
         <q-item-section class="q-px-sm" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';'">
