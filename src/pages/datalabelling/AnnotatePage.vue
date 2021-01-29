@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-px-lg">
+  <q-page style="width:1800px; max-width:85vw">
     <div>
       <!-- LABELS -->
       <labels
@@ -8,7 +8,7 @@
         :add-entity="addEntity"
       > </labels>
       <!-- ANNOTATOR -->
-      <div class="q-pa-md">
+      <div>
       <q-card class="q-toolbar text-white" bordered>
         <q-card-section>
             <annotationbar/>

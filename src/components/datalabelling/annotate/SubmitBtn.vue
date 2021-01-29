@@ -7,12 +7,11 @@
       v-ripple
       @click="dialog = true"
     >
-    <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]"
-    >Submit this chunk of text and start labelling.</q-tooltip>
+    <q-tooltip anchor="bottom middle" self="center middle" :offset="[20, 20]">Submit this chunk of text and start labelling.</q-tooltip>
     </q-btn>
     <q-form>
     <q-dialog :value="dialog" persistent>
-      <q-card class="q-toolbar text-white" style="width: 30vw" bordered>
+      <q-card class="popup" style="width: 30vw" bordered>
         <q-card-section class="row">
           <div class="text-h6 text-white">Confirm submission?</div>
           <q-space />

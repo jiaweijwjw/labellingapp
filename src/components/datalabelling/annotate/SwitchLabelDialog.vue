@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-dialog :value="dialog" persistent>
+    <q-dialog :value="dialog" persistent class="popup">
       <q-card
         style="width: 40vw"
         bordered
@@ -19,36 +19,20 @@
           />
         </q-card-section>
         <q-card-section>
-          <div class="row justify-center q-gutter-x-md q-gutter-y-sm">
-            <q-btn
-              size="0.8rem"
-              class="no-padding row"
-              v-for="(labelbtn, key) in remainingLabels"
-              :key="key"
-              clickable
-              v-ripple
-              v-shortkey="[labelbtn.shortcutkey]"
-              @shortkey="assignLabel(labelbtn.id)"
-              @click="assignLabel(labelbtn.id)"
-            >
-              <q-item class="no-margin no-padding">
-                <q-item-section
-                  class="q-px-sm"
-                  :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';'"
-                >
-                  <q-item-label v-text="labelbtn.name" />
-                </q-item-section>
-              </q-item>
-              <q-item class="no-margin no-padding">
-                <q-item-section
-                  class="q-px-xs"
-                  :style="'background-color: white'"
-                >
-                  <q-item-label v-text="labelbtn.shortcutkey" />
-                </q-item-section>
-              </q-item>
-            </q-btn>
-          </div>
+        <div class="row justify-center q-gutter-x-sm q-gutter-y-sm no-padding">
+        <q-btn-group size="0.8rem" class="no-padding row roundedbtn"
+        v-for="(labelbtn, key) in labels"
+        :key="key"
+        clickable
+        v-shortkey="[labelbtn.shortcutkey]"
+        @shortkey="assignLabel(labelbtn.id)"
+        @click="assignLabel(labelbtn.id)">
+          <q-btn class="q-px-sm no-margin ellipsis roundedbtn" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:15vw'" v-text="labelbtn.name">
+          </q-btn>
+          <q-btn class="q-px-sm no-margin roundedbtn" :style="'background-color: white'" v-text="labelbtn.shortcutkey">
+          </q-btn>
+        </q-btn-group>
+  </div>
         </q-card-section>
         <q-card-actions
           align="right"

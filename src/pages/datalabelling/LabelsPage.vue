@@ -1,6 +1,6 @@
 <template>
-  <q-page style="width: 100vw">
-    <div class="row q-pa-lg">
+  <q-page style="width:1800px; max-width:85vw">
+    <div class="row q-py-md">
       <q-btn-dropdown
         flat
         text-color="primary"
@@ -39,7 +39,7 @@
       </q-btn-dropdown>
     </div>
     <!-- TABLE -->
-    <div class="q-px-lg q-py-xs">
+    <div>
       <labeltable />
     </div>
     <div>

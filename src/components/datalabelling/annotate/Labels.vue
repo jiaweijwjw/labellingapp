@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md column">
+  <div class="q-py-md column">
       <!-- <div class="cursor-pointer non-selectable" color="primary" >
         <q-btn flat color="primary" label="Import from file" v-ripple>
           <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Import text from your own files to be annotated.</q-tooltip>

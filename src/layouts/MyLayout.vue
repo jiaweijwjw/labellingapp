@@ -102,7 +102,7 @@
       </q-list>
     </q-drawer> -->
     <!-- pages will be inserted here -->
-    <q-page-container>
+    <q-page-container class="absolute-center">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -122,6 +122,8 @@ export default {
 </script>
 
 <style lang="sass">
+  .q-layout
+    background-color: $body-background !important
   .q-toolbar
     background-color: $toolbar-color
   .q-drawer__content
@@ -133,4 +135,7 @@ export default {
   .app-menu-item
     border-radius: 0 10px 10px 0
     margin-right: 12px
+  .popup
+    background-color: $darker
+    text-color: white
 </style>

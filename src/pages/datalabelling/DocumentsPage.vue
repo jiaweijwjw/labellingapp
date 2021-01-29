@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="documentspage flex row q-pa-md">
+    <div class="documentspage flex row q-py-lg" style="width:1800px; max-width:85vw">
       <documentlist/>
     </div>
         <!-- TEXT INPUT -->

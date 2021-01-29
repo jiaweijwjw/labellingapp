@@ -15,16 +15,16 @@
         <div class="q-px-xs no-margin" :style="'background-color: white'" v-text="labelbtn.shortcutkey"/>
         </q-btn> -->
 
-        <q-btn-group size="0.8rem" class="no-padding row"
+        <q-btn-group size="0.8rem" class="no-padding row roundedbtn"
         v-for="(labelbtn, key) in labels"
         :key="key"
         clickable
         v-shortkey="[labelbtn.shortcutkey]"
         @shortkey="assignLabel(labelbtn.id)"
         @click="assignLabel(labelbtn.id)">
-          <q-btn class="q-px-sm no-margin ellipsis" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:15vw'" v-text="labelbtn.name">
+          <q-btn class="q-px-sm no-margin ellipsis roundedbtn" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:15vw'" v-text="labelbtn.name">
           </q-btn>
-          <q-btn class="q-px-xs no-margin" :style="'background-color: white'" v-text="labelbtn.shortcutkey">
+          <q-btn class="q-px-sm no-margin roundedbtn" :style="'background-color: white'" v-text="labelbtn.shortcutkey">
           </q-btn>
         </q-btn-group>
   </div>
@@ -108,4 +108,6 @@ export default {
 </script>
 
 <style lang="sass">
+.roundedbtn
+  border-radius: 7px;
 </style>
