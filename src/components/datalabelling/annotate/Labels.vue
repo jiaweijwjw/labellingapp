@@ -1,8 +1,6 @@
 <template>
   <div class="q-pa-md column">
-    <q-bar class="q-toolbar text-white">
-      <!-- IMPORT FROM FILE -->
-      <div class="cursor-pointer non-selectable" color="primary" >
+      <!-- <div class="cursor-pointer non-selectable" color="primary" >
         <q-btn flat color="primary" label="Import from file" v-ripple>
           <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">Import text from your own files to be annotated.</q-tooltip>
           </q-btn>
@@ -18,10 +16,7 @@
             <q-separator />
           </q-list>
         </q-menu>
-      </div>
-      <!-- ADD NEW LABEL -->
-    <customlabel></customlabel>
-    </q-bar>
+      </div> -->
     <!-- DEFAULT LABEL OPTIONS -->
     <q-card class="col-12 my-card bg-grey-4">
       <q-card-section>
@@ -57,15 +52,10 @@ export default {
   data () {
     return {}
   },
-  // props: ['options'],
   methods: {
-    newCustomLabel () {
-      console.log('hi')
-    }
   },
   components: {
-    labelbtn: require('components/datalabelling/labels/LabelBtn.vue').default,
-    customlabel: require('components/datalabelling/labels/CustomLabel.vue').default
+    labelbtn: require('components/datalabelling/labels/LabelBtn.vue').default
   }
 }
 </script>
@@ -73,15 +63,15 @@ export default {
 <style lang="sass">
 .my-card
   width: 100%
-  .q-toolbar
-    background-color: $toolbar-color
-  .q-drawer__content
-    background-color: $drawer-color !important
-  .q-drawer
-    background-color: $drawer-color
-  .q-page-container
-    background-color: $body-background !important
-  .app-menu-item
-    border-radius: 0 10px 10px 0
-    margin-right: 12px
+.q-toolbar
+  background-color: $toolbar-color
+.q-drawer__content
+  background-color: $drawer-color !important
+.q-drawer
+  background-color: $drawer-color
+  q-page-container
+  background-color: $body-background !important
+.app-menu-item
+  border-radius: 0 10px 10px 0
+  margin-right: 12px
 </style>

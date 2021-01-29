@@ -1,10 +1,6 @@
 <template>
-  <q-page>
-    <div class="annotatingpage flex column">
-      <h2 class="doc-h2 col-12">DSOViz Data Labelling</h2>
-      <p class="text-white col-12">A text annotation tool for NLP.</p>
-    </div>
-    <div class="annotatingpage col-12">
+  <q-page class="q-px-lg">
+    <div>
       <!-- LABELS -->
       <labels
         :labels="labels"
@@ -33,11 +29,6 @@
         </q-card-section>
       </q-card>
   </div>
-      <!-- TEXT INPUT -->
-      <texteditor> </texteditor>
-      <div class="row">
-      <q-space/><submitbtn @submit="addToDocuments"/>
-      </div>
     </div>
   </q-page>
 </template>
@@ -67,10 +58,8 @@ export default {
     }
   },
   components: {
-    texteditor: require('components/datalabelling/annotate/TextEditor.vue').default,
     labels: require('components/datalabelling/annotate/Labels.vue').default,
     entitynaming: require('components/datalabelling/annotate/EntityNaming.vue').default,
-    submitbtn: require('components/datalabelling/annotate/SubmitBtn.vue').default,
     annotationbar: require('components/datalabelling/annotate/AnnotationBar.vue').default
   },
   computed: {
@@ -79,16 +68,7 @@ export default {
     ...mapState('documents', ['inputText'])
   },
   methods: {
-    ...mapActions('documents', ['addDocument', 'updateInputText', 'deleteAnnotation', 'addAnnotation', 'updateAnnotation']),
-    addToDocuments () {
-      console.log('submitted document successfully')
-      let cloneDocumentToSubmit = { ...this.documentToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
-      cloneDocumentToSubmit.text = this.inputText
-      this.addDocument(cloneDocumentToSubmit)
-      this.documentToSubmit.text = ''
-      this.documentToSubmit.annotations = []
-      this.updateInputText('') // clear the textfield after user submission
-    },
+    ...mapActions('documents', ['updateInputText', 'deleteAnnotation', 'addAnnotation', 'updateAnnotation']),
     // removeEntity (annotationId) {
     //   this.currentDoc.annotations = this.currentDoc.annotations.filter(item => item.id !== annotationId)
     // },
@@ -142,7 +122,4 @@ export default {
   font-weight: 400
   color: $primary
   margin: 4rem 0 1.5rem
-.annotatingpage
-  width: 70vw
-  max-width: 100vw
 </style>

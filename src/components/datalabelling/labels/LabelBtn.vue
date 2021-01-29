@@ -1,14 +1,9 @@
 <template>
-  <div class="row justify-center q-gutter-x-md q-gutter-y-sm">
-      <!-- <q-btn class="q-ma-xs col-2"
-      v-for="(labelbtn, key) in labels"
-        :key="key"
-        clickable
-        v-ripple
-        :label="labelbtn.name"
-        :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';'"
-        @click="assignLabel(labelbtn.id)"/> -->
-        <q-btn size="0.8rem" class="no-padding row"
+  <div class="row justify-center q-gutter-x-md q-gutter-y-xs no-padding">
+        <!-- :label="labelbtn.name"
+        :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';'" -->
+
+        <!-- <q-btn size="0.8rem" class="no-padding row"
         v-for="(labelbtn, key) in labels"
         :key="key"
         clickable
@@ -16,25 +11,22 @@
         v-shortkey="[labelbtn.shortcutkey]"
         @shortkey="assignLabel(labelbtn.id)"
         @click="assignLabel(labelbtn.id)">
-        <q-item class="no-margin no-padding">
-        <q-item-section class="q-px-sm" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';'">
-          <q-item-label v-text="labelbtn.name" />
-          </q-item-section>
-        </q-item>
-        <q-item class="no-margin no-padding">
-        <q-item-section class="q-px-xs" :style="'background-color: white'">
-          <q-item-label v-text="labelbtn.shortcutkey" />
-        </q-item-section>
-        </q-item>
-        </q-btn>
-      <!-- <q-btn class="q-ma-xs col-2"
-      v-for="(customlabelbtn, key) in customLabels"
+        <div class="q-px-sm no-margin" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';'" v-text="labelbtn.name"/>
+        <div class="q-px-xs no-margin" :style="'background-color: white'" v-text="labelbtn.shortcutkey"/>
+        </q-btn> -->
+
+        <q-btn-group size="0.8rem" class="no-padding row"
+        v-for="(labelbtn, key) in labels"
         :key="key"
         clickable
-        v-ripple
-        :label="customlabelbtn.name"
-        :color="customlabelbtn.color" /> -->
-      <!-- <q-btn class="q-ma-xs col-2" color="secondary" icon-right="mail" label="On Right" /> -->
+        v-shortkey="[labelbtn.shortcutkey]"
+        @shortkey="assignLabel(labelbtn.id)"
+        @click="assignLabel(labelbtn.id)">
+          <q-btn class="q-px-sm no-margin ellipsis" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:10vw'" v-text="labelbtn.name">
+          </q-btn>
+          <q-btn class="q-px-xs no-margin" :style="'background-color: white'" v-text="labelbtn.shortcutkey">
+          </q-btn>
+        </q-btn-group>
   </div>
 </template>
 

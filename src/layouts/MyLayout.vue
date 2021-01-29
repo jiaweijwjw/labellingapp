@@ -1,14 +1,23 @@
 <template>
-  <q-layout view="hHh Lpr lff">
+  <q-layout view="hHh lpr fff">
     <q-header elevated class="bg-black">
-      <q-toolbar class="q-pa-md">
-        <q-btn flat @click="miniState = !miniState" round dense icon="menu" />
-        <q-toolbar-title>
+      <q-toolbar class="q-pa-sm">
+        <!-- <q-btn flat @click="miniState = !miniState" round dense icon="menu" /> -->
+        <q-toolbar-title class="q-ml-lg">
           DSOViz
         </q-toolbar-title>
+        <q-btn flat round dense icon="create" class="q-mr-sm" clickable to="/datalabelling/annotate/">
+          <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Annotate</q-tooltip>
+          </q-btn>
+        <q-btn flat round dense icon="label" class="q-mr-sm" clickable to="/datalabelling/labelspage">
+          <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Labels</q-tooltip>
+          </q-btn>
+        <q-btn flat round dense icon="description" class="q-mr-md" clickable to="/datalabelling/documentspage">
+          <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Documents</q-tooltip>
+          </q-btn>
       </q-toolbar>
     </q-header>
-    <q-drawer v-model="leftDrawerOpen" :mini="miniState" :width="250" :breakpoint="500" show-if-above>
+    <!-- <q-drawer v-model="leftDrawerOpen" :mini="miniState" :width="250" :breakpoint="500" show-if-above>
       <q-list dark>
         <q-item-label header></q-item-label>
         <q-item clickable to="/">
@@ -65,7 +74,6 @@
           label="Geospatial"
         >
         </q-expansion-item>
-        <!-- LABELLING -->
         <q-expansion-item
           expand-separator
           icon="colorize"
@@ -92,7 +100,7 @@
         </q-item>
         </q-expansion-item>
       </q-list>
-    </q-drawer>
+    </q-drawer> -->
     <!-- pages will be inserted here -->
     <q-page-container>
       <router-view />
@@ -106,8 +114,8 @@ export default {
 
   data () {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop,
-      miniState: !this.$q.platform.is.desktop
+      // leftDrawerOpen: this.$q.platform.is.desktop,
+      // miniState: !this.$q.platform.is.desktop
     }
   }
 }
