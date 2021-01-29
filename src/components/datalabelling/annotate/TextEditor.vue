@@ -10,8 +10,8 @@
       rows="10"
       stack-label
       clearable
-      placeholder= ' Input text here.'
-      hint= '  Paste text paragraph here or select the import from file option.'
+      placeholder='Input text here.'
+      hint='Paste text paragraph here or select the import from file option.'
       clear-icon="close"
       />
     </div>

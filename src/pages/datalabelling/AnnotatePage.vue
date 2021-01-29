@@ -34,27 +34,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: 'Annotate',
+  name: 'AnnotatePage',
   data () {
     return {
-      documentToSubmit: {
-        id: '',
-        text: '',
-        annotations: [
-          // {
-          //   id: 17,
-          //   prob: 0.0,
-          //   label: 4,
-          //   start_offset: 60,
-          //   end_offset: 70,
-          //   user: 1,
-          //   document: 8
-          // }
-        ]
-      }
     }
   },
   components: {
@@ -64,11 +49,10 @@ export default {
   },
   computed: {
     ...mapGetters('documents', ['currentDoc']),
-    ...mapGetters('labels', ['labels']),
-    ...mapState('documents', ['inputText'])
+    ...mapGetters('labels', ['labels'])
   },
   methods: {
-    ...mapActions('documents', ['updateInputText', 'deleteAnnotation', 'addAnnotation', 'updateAnnotation']),
+    ...mapActions('documents', ['deleteAnnotation', 'addAnnotation', 'updateAnnotation']),
     // removeEntity (annotationId) {
     //   this.currentDoc.annotations = this.currentDoc.annotations.filter(item => item.id !== annotationId)
     // },

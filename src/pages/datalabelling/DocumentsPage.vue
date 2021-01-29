@@ -2,7 +2,7 @@
   <q-page>
     <div class="documentspage flex row q-pa-md">
       <documentlist/>
-  </div>
+    </div>
         <!-- TEXT INPUT -->
       <texteditor> </texteditor>
       <div class="row">
@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
-  name: 'LabelsPage',
+  name: 'DocumentsPage',
   components: {
     documentlist: require('components/datalabelling/documents/DocumentList.vue').default,
     texteditor: require('components/datalabelling/annotate/TextEditor.vue').default,
@@ -22,10 +22,28 @@ export default {
   },
   data () {
     return {
+      documentToSubmit: {
+        id: '',
+        text: '',
+        annotations: [
+          // {
+          //   id: 17,
+          //   prob: 0.0,
+          //   label: 4,
+          //   start_offset: 60,
+          //   end_offset: 70,
+          //   user: 1,
+          //   document: 8
+          // }
+        ]
+      }
     }
   },
+  computed: {
+    ...mapState('documents', ['inputText'])
+  },
   methods: {
-    ...mapActions('documents', ['addDocument']),
+    ...mapActions('documents', ['addDocument', 'updateInputText']),
     addToDocuments () {
       console.log('submitted document successfully')
       let cloneDocumentToSubmit = { ...this.documentToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
@@ -33,6 +51,7 @@ export default {
       this.addDocument(cloneDocumentToSubmit)
       this.documentToSubmit.text = ''
       this.documentToSubmit.annotations = []
+      console.log(cloneDocumentToSubmit)
       this.updateInputText('') // clear the textfield after user submission
     }
   }

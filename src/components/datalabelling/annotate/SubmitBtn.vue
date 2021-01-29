@@ -12,7 +12,7 @@
     </q-btn>
     <q-form>
     <q-dialog :value="dialog" persistent>
-      <q-card style="width: 30vw" bordered>
+      <q-card class="q-toolbar text-white" style="width: 30vw" bordered>
         <q-card-section class="row">
           <div class="text-h6 text-white">Confirm submission?</div>
           <q-space />

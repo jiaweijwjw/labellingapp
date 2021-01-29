@@ -1,5 +1,5 @@
 <template>
-  <div class="row justify-center q-gutter-x-md q-gutter-y-xs no-padding">
+  <div class="row justify-center q-gutter-x-sm q-gutter-y-sm no-padding">
         <!-- :label="labelbtn.name"
         :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';'" -->
 
@@ -22,7 +22,7 @@
         v-shortkey="[labelbtn.shortcutkey]"
         @shortkey="assignLabel(labelbtn.id)"
         @click="assignLabel(labelbtn.id)">
-          <q-btn class="q-px-sm no-margin ellipsis" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:10vw'" v-text="labelbtn.name">
+          <q-btn class="q-px-sm no-margin ellipsis" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:15vw'" v-text="labelbtn.name">
           </q-btn>
           <q-btn class="q-px-xs no-margin" :style="'background-color: white'" v-text="labelbtn.shortcutkey">
           </q-btn>
