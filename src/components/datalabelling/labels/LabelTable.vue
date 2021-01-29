@@ -8,8 +8,9 @@
       color="primary"
       rows-per-page-label="Labels per page"
       :rows-per-page-options="[20, 50, 0]"
-      :pagination="{rowsPerPage: 10}"
+      :pagination.sync="labelsPagination"
     >
+    <!-- COLORING -->
       <template v-slot:body-cell-color="props">
         <q-td :props="props">
           <div>
@@ -33,6 +34,9 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      labelsPagination: {
+        rowsPerPage: 10
+      },
       columns: [
         {
           name: 'name',

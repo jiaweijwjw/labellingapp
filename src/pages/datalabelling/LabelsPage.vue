@@ -1,6 +1,6 @@
 <template>
   <q-page style="width: 100vw">
-    <div class="row q-pa-md">
+    <div class="row q-pa-lg">
       <q-btn-dropdown
         flat
         text-color="primary"
