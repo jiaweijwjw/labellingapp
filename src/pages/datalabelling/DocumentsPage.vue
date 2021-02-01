@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
   name: 'DocumentsPage',
   components: {
@@ -40,7 +40,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('documents', ['inputText'])
+    ...mapState('documents', ['inputText']),
+    ...mapGetters('documents', ['currentDoc'])
   },
   methods: {
     ...mapActions('documents', ['addDocument', 'updateInputText']),
@@ -51,7 +52,10 @@ export default {
       this.addDocument(cloneDocumentToSubmit)
       this.documentToSubmit.text = ''
       this.documentToSubmit.annotations = []
-      console.log(cloneDocumentToSubmit)
+      // console.log(cloneDocumentToSubmit)
+      let arr = ['a', 'b', 'c', 'd', 'e']
+      console.log(arr.slice(0, -1))
+      console.log(this.currentDoc.text.split('\n'))
       this.updateInputText('') // clear the textfield after user submission
     }
   }

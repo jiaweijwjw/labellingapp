@@ -159,7 +159,6 @@ export default {
     makeChunks (text) {
       const chunks = []
       const snippets = text.split('\n')
-      console.log(snippets)
       for (const snippet of snippets.slice(0, -1)) {
         chunks.push({
           label: null,
@@ -174,7 +173,7 @@ export default {
           newline: true
         })
       }
-      chunks.push({
+      chunks.push({ // EOF
         label: null,
         color: null,
         text: snippets.slice(-1)[0],
@@ -260,17 +259,31 @@ export default {
 </script>
 
 <style scoped>
-.highlight-container.highlight-container--bottom-labels {
+/* .highlight-container.highlight-container--bottom-labels {
+  align-items: flex-start;
+} */
+.highlight-container {
+  line-height: 42px !important;
+  display: inline;
+  word-wrap: normal;
+  white-space: pre-wrap;
+  cursor: context-menu;
+}
+/* .highlight-container.highlight-container--bottom-labels .highlight.bottom {
+  margin-top: 6px;
+} */
+
+/* .highlight-container.highlight-container--bottom-labels {
   align-items: flex-start;
 }
 .highlight-container {
-  line-height: 38px !important;
+  line-height: 42px !important;
   display: flex;
   flex-wrap: wrap;
   white-space: pre-wrap;
-  cursor: default;
+  cursor: context-menu;
 }
 .highlight-container.highlight-container--bottom-labels .highlight.bottom {
   margin-top: 6px;
-}
+} */
 </style>

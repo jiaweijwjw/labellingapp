@@ -14,7 +14,7 @@
       <q-card class="popup" style="width: 30vw" bordered>
         <q-card-section class="row">
           <div class="text-h6 text-white">Confirm submission?</div>
-          <q-space />
+          <q-space/>
           <q-btn v-close-popup flat round dense icon="close" color="primary" @click="dialog = false"/>
         </q-card-section>
         <q-card-section class="row text-primary">
