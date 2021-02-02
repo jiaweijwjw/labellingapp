@@ -8,6 +8,7 @@
     <entityitem
       v-for="(chunk, i) in chunks"
       :key="i"
+      :entityId="chunk.id"
       :content="chunk.text"
       :newline="chunk.newline"
       :label="chunk.label"
@@ -23,7 +24,8 @@
     <switchlabel
     :dialog="dialog"
     :labels="labels"
-    :currentlabelId="labelToEdit"
+    :labelToEdit="labelToEdit"
+    @update="updateEntity($event.newLabelId, $event.annotationId)"
     @close="dialog = false">
     </switchlabel>
     <q-menu
@@ -103,7 +105,7 @@ export default {
       showMenu: false,
       dialog: false,
       isValidSelection: true,
-      labelToEdit: '',
+      labelToEdit: {},
       isStillSelecting: false,
       x: 0,
       y: 0,
@@ -152,11 +154,10 @@ export default {
     //   this.dialog = true
     //   this.updateEntity(labelId, chunkId)
     // },
-    openDialog (labelId) {
+    openDialog (highlightedChunk) {
       this.dialog = true
-      this.labelToEdit = labelId
+      this.labelToEdit = highlightedChunk
       console.log(this.labelToEdit)
-      console.log(labelId)
     },
     autoTextColor (color) {
       return this.$hf.autoChooseTextColor(color)
@@ -275,13 +276,13 @@ export default {
 .leeway {
   padding-right: 2em;
   padding-left: 2em;
+  cursor: context-menu;
 }
 .highlight-container {
   line-height: 30px !important;
   display: inline;
-  word-wrap: normal;
+  word-wrap: break-word;
   white-space: pre-wrap;
-  cursor: context-menu;
 }
 /* .highlight-container.highlight-container--bottom-labels .highlight.bottom {
   margin-top: 6px;

@@ -76,12 +76,13 @@ export default {
       // }
       this.deleteAnnotation(annotationId)
     },
-    updateEntity (labelId, annotationId) {
+    updateEntity (newLabelId, annotationId) {
       const payload = {
         annotationId,
-        label: labelId
+        newLabelId
         // projectId: this.$route.params.id
       }
+      console.log(newLabelId, annotationId)
       this.updateAnnotation(payload)
     },
     addEntity (startOffset, endOffset, labelId) {

@@ -3,12 +3,12 @@
   <span v-if="label">
     <span :style="{ borderColor: color }" class="highlight bottom" @mouseover="hover = true" @mouseleave="hover = false">
       <span class="highlight__box no-margin no-padding">
-        <span class="highlight__content" v-shortkey="['space']" @shortkey="openDialog(labelId)">{{ content }}</span>
+        <span class="highlight__content" v-shortkey="['space']">{{ content }}</span>
         <span :data-label="label" :style="{ backgroundColor: color, color: textColor }" class="highlight__label" />
       </span>
     <span class="highlight__options no-margin" :style="{ backgroundColor: color, color: textColor }">
       <q-btn v-if="hover" class="close-btn" @click="remove" flat dense size="xs" icon="close"/>
-      <q-btn v-if="hover" class="change-label" @click="openDialog(labelId)" flat dense size="xs" icon="edit"/>
+      <q-btn v-if="hover" class="change-label" @click="openDialog(labelId, entityId)" flat dense size="xs" icon="edit"/>
         <!-- <q-expansion-item dense class="highlight__options no-margin no-padding">
           <q-list><q-item-label>test</q-item-label></q-list>
           </q-expansion-item> -->
@@ -51,6 +51,10 @@ export default {
     },
     isValidSelection: {
       type: Boolean
+    },
+    entityId: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -75,9 +79,12 @@ export default {
     autoTextColor (color) {
       return this.$hf.autoChooseTextColor(color)
     },
-    openDialog (labelId) {
-      console.log('openDialog' + labelId)
-      this.$emit('opendialog', labelId)
+    openDialog (labelId, entityId) {
+      let highlightedChunk = {
+        currentLabelId: labelId,
+        entityId: entityId
+      }
+      this.$emit('opendialog', highlightedChunk)
     }
   }
 }

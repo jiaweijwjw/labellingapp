@@ -19,15 +19,15 @@
             @click="close"
           />
         </q-card-section>
-        <q-card-section>
+        <q-card-section ref="labelbtns">
         <div class="row justify-center q-gutter-x-sm q-gutter-y-sm no-padding">
         <q-btn-group size="0.8rem" class="no-padding row roundedbtn"
-        v-for="(labelbtn, key) in labels"
+        v-for="(labelbtn, key) in remainingLabels"
         :key="key"
         clickable
         v-shortkey="[labelbtn.shortcutkey]"
-        @shortkey="assignLabel(labelbtn.id)"
-        @click="assignLabel(labelbtn.id)">
+        @shortkey="selectedNewLabel(labelbtn.id)"
+        @click="selectedNewLabel(labelbtn.id)">
           <q-btn class="q-px-sm no-margin ellipsis roundedbtn" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:15vw'" v-text="labelbtn.name">
           </q-btn>
           <q-btn class="q-px-sm no-margin roundedbtn" :style="'background-color: white'" v-text="labelbtn.shortcutkey">
@@ -43,7 +43,7 @@
             flat
             type="submit"
             label="Confirm"
-            @click="close"
+            @click="update"
           />
           <!-- <q-btn flat label="Open another dialog" @click="secondDialog = true" /> -->
         </q-card-actions>
@@ -56,11 +56,18 @@
 // import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  props: ['dialog', 'labels', 'currentlabelId'],
+  props: ['dialog', 'labels', 'labelToEdit'],
+  data () {
+    return {
+      newLabelId: ''
+    }
+  },
+  // mounted () {
+  //   this.focusLabels()
+  // },
   computed: {
     remainingLabels () {
-      let arr = this.labels.filter(item => item.id !== this.currentlabelId)
-      console.log(arr)
+      let arr = this.labels.filter(item => item.id !== this.labelToEdit.currentLabelId)
       return arr // this.labels.filter(item => item.name !== this.currentlabelId)
     }
   },
@@ -71,7 +78,24 @@ export default {
     },
     close () {
       this.$emit('close')
+    },
+    selectedNewLabel (labelbtnId) {
+      this.newLabelId = labelbtnId
+      console.log('label selected')
+    },
+    update () {
+      let changes = {
+        newLabelId: this.newLabelId,
+        annotationId: this.labelToEdit.entityId
+      }
+      this.$emit('update', changes)
+      this.close()
     }
+    // focusLabels () {
+    //   // this.$nextTick(() => this.$refs.labelbtns.focus())
+    //   this.$refs.labelbtns.focus()
+    //   console.log(this.$refs)
+    // }
   }
 }
 </script>

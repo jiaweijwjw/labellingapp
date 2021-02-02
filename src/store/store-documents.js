@@ -9,7 +9,7 @@ const state = {
   documents: [
     {
       id: '1',
-      text: 'Batman is a superhero who appears                  in American comic books published by DC Comics. Batman was created by artist Bob Kane and writer Bill Finger, and debuted in the 27th issue of the comic book Detective Comics on March 30, 1939. In the DC Universe continuity, Batman is the alias of Bruce Wayne, a wealthy American playboy, philanthropist, and owner of Wayne Enterprises based in Gotham City.' +
+      text: 'Batman is a superhero who appears                  in American comic booksssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss published by DC Comics. Batman was created by artist Bob Kane and writer Bill Finger, and debuted in the 27th issue of the comic book Detective Comics on March 30, 1939. In the DC Universe continuity, Batman is the alias of Bruce Wayne, a wealthy American playboy, philanthropist, and owner of Wayne Enterprises based in Gotham City.' +
         '\n' + '\n' + 'Joker is a 2019 American psychological thriller film directed and produced by Todd Phillips, who co-wrote the screenplay with Scott Silver. The film, based on DC Comics characters, stars Joaquin Phoenix as the Joker and provides an alternative origin story for the character. Set in 1981, it follows Arthur Fleck, a failed clown and stand-up comedian whose descent into insanity and nihilism inspires a violent counter-cultural revolution against the wealthy in a decaying Gotham City. Robert De Niro, Zazie Beetz, Frances Conroy, Brett Cullen, Glenn Fleshler, Bill Camp, Shea Whigham, and Marc Maron appear in supporting roles. Joker was produced by Warner Bros. Pictures, DC Films, and Joint Effort, in association with Bron Creative and Village Roadshow Pictures, and distributed by Warner Bros.' +
         '\n' + '\n' + 'test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test',
       annotations: [
@@ -65,6 +65,8 @@ const mutations = {
   },
   updateAnnotation (state, payload) {
     const document = state.documents[state.current].annotations.find(item => item.id === payload.annotationId)
+    // var index = state.documents.map(item => item.id).indexOf(payload.documentId)
+    console.log(document)
     Object.assign(document, payload)
   }
 }
@@ -107,10 +109,10 @@ const actions = {
     commit('addAnnotation', payload)
   },
   updateAnnotation ({ commit, state }, obj) {
-    // const documentId = state.documents[state.current].id
+    const documentId = state.documents[state.current].id
     let payload = {
-      // documentId: documentId,
-      label: obj.labelId,
+      documentId: documentId,
+      label: obj.newLabelId,
       annotationId: obj.annotationId
     }
     commit('updateAnnotation', payload)
