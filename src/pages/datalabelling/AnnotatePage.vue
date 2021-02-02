@@ -16,7 +16,7 @@
           <q-menu>
           </q-menu>
         </q-card-section>
-        <q-card-section class="words-container">
+        <q-card-section class="words-container no-margin no-padding">
             <entitynaming
               :labels="labels"
               :text="currentDoc.text"

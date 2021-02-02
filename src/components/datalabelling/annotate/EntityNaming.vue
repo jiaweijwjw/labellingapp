@@ -1,7 +1,9 @@
 <template>
+<div class="leeway"
+    @mousedown="isStillSelecting = true"
+    @mouseup="open">
   <div
     class="highlight-container highlight-container--bottom-labels"
-    @click="open"
   >
     <entityitem
       v-for="(chunk, i) in chunks"
@@ -54,6 +56,7 @@
     </q-menu>
   </div>
 <!-- <div v-else>{{text}}</div> -->
+</div>
 </template>
 
 <script>
@@ -101,6 +104,7 @@ export default {
       dialog: false,
       isValidSelection: true,
       labelToEdit: '',
+      isStillSelecting: false,
       x: 0,
       y: 0,
       start: 0,
@@ -242,10 +246,13 @@ export default {
     open (e) {
       console.log(this.start, this.end)
       console.log('clicked')
-      this.setSpanInfo()
-      if (this.validateSpan()) {
-        console.log('is valid span')
-        this.show(e)
+      if (this.isStillSelecting === true) {
+        this.isStillSelecting = false
+        this.setSpanInfo()
+        if (this.validateSpan()) {
+          console.log('is valid span')
+          this.show(e)
+        }
       }
     },
     assignLabel (labelId) {
@@ -265,6 +272,10 @@ export default {
 /* .highlight-container.highlight-container--bottom-labels {
   align-items: flex-start;
 } */
+.leeway {
+  padding-right: 2em;
+  padding-left: 2em;
+}
 .highlight-container {
   line-height: 30px !important;
   display: inline;

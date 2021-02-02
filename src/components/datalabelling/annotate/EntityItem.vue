@@ -111,12 +111,13 @@ export default {
 }
 .highlight__label {
   line-height: 100%;
-  padding-top: 1px;
+  padding-top: 0px;
+  margin-bottom: -2px;
   align-items: center;
   justify-content: center;
   /* display: flex; */
   display: flex;
-  padding: 0 8px;
+  /* padding: 0 8px; */
   text-align: center;
   -webkit-user-select: none;
   -moz-user-select: none;
