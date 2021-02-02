@@ -12,6 +12,7 @@
       :labelId="chunk.labelId"
       :color="chunk.color"
       :labels="labels"
+      :isValidSelection="isValidSelection"
       @remove="deleteAnnotation(chunk.id)"
       @update="updateEntity($event.id, chunk.id)"
       @opendialog="openDialog($event)"
@@ -25,7 +26,6 @@
     </switchlabel>
     <q-menu
       v-model="showMenu"
-      context-menu
     >
       <q-list
         dense
@@ -99,6 +99,7 @@ export default {
     return {
       showMenu: false,
       dialog: false,
+      isValidSelection: true,
       labelToEdit: '',
       x: 0,
       y: 0,
@@ -200,7 +201,7 @@ export default {
         selection = document.selection // IE < 9
       }
       // If nothing is selected.
-      if (selection.rangeCount <= 0) { // once clicked, count will be 1
+      if (selection.rangeCount <= 0) { // once clicked, count will be 1. only 0 or 1
         return
       }
       const range = selection.getRangeAt(0)
@@ -210,6 +211,8 @@ export default {
       this.start = [...preSelectionRange.toString()].length
       this.end = this.start + [...range.toString()].length
       console.log('start: ' + this.start + ' end: ' + this.end)
+      // if (this.end - this.start > 20) { this.isValidSelection = false } else { this.isValidSelection = true }
+      // console.log(this.end - this.start, this.isValidSelection)
       let startEnd = {
         start: this.start,
         end: this.end
@@ -263,7 +266,7 @@ export default {
   align-items: flex-start;
 } */
 .highlight-container {
-  line-height: 42px !important;
+  line-height: 30px !important;
   display: inline;
   word-wrap: normal;
   white-space: pre-wrap;

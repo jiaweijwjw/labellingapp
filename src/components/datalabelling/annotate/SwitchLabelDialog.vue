@@ -1,9 +1,10 @@
 <template>
   <div>
-    <q-dialog :value="dialog" persistent class="popup">
+    <q-dialog :value="dialog" persistent>
       <q-card
         style="width: 40vw"
         bordered
+        class="popup"
       >
         <q-card-section class="row">
           <div class="text-h6 text-white">Choose new label</div>

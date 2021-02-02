@@ -124,6 +124,7 @@ export default {
 <style lang="sass">
   .q-layout
     background-color: $body-background !important
+    overflow: auto
   .q-toolbar
     background-color: $toolbar-color
   .q-drawer__content

@@ -1,12 +1,22 @@
 <template>
-<span>
+<span class="words">
   <span v-if="label">
-    <span :style="{ borderColor: color }" class="highlight bottom">
-        <span class="highlight__content" @click="remove" v-shortkey="['space']" @shortkey="openDialog(labelId)">{{ content }}</span>
+    <span :style="{ borderColor: color }" class="highlight bottom" @mouseover="hover = true" @mouseleave="hover = false">
+      <span class="highlight__box no-margin no-padding">
+        <span class="highlight__content" v-shortkey="['space']" @shortkey="openDialog(labelId)">{{ content }}</span>
         <span :data-label="label" :style="{ backgroundColor: color, color: textColor }" class="highlight__label" />
       </span>
+    <span class="highlight__options no-margin" :style="{ backgroundColor: color, color: textColor }">
+      <q-btn v-if="hover" class="close-btn" @click="remove" flat dense size="xs" icon="close"/>
+      <q-btn v-if="hover" class="change-label" @click="openDialog(labelId)" flat dense size="xs" icon="edit"/>
+        <!-- <q-expansion-item dense class="highlight__options no-margin no-padding">
+          <q-list><q-item-label>test</q-item-label></q-list>
+          </q-expansion-item> -->
+      </span>
+      </span>
+      <!-- <q-btn v-if="hover" class="close-btn" round dense size="xs" icon="close" style="background: goldenrod; color: black"/> -->
   </span>
-  <span v-else :class="[newline ? 'newline' : '']">{{ content }}</span>
+  <span v-else :class="[newline ? 'newline' : (isValidSelection ? 'green' : '')]">{{ content }}</span>
 </span>
 </template>
 
@@ -38,11 +48,15 @@ export default {
     labelId: {
       type: String,
       default: ''
+    },
+    isValidSelection: {
+      type: Boolean
     }
   },
   data () {
     return {
-      showMenu: false
+      showMenu: false,
+      hover: false
     }
   },
   computed: {
@@ -70,51 +84,37 @@ export default {
 </script>
 
 <style scoped>
-/* .highlight.selection-color {
-  background: #969ba0 !important;
-} */
-.highlight.bottom {
-  display: inline-block;
-  white-space: normal;
-}
-.highlight:first-child {
-  margin-left: 0;
-}
 .highlight {
   border: 2px solid;
-  margin: 4px 6px 4px 3px;
-  vertical-align: middle;
+  margin: 1px 3px 1px 3px;
+  vertical-align: baseline;
+  /* vertical-align: middle; */
   box-shadow: 2px 4px 20px rgba(0,0,0,.1);
   position: relative;
   cursor: pointer;
   min-width: 26px;
-  line-height: 22px;
+  /* line-height: 22px; */
+  line-height: 100%;
   display: inline-flex;
 }
-/* .highlight .delete {
-  top:-15px;
-  left:-13px;
-  position:absolute;
-  display: none;
-} */
-/* .highlight:hover .delete {
-  display: block;
-} */
+.highlight__box {
+  display:inline-block;
+}
 .highlight__content {
+  /* display: block; */
   display: block;
   flex-wrap: wrap;
   align-items: center;
-  padding: 2px 2px 0px 6px;
-}
-.highlight.bottom .highlight__content:after {
-  content: " ";
-  padding-right: 3px;
+  text-align: center;
+  /* padding: 2px 2px 0px 6px; */
+  padding: 5px 5px 5px 5px;
 }
 .highlight__label {
-  line-height: 14px;
+  line-height: 100%;
   padding-top: 1px;
   align-items: center;
   justify-content: center;
+  /* display: flex; */
   display: flex;
   padding: 0 8px;
   text-align: center;
@@ -127,14 +127,60 @@ export default {
 .highlight__label::after {
   content: attr(data-label);
   display: block;
-  font-size: 14px;
+  font-size: 0.65em;
   -webkit-font-smoothing: subpixel-antialiased;
   letter-spacing: .1em;
+}
+.highlight:first-child {
+  margin-left: 0;
+}
+.highlight.bottom .highlight__content:after {
+  content: "";
+  padding-right: 0px;
+}
+.highlight.bottom {
+  display: inline-flex;
+  /* display: inline-block; */
+  white-space: normal;
+}
+.highlight__options {
+  display: inline-flex;
+  flex-flow: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.close-btn {
+  /* position: relative;
+  top: -3px;
+  right: -3px; */
+  padding-left: 2px;
+  /* to account for border */
+}
+.change-label {
+  padding-left: 2px;
+}
+.words {
+  font-size: 1.2em;
 }
 .newline {
   width: 100%;
 }
-
+span.green::selection {
+  background: rgba(226, 255, 224, 0.99);
+  color:  black
+}
+span.green::-moz-selection {
+  background: rgba(226, 255, 224, 0.99);
+  color:  black
+}
+span.red::selection {
+  background: rgba(255, 217, 217, 0.99);
+  color:  black
+}
+span.red::-moz-selection {
+  background: rgba(255, 217, 217, 0.99);
+  color:  black
+}
 /* .highlight.blue {
   background: #edf4fa !important;
 }

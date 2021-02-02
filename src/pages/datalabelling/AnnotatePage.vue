@@ -16,7 +16,7 @@
           <q-menu>
           </q-menu>
         </q-card-section>
-        <q-card-section>
+        <q-card-section class="words-container">
             <entitynaming
               :labels="labels"
               :text="currentDoc.text"
@@ -98,6 +98,9 @@ export default {
 </script>
 
 <style lang="sass">
+.words-container
+  max-height: 70vh;
+  overflow: auto;
 .doc-h2
   border-bottom: 1px solid #ccc
   font-size: 1.5rem
