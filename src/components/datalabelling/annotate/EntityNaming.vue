@@ -28,7 +28,7 @@
     @update="updateEntity($event.newLabelId, $event.annotationId)"
     @close="dialog = false">
     </switchlabel>
-    <q-menu
+    <!-- <q-menu
       v-model="showMenu"
     >
       <q-list
@@ -55,9 +55,8 @@
           </q-item-section>
         </q-item>
       </q-list>
-    </q-menu>
+    </q-menu> -->
   </div>
-<!-- <div v-else>{{text}}</div> -->
 </div>
 </template>
 

@@ -6,6 +6,7 @@
       row-key="name"
       dark
       color="primary"
+      class="q-toolbar"
       rows-per-page-label="Labels per page"
       :rows-per-page-options="[20, 50, 0]"
       :pagination.sync="labelsPagination"

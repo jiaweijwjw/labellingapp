@@ -2,8 +2,8 @@
   <div class="row justify-center q-gutter-x-sm q-gutter-y-sm no-padding">
         <!-- :label="labelbtn.name"
         :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';'" -->
-
-        <!-- <q-btn size="0.8rem" class="no-padding row"
+<!--
+        <q-btn size="0.8rem" class="no-padding row roundedbtn"
         v-for="(labelbtn, key) in labels"
         :key="key"
         clickable
@@ -11,20 +11,25 @@
         v-shortkey="[labelbtn.shortcutkey]"
         @shortkey="assignLabel(labelbtn.id)"
         @click="assignLabel(labelbtn.id)">
-        <div class="q-px-sm no-margin" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';'" v-text="labelbtn.name"/>
-        <div class="q-px-xs no-margin" :style="'background-color: white'" v-text="labelbtn.shortcutkey"/>
+        <span class="q-px-sm no-margin ellipsis roundedbtn" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:15vw'" v-text="labelbtn.name"/>
+        <span class="q-px-sm no-margin roundedbtn" :style="'background-color: white'" v-text="labelbtn.shortcutkey"/>
         </q-btn> -->
 
         <q-btn-group size="0.8rem" class="no-padding row roundedbtn"
         v-for="(labelbtn, key) in labels"
         :key="key"
-        clickable
-        v-shortkey="[labelbtn.shortcutkey]"
-        @shortkey="assignLabel(labelbtn.id)"
-        @click="assignLabel(labelbtn.id)">
-          <q-btn class="q-px-sm no-margin ellipsis roundedbtn" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:15vw'" v-text="labelbtn.name">
+        clickable>
+          <q-btn class="q-px-sm no-margin ellipsis roundedbtn"
+          v-shortkey="[labelbtn.shortcutkey]"
+          @shortkey="assignLabel(labelbtn.id)"
+          @click="assignLabel(labelbtn.id)"
+          :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:15vw'" v-text="labelbtn.name">
           </q-btn>
-          <q-btn class="q-px-sm no-margin roundedbtn" :style="'background-color: white'" v-text="labelbtn.shortcutkey">
+          <q-btn class="q-px-sm no-margin roundedbtn"
+          v-shortkey="[labelbtn.shortcutkey]"
+          @shortkey="assignLabel(labelbtn.id)"
+          @click="assignLabel(labelbtn.id)"
+          :style="'background-color: white'" v-text="labelbtn.shortcutkey">
           </q-btn>
         </q-btn-group>
   </div>
@@ -92,6 +97,7 @@ export default {
       return true
     },
     assignLabel (labelId) {
+      console.log('assign')
       if (this.validateSpan()) {
         this.addEntity(this.start, this.end, labelId)
         console.log(this.start, this.end)

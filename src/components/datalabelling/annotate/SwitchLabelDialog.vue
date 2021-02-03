@@ -25,13 +25,18 @@
         v-for="(labelbtn, key) in remainingLabels"
         :key="key"
         v-bind:class="{ border: labelbtn.id === newLabelId }"
-        clickable
-        v-shortkey="[labelbtn.shortcutkey]"
-        @shortkey="selectedNewLabel(labelbtn.id)"
-        @click="selectedNewLabel(labelbtn.id)">
-          <q-btn class="q-px-sm no-margin ellipsis roundedbtn" :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:15vw'" v-text="labelbtn.name">
+        clickable>
+          <q-btn class="q-px-sm no-margin ellipsis roundedbtn"
+          v-shortkey="[labelbtn.shortcutkey]"
+          @shortkey="selectedNewLabel(labelbtn.id)"
+          @click="selectedNewLabel(labelbtn.id)"
+          :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:15vw'" v-text="labelbtn.name">
           </q-btn>
-          <q-btn class="q-px-sm no-margin roundedbtn" :style="'background-color: white'" v-text="labelbtn.shortcutkey">
+          <q-btn class="q-px-sm no-margin roundedbtn"
+          v-shortkey="[labelbtn.shortcutkey]"
+          @shortkey="selectedNewLabel(labelbtn.id)"
+          @click="selectedNewLabel(labelbtn.id)"
+          :style="'background-color: white'" v-text="labelbtn.shortcutkey">
           </q-btn>
         </q-btn-group>
   </div>
