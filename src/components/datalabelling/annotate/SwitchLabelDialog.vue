@@ -19,11 +19,12 @@
             @click="close"
           />
         </q-card-section>
-        <q-card-section ref="labelbtns">
+        <q-card-section>
         <div class="row justify-center q-gutter-x-sm q-gutter-y-sm no-padding">
         <q-btn-group size="0.8rem" class="no-padding row roundedbtn"
         v-for="(labelbtn, key) in remainingLabels"
         :key="key"
+        v-bind:class="{ border: labelbtn.id === newLabelId }"
         clickable
         v-shortkey="[labelbtn.shortcutkey]"
         @shortkey="selectedNewLabel(labelbtn.id)"
@@ -35,17 +36,15 @@
         </q-btn-group>
   </div>
         </q-card-section>
-        <q-card-actions
-          align="right"
-          class="text-primary"
-        >
+        <q-card-actions class="text-primary">
+        <span class="hint" v-if="!selected">Please select a label</span>
+        <q-space/>
           <q-btn
             flat
             type="submit"
             label="Confirm"
             @click="update"
           />
-          <!-- <q-btn flat label="Open another dialog" @click="secondDialog = true" /> -->
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -59,11 +58,20 @@ export default {
   props: ['dialog', 'labels', 'labelToEdit'],
   data () {
     return {
-      newLabelId: ''
+      newLabelId: '',
+      selected: false
     }
   },
   // mounted () {
-  //   this.focusLabels()
+  //   console.log('mounted')
+  //   // const labelbtnsRef = this.$refs.labelbtns
+  //   // labelbtnsRef.focus()
+  // },
+  // updated () {
+  //   console.log('after click update')
+  //   console.log(this.$refs)
+  //   const labelbtnsRef = this.$refs.labelbtns
+  //   labelbtnsRef.focus()
   // },
   computed: {
     remainingLabels () {
@@ -77,28 +85,62 @@ export default {
       return this.$hf.autoChooseTextColor(color)
     },
     close () {
+      this.selected = false
       this.$emit('close')
     },
     selectedNewLabel (labelbtnId) {
+      this.selected = true
       this.newLabelId = labelbtnId
       console.log('label selected')
     },
     update () {
-      let changes = {
-        newLabelId: this.newLabelId,
-        annotationId: this.labelToEdit.entityId
+      if (this.newLabelId !== '') {
+        let changes = {
+          newLabelId: this.newLabelId,
+          annotationId: this.labelToEdit.entityId
+        }
+        this.$emit('update', changes)
+        this.newLabelId = ''
+        this.close()
+      } else {
+        console.log('nothing selected')
       }
-      this.$emit('update', changes)
-      this.close()
     }
+    // dialogShow () {
+    //   this.focusLabels()
+    // },
     // focusLabels () {
     //   // this.$nextTick(() => this.$refs.labelbtns.focus())
-    //   this.$refs.labelbtns.focus()
-    //   console.log(this.$refs)
+    //   // console.log(this.$refs.labelbtns)
+    //   // this.$refs.labelbtns.focus()
+    //   this.$nextTick(() => {
+    //     const labelbtnsRef = this.$refs.labelbtns
+    //     // labelbtnsRef.focus()
+    //     console.log(labelbtnsRef)
+    //   })
     // }
   }
 }
 </script>
 
-<style lang="sass">
+<style scoped>
+.hint {
+  vertical-align: middle;
+  align-items: center;
+  padding-left: 2%;
+  color: #fcba03;
+}
+.border {
+  border: 3px solid;
+  border-radius: 11px;
+  border-color: #fcba03;
+  /* margin: 1px 3px 1px 3px;
+  vertical-align: baseline;
+  box-shadow: 2px 4px 20px rgba(0,0,0,.1);
+  position: relative;
+  cursor: pointer;
+  min-width: 26px;
+  line-height: 100%;
+  display: inline-flex; */
+}
 </style>
