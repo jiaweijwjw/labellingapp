@@ -1,5 +1,34 @@
 <template>
   <q-page>
+    <div class="row q-py-md">
+      <q-btn-dropdown
+        flat
+        text-color="primary"
+        label="Actions"
+        class="col-2 max-width=20vw"
+      >
+        <q-list separator>
+          <q-item
+            clickable
+            v-close-popup
+            @click="dialog = true"
+          >
+            <q-item-section>
+              <q-item-label>Import</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
+            v-close-popup
+          >
+            <q-item-section>
+              <q-item-label>test</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-btn-dropdown>
+    </div>
     <div class="documentspage flex row q-py-lg" style="width:1800px; max-width:85vw">
       <documentlist/>
     </div>
@@ -8,20 +37,30 @@
       <div class="row">
       <q-space/><submitbtn @submit="addToDocuments"/>
       </div>
+    <div>
+      <importdocument
+        v-if="dialog"
+        :dialog="dialog"
+        @close="dialog = false"
+      ></importdocument>
+    </div>
   </q-page>
 </template>
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
+
 export default {
   name: 'DocumentsPage',
   components: {
+    importdocument: require('components/datalabelling/documents/ImportDocument.vue').default,
     documentlist: require('components/datalabelling/documents/DocumentList.vue').default,
     texteditor: require('components/datalabelling/annotate/TextEditor.vue').default,
     submitbtn: require('components/datalabelling/annotate/SubmitBtn.vue').default
   },
   data () {
     return {
+      dialog: false,
       documentToSubmit: {
         id: '',
         text: '',
