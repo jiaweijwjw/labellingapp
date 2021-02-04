@@ -1,15 +1,36 @@
 <template>
-  <q-page style="width:1800px; max-width:85vw">
+  <q-page class="annotate-page" style="width:1800px;">
     <div>
       <!-- LABELS -->
       <labels
+        class="labels-box"
         :labels="labels"
         :entities="currentDoc.annotations"
         :add-entity="addEntity"
       > </labels>
       <!-- ANNOTATOR -->
-      <div>
-      <q-card class="q-toolbar text-white" bordered>
+    <q-carousel
+      class="carousel text-white rounded-borders no-padding no-margin"
+      v-model="currentSlide"
+      keep-alive
+      infinite
+      transition-prev="slide-right"
+      transition-next="slide-left"
+      animated
+      arrows
+      dark
+      navigation
+      navigation-position="bottom"
+      navigation-icon="close"
+      navigation-active-icon="bathtub"
+      control-type="flat"
+      control-color="black"
+      control-text-color="primary"
+    >
+    <q-carousel-slide name="1" class="q-pa-none">
+        <q-scroll-area class="fit">
+          <div class="column no-wrap flex-center q-carousel--padding">
+            <q-card class="q-toolbar text-white" bordered style="width: 85vw">
         <q-card-section>
             <annotationbar/>
           <q-space/>
@@ -28,7 +49,22 @@
       </entitynaming>
         </q-card-section>
       </q-card>
-  </div>
+          </div>
+        </q-scroll-area>
+      </q-carousel-slide>
+
+      <q-carousel-slide name="2" class="q-pa-none">
+        <q-scroll-area class="fit">
+          <div class="column no-wrap flex-center q-carousel--padding">
+            <q-icon name="style" size="56px" />
+            <div class="q-mt-md">
+              {{ lorem }}
+            </div>
+          </div>
+        </q-scroll-area>
+      </q-carousel-slide>
+
+    </q-carousel>
     </div>
   </q-page>
 </template>
@@ -40,8 +76,17 @@ export default {
   name: 'AnnotatePage',
   data () {
     return {
+      currentSlide: '1',
+      lorem: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque voluptatem totam, architecto cupiditate officia rerum, error dignissimos praesentium libero ab nemo.'
     }
   },
+  // watch: {
+  //   vertical (val) {
+  //     this.navPos = val === true
+  //       ? 'right'
+  //       : 'bottom'
+  //   }
+  // },
   components: {
     labels: require('components/datalabelling/annotate/Labels.vue').default,
     entitynaming: require('components/datalabelling/annotate/EntityNaming.vue').default,
@@ -99,8 +144,21 @@ export default {
 </script>
 
 <style lang="sass">
+.annotate-page
+  display: flex
+  flex-flow: column
+  align-content: center
+  max-width: 100vw
+  height: 100%
+.labels-box
+  margin: auto
+  width: 85vw
+  max-width: 100vw
+.carousel
+  width: 100vw
+  height: 45vw
+  backgroundColor: $darker
 .words-container
-  max-height: 70vh;
   overflow: auto;
 .doc-h2
   border-bottom: 1px solid #ccc
