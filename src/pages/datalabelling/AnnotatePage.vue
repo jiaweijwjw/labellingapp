@@ -29,8 +29,9 @@
       control-text-color="primary"
     >
     <q-carousel-slide v-for="document in selectedDocs" v-bind:key="document.id" :name="document.id" class="q-pa-none">
-        <q-scroll-area class="fit">
-          <div class="column no-wrap flex-center q-carousel--padding">
+        <q-scroll-area dark :thumb-style="thumbStyle" class="fit">
+          <!-- q-carousel--padding -->
+          <div class="column no-wrap flex-center carousel-padding">
             <q-card class="q-toolbar text-white" bordered style="width: 85vw">
         <q-card-section>
             <annotationbar/>
@@ -66,7 +67,10 @@ export default {
   name: 'AnnotatePage',
   data () {
     return {
-      currentSlide: '1'
+      currentSlide: '1',
+      thumbStyle: {
+        borderRadius: '10px'
+      }
     }
   },
   components: {
@@ -148,9 +152,11 @@ export default {
 .carousel
   width: 100vw
   height: 45vw
-  background-color: purple
+  background-color: ''
 .words-container
   overflow: auto;
+.carousel-padding
+  margin-bottom: 5vw
 .doc-h2
   border-bottom: 1px solid #ccc
   font-size: 1.5rem
