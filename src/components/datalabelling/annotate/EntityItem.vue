@@ -114,6 +114,13 @@ export default {
   /* display: block; */
   display: block;
   flex-wrap: wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
   align-items: center;
   text-align: center;
   /* padding: 2px 2px 0px 6px; */

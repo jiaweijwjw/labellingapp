@@ -10,6 +10,7 @@
       > </labels>
       <!-- ANNOTATOR -->
     <q-carousel
+      @before-transition="switchSlide"
       class="carousel text-white rounded-borders no-padding no-margin"
       v-model="currentSlide"
       keep-alive
@@ -21,13 +22,13 @@
       dark
       navigation
       navigation-position="bottom"
-      navigation-icon="close"
-      navigation-active-icon="bathtub"
+      navigation-icon="fiber_manual_record"
+      navigation-active-icon="create"
       control-type="flat"
       control-color="black"
       control-text-color="primary"
     >
-    <q-carousel-slide name="1" class="q-pa-none">
+    <q-carousel-slide v-for="document in selectedDocs" v-bind:key="document.id" :name="document.id" class="q-pa-none">
         <q-scroll-area class="fit">
           <div class="column no-wrap flex-center q-carousel--padding">
             <q-card class="q-toolbar text-white" bordered style="width: 85vw">
@@ -40,8 +41,8 @@
         <q-card-section class="words-container no-margin no-padding">
             <entitynaming
               :labels="labels"
-              :text="currentDoc.text"
-              :entities="currentDoc.annotations"
+              :text="document.text"
+              :entities="document.annotations"
               :delete-annotation="removeEntity"
               :update-entity="updateEntity"
               :add-entity="addEntity"
@@ -49,17 +50,6 @@
       </entitynaming>
         </q-card-section>
       </q-card>
-          </div>
-        </q-scroll-area>
-      </q-carousel-slide>
-
-      <q-carousel-slide name="2" class="q-pa-none">
-        <q-scroll-area class="fit">
-          <div class="column no-wrap flex-center q-carousel--padding">
-            <q-icon name="style" size="56px" />
-            <div class="q-mt-md">
-              {{ lorem }}
-            </div>
           </div>
         </q-scroll-area>
       </q-carousel-slide>
@@ -76,28 +66,29 @@ export default {
   name: 'AnnotatePage',
   data () {
     return {
-      currentSlide: '1',
-      lorem: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque voluptatem totam, architecto cupiditate officia rerum, error dignissimos praesentium libero ab nemo.'
+      currentSlide: '1'
     }
   },
-  // watch: {
-  //   vertical (val) {
-  //     this.navPos = val === true
-  //       ? 'right'
-  //       : 'bottom'
-  //   }
-  // },
   components: {
     labels: require('components/datalabelling/annotate/Labels.vue').default,
     entitynaming: require('components/datalabelling/annotate/EntityNaming.vue').default,
     annotationbar: require('components/datalabelling/annotate/AnnotationBar.vue').default
   },
   computed: {
-    ...mapGetters('documents', ['currentDoc']),
+    ...mapGetters('documents', ['currentDoc', 'selectedDocs']),
     ...mapGetters('labels', ['labels'])
+    // currentSlide () {
+    //   return '1' // this.selectedDocs[1].id
+    // }
   },
   methods: {
-    ...mapActions('documents', ['deleteAnnotation', 'addAnnotation', 'updateAnnotation']),
+    ...mapActions('documents', ['updateCurrent', 'deleteAnnotation', 'addAnnotation', 'updateAnnotation']),
+    switchSlide (newSlideName, oldSlideName) {
+      this.updateCurrent(newSlideName)
+      console.log('currentdocid: ' + this.currentDoc.id)
+      console.log(this.currentDoc, this.selectedDocs)
+      console.log(newSlideName, oldSlideName)
+    },
     // removeEntity (annotationId) {
     //   this.currentDoc.annotations = this.currentDoc.annotations.filter(item => item.id !== annotationId)
     // },
@@ -157,7 +148,7 @@ export default {
 .carousel
   width: 100vw
   height: 45vw
-  backgroundColor: $darker
+  background-color: purple
 .words-container
   overflow: auto;
 .doc-h2

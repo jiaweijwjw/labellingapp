@@ -280,8 +280,15 @@ export default {
 .highlight-container {
   line-height: 30px !important;
   display: inline;
-  word-wrap: break-word;
   white-space: pre-wrap;
+  word-break: break-word;
+  /* word-break: break-all; */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }
 /* .highlight-container.highlight-container--bottom-labels .highlight.bottom {
   margin-top: 6px;
