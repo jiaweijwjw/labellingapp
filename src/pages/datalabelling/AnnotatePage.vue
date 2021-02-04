@@ -1,5 +1,5 @@
 <template>
-  <q-page class="annotate-page" style="width:1800px;">
+  <q-page v-shortkey="{left: ['arrowleft'], right: ['arrowright']}" @shortkey="slideCarousel" class="annotate-page" style="width:1800px;">
     <div>
       <!-- LABELS -->
       <labels
@@ -65,9 +65,12 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'AnnotatePage',
+  mounted () {
+    this.slide = this.currentDoc.id
+  },
   data () {
     return {
-      currentSlide: '1',
+      slide: '',
       thumbStyle: {
         borderRadius: '10px'
       }
@@ -80,7 +83,20 @@ export default {
   },
   computed: {
     ...mapGetters('documents', ['currentDoc', 'selectedDocs']),
-    ...mapGetters('labels', ['labels'])
+    ...mapGetters('labels', ['labels']),
+
+    currentSlide: { //  IMPORTANT. Need getters and setter if v-model computed property.
+      get: function () {
+        return this.slide
+      },
+      set: function (newSlide) {
+        this.slide = newSlide
+      }
+    },
+    allSlides () {
+      let slides = this.selectedDocs.map(docs => docs.id)
+      return slides
+    }
     // currentSlide () {
     //   return '1' // this.selectedDocs[1].id
     // }
@@ -92,6 +108,35 @@ export default {
       console.log('currentdocid: ' + this.currentDoc.id)
       console.log(this.currentDoc, this.selectedDocs)
       console.log(newSlideName, oldSlideName)
+    },
+    slideCarousel (event) {
+      let index = this.allSlides.indexOf(this.currentSlide)
+      switch (event.srcKey) {
+        case 'left':
+          if (index < 0 || index >= this.allSlides.length) {
+            break
+          } else if (index !== 0) {
+            --index
+            this.currentSlide = this.allSlides[index]
+          } else {
+            index = this.allSlides.length - 1
+            this.currentSlide = this.allSlides[index]
+          }
+          break
+        case 'right':
+          console.log(this.allSlides)
+          if (index < 0 || index >= this.allSlides.length) {
+            break
+          } else if (index !== this.allSlides.length - 1) {
+            ++index
+            this.currentSlide = this.allSlides[index]
+          } else {
+            index = 0
+            this.currentSlide = this.allSlides[index]
+          }
+          break
+        default: break
+      }
     },
     // removeEntity (annotationId) {
     //   this.currentDoc.annotations = this.currentDoc.annotations.filter(item => item.id !== annotationId)
