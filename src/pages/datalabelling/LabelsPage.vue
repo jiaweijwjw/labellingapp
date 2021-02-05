@@ -1,6 +1,6 @@
 <template>
-  <q-page style="width:1800px; max-width:85vw">
-    <div class="row q-py-md">
+  <q-page class="page labels-page">
+    <div class="page-item row q-py-md">
       <q-btn-dropdown
         flat
         text-color="primary"
@@ -39,7 +39,7 @@
       </q-btn-dropdown>
     </div>
     <!-- TABLE -->
-    <div>
+    <div class="page-item">
       <labeltable />
     </div>
     <div>
@@ -68,10 +68,20 @@ export default {
 </script>
 
 <style lang="sass">
-.labelspage
-  width: 70vw
-  max-width: 80vw
-  background-color: white
+.page
+  display: flex
+  flex-flow: column
+  align-content: center
+  align-items: center
+  width: 1800px
+  max-width: 100vw
+  height: 100%
+.page-item
+  display: block
+  width: 85vw
+  max-width: 100vw
+.labels-page
+  background-color: $body-background
 .labeltable
   width: 70vw
   max-width: 80vw

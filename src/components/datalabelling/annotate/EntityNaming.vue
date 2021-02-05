@@ -3,7 +3,7 @@
     @mousedown="isStillSelecting = true"
     @mouseup="open">
   <div
-    class="highlight-container highlight-container--bottom-labels"
+    class="highlight-container"
   >
     <entityitem
       v-for="(chunk, i) in chunks"
@@ -273,8 +273,7 @@ export default {
   align-items: flex-start;
 } */
 .leeway {
-  padding-right: 2em;
-  padding-left: 2em;
+  padding: 2em 1em 2em 1em;
   cursor: context-menu;
 }
 .highlight-container {

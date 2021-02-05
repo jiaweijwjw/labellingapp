@@ -1,6 +1,6 @@
 <template>
-  <q-page>
-    <div class="row q-py-md">
+  <q-page class="page documents-page">
+    <div class="page-item row q-py-md">
       <q-btn-dropdown
         flat
         text-color="primary"
@@ -29,14 +29,15 @@
         </q-list>
       </q-btn-dropdown>
     </div>
-    <div class="documentspage flex row q-py-lg" style="width:1800px; max-width:85vw">
-      <documentlist/>
+    <div class="page-item table-container">
+      <documentstable/>
     </div>
         <!-- TEXT INPUT -->
-      <texteditor> </texteditor>
+      <!-- <texteditor> </texteditor>
       <div class="row">
       <q-space/><submitbtn @submit="addToDocuments"/>
-      </div>
+      </div> -->
+
     <div>
       <importdocument
         v-if="dialog"
@@ -54,9 +55,10 @@ export default {
   name: 'DocumentsPage',
   components: {
     importdocument: require('components/datalabelling/documents/ImportDocument.vue').default,
-    documentlist: require('components/datalabelling/documents/DocumentList.vue').default,
-    texteditor: require('components/datalabelling/annotate/TextEditor.vue').default,
-    submitbtn: require('components/datalabelling/annotate/SubmitBtn.vue').default
+    documentstable: require('components/datalabelling/documents/DocumentsTable.vue').default
+    // documentlist: require('components/datalabelling/documents/DocumentList.vue').default,
+    // texteditor: require('components/datalabelling/annotate/TextEditor.vue').default,
+    // submitbtn: require('components/datalabelling/annotate/SubmitBtn.vue').default
   },
   data () {
     return {
@@ -102,7 +104,19 @@ export default {
 </script>
 
 <style lang="sass">
-.documentspage
-  width: 80vw
-  max-width: 80vw
+.table-container
+.page
+  display: flex
+  flex-flow: column
+  align-content: center
+  align-items: center
+  width: 1800px
+  max-width: 100vw
+  height: 100%
+.page-item
+  display: block
+  width: 85vw
+  max-width: 100vw
+.documents-page
+  background-color: $body-background
 </style>

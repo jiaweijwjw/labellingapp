@@ -1,5 +1,5 @@
 <template>
-  <q-page v-shortkey="{left: ['arrowleft'], right: ['arrowright']}" @shortkey="slideCarousel" class="annotate-page" style="width:1800px;">
+  <q-page v-shortkey="{left: ['arrowleft'], right: ['arrowright']}" @shortkey="slideCarousel" class="page">
     <div>
       <!-- LABELS -->
       <labels
@@ -33,12 +33,9 @@
           <!-- q-carousel--padding -->
           <div class="column no-wrap flex-center carousel-padding">
             <q-card class="q-toolbar text-white" bordered style="width: 85vw">
-        <q-card-section>
+        <!-- <q-card-section>
             <annotationbar/>
-          <q-space/>
-          <q-menu>
-          </q-menu>
-        </q-card-section>
+        </q-card-section> -->
         <q-card-section class="words-container no-margin no-padding">
             <entitynaming
               :labels="labels"
@@ -78,8 +75,8 @@ export default {
   },
   components: {
     labels: require('components/datalabelling/annotate/Labels.vue').default,
-    entitynaming: require('components/datalabelling/annotate/EntityNaming.vue').default,
-    annotationbar: require('components/datalabelling/annotate/AnnotationBar.vue').default
+    entitynaming: require('components/datalabelling/annotate/EntityNaming.vue').default
+    // annotationbar: require('components/datalabelling/annotate/AnnotationBar.vue').default
   },
   computed: {
     ...mapGetters('documents', ['currentDoc', 'selectedDocs']),
@@ -184,12 +181,18 @@ export default {
 </script>
 
 <style lang="sass">
-.annotate-page
+.page
   display: flex
   flex-flow: column
   align-content: center
+  align-items: center
+  width: 1800px
   max-width: 100vw
   height: 100%
+.page-item
+  display: block
+  width: 85vw
+  max-width: 100vw
 .labels-box
   margin: auto
   width: 85vw
@@ -197,7 +200,7 @@ export default {
 .carousel
   width: 100vw
   height: 45vw
-  background-color: ''
+  background-color: $body-background
 .words-container
   overflow: auto;
 .carousel-padding

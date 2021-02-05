@@ -1,18 +1,23 @@
 <template>
   <div>
     <q-table
-      :data="labels"
+      :data="documents"
       :columns="columns"
-      row-key="name"
+      :row-key="row => row.id"
       dark
+      visible-columns="['name', 'text']"
       color="primary"
       class="q-toolbar"
-      rows-per-page-label="Labels per page"
+      rows-per-page-label="Documents per page"
       :rows-per-page-options="[20, 50, 0]"
       :pagination.sync="pagination"
+      :selected-rows-label="getSelectedString"
+      selection="multiple"
+      :selected.sync="selected"
+
     >
     <!-- COLORING -->
-      <template v-slot:body-cell-color="props">
+      <!-- <template v-slot:body-cell-color="props">
         <q-td :props="props">
           <div>
             <q-badge
@@ -24,8 +29,11 @@
             {{ props.row.details }}
           </div>
         </q-td>
-      </template>
+      </template> -->
     </q-table>
+    <!-- <div class="q-mt-md text-white">
+      Selected: {{ JSON.stringify(selected[0].id) }}
+    </div> -->
   </div>
 </template>
 
@@ -35,6 +43,7 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
+      selected: [],
       pagination: {
         rowsPerPage: 10
       },
@@ -42,25 +51,21 @@ export default {
         {
           name: 'name',
           required: true,
-          label: 'Label Name',
+          label: 'Document Name',
           align: 'left',
-          // field: row => row.some.nested.prop,
           field: row => row.name,
-          format: val => `${val}`,
+          format: val => `${val}`, // template literals
+          style: '',
+          classes: 'test',
           sortable: true
         },
         {
-          name: 'shortcutkey',
+          name: 'text',
           align: 'left',
-          label: 'Short Cut Key',
-          field: 'shortcutkey',
-          sortable: true
-        },
-        {
-          name: 'color',
-          align: 'left',
-          label: 'Color',
-          field: 'color',
+          label: 'Text',
+          field: 'text',
+          style: 'max-width: 50vw',
+          classes: 'ellipsis',
           sortable: true
         }
         // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
@@ -68,22 +73,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('labels', ['labels'])
+    ...mapGetters('documents', ['documents'])
   },
   methods: {
-    autoTextColor (color) {
-      return this.$hf.autoChooseTextColor(color)
+    getSelectedString () {
+      return this.selected.length === 0 ? '' : `${this.selected.length} document${this.selected.length > 1 ? 's' : ''} selected of ${this.documents.length}`
     }
   }
 }
 </script>
 
-<style lang="sass" scoped>
-.my-table-details
-    font-size: 0.85em
-    font-style: italic
-    max-width: 200px
-    white-space: normal
-    color: #555
-    margin-top: 4px
+<style lang='sass' scoped>
 </style>
