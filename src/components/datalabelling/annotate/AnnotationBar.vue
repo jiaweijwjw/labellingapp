@@ -1,9 +1,9 @@
 <template>
 <div>
     <q-bar class="row">
-        <q-checkbox class="col-2" dark v-model="marked" label="Teal" color="teal"/>
+        <q-checkbox class="col-2" dark v-model="docStatus" label="Teal" color="teal" @input="updateStatus()"/>
         <q-space/>
-        <q-chip class="col-2" color="primary" text-color="white" icon="cake">test</q-chip>
+        <q-chip clickable @click="onClick" class="col-2" color="primary" text-color="white" icon="cake">test</q-chip>
         <q-btn flat class="col-1" @click="dialog = true"><q-icon name="menubook"/></q-btn>
     </q-bar>
     <div>
@@ -27,14 +27,56 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
-  props: ['marked'],
+  props: {
+    marked: {
+      type: Boolean
+    },
+    currentDocId: {
+      type: String,
+      default: ''
+    },
+    selected: {
+      type: Array,
+      default: () => ([])
+    }
+  },
   data () {
     return {
+      status: false,
       dialog: false
     }
   },
+  mounted () {
+    this.docStatus = this.marked
+    console.log(this.currentDocId)
+  },
+  computed: {
+    docStatus: { //  IMPORTANT. Need getters and setter if v-model computed property.
+      get: function () {
+        return this.status
+      },
+      set: function (marked) {
+        this.status = marked
+      }
+    }
+  },
   methods: {
+    ...mapActions('documents', ['updateDocStatus']),
+    updateStatus () {
+      let payload = {
+        newStatus: this.docStatus,
+        documentId: this.currentDocId
+      }
+      console.log(payload)
+      this.updateDocStatus(payload)
+    },
+    onClick () {
+      let test = this.selected.map(doc => doc.isMarked)
+      console.log(test)
+    }
   }
 }
 </script>

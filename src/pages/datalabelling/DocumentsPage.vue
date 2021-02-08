@@ -62,10 +62,10 @@ export default {
     console.log('deactivated')
   },
   mounted: function () {
-    console.log('mounted')
+    console.log('mounted documentpage')
   },
   destroyed: function () {
-    console.log('destroyed')
+    console.log('destroyed documentpage')
   },
   components: {
     importdocument: require('components/datalabelling/documents/ImportDocument.vue').default,

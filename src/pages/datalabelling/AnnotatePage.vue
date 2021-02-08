@@ -34,7 +34,7 @@
           <div class="column no-wrap flex-center carousel-padding">
             <q-card class="q-toolbar text-white" bordered style="width: 85vw">
         <q-card-section>
-            <annotationbar :marked="document.isMarked"/>
+            <annotationbar :marked="document.isMarked" :currentDocId="document.id" :selected="selectedDocs"/>
         </q-card-section>
         <q-card-section class="words-container no-margin no-padding">
             <entitynaming
@@ -103,7 +103,7 @@ export default {
       this.updateCurrent(newSlideName)
       console.log('currentdocid: ' + this.currentDoc.id)
       console.log(this.currentDoc, this.selectedDocs)
-      console.log(newSlideName, oldSlideName)
+      console.log('newSlideName: ' + newSlideName + ' oldSlideName: ' + oldSlideName)
     },
     slideCarousel (event) {
       let index = this.allSlides.indexOf(this.currentSlide)

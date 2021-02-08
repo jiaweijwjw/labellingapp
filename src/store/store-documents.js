@@ -66,6 +66,10 @@ const mutations = {
   updateInputText (state, payload) {
     state.inputText = payload
   },
+  updateDocStatus (state, payload) {
+    const document = state.documents.find(doc => doc.id === payload.documentId)
+    document.isMarked = payload.newStatus
+  },
   updateStartEnd (state, payload) {
     state.start = payload.start
     state.end = payload.end
@@ -120,6 +124,9 @@ const actions = {
   },
   updateInputText ({ commit }, userInputText) {
     commit('updateInputText', userInputText)
+  },
+  updateDocStatus ({ commit }, payload) {
+    commit('updateDocStatus', payload)
   },
   updateStartEnd ({ commit }, selectionStartEnd) {
     commit('updateStartEnd', selectionStartEnd)
