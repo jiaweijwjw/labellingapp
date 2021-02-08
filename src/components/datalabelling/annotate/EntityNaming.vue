@@ -273,7 +273,7 @@ export default {
   align-items: flex-start;
 } */
 .leeway {
-  padding: 2em 1em 2em 1em;
+  padding: 0.5em 1em 2em 1em;
   cursor: context-menu;
 }
 .highlight-container {

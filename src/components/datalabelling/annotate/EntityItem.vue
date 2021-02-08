@@ -23,9 +23,6 @@
 <script>
 
 export default {
-  // mounted () {
-  //   console.log('mounted entityitem')
-  // },
   props: {
     content: {
       type: String,

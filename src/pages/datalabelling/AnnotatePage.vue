@@ -3,7 +3,7 @@
     <div>
       <!-- LABELS -->
       <labels
-        class="labels-box"
+        class="labels-box page-item"
         :labels="labels"
         :entities="currentDoc.annotations"
         :add-entity="addEntity"
@@ -33,9 +33,9 @@
           <!-- q-carousel--padding -->
           <div class="column no-wrap flex-center carousel-padding">
             <q-card class="q-toolbar text-white" bordered style="width: 85vw">
-        <!-- <q-card-section>
-            <annotationbar/>
-        </q-card-section> -->
+        <q-card-section>
+            <annotationbar :marked="document.isMarked"/>
+        </q-card-section>
         <q-card-section class="words-container no-margin no-padding">
             <entitynaming
               :labels="labels"
@@ -51,8 +51,7 @@
           </div>
         </q-scroll-area>
       </q-carousel-slide>
-
-    </q-carousel>
+      </q-carousel>
     </div>
   </q-page>
 </template>
@@ -75,8 +74,8 @@ export default {
   },
   components: {
     labels: require('components/datalabelling/annotate/Labels.vue').default,
-    entitynaming: require('components/datalabelling/annotate/EntityNaming.vue').default
-    // annotationbar: require('components/datalabelling/annotate/AnnotationBar.vue').default
+    entitynaming: require('components/datalabelling/annotate/EntityNaming.vue').default,
+    annotationbar: require('components/datalabelling/annotate/AnnotationBar.vue').default
   },
   computed: {
     ...mapGetters('documents', ['currentDoc', 'selectedDocs']),

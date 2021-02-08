@@ -1,7 +1,10 @@
 <template>
 <div>
     <q-bar class="row">
-        <q-btn flat class="col-2" @click="dialog = true"><q-icon name="menubook"/></q-btn>
+        <q-checkbox class="col-2" dark v-model="marked" label="Teal" color="teal"/>
+        <q-space/>
+        <q-chip class="col-2" color="primary" text-color="white" icon="cake">test</q-chip>
+        <q-btn flat class="col-1" @click="dialog = true"><q-icon name="menubook"/></q-btn>
     </q-bar>
     <div>
     <q-dialog v-model="dialog">
@@ -25,6 +28,7 @@
 
 <script>
 export default {
+  props: ['marked'],
   data () {
     return {
       dialog: false
@@ -35,6 +39,5 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="sass" scoped>
 </style>
