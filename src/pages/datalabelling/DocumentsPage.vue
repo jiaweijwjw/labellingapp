@@ -28,9 +28,11 @@
           </q-item>
         </q-list>
       </q-btn-dropdown>
+      <q-btn class="col-2 max-width=20vw" label="Annotate Selected" flat text-color="primary" @click="annotateSelected" :to="{ name: 'AnnotatePage' }">
+      </q-btn>
     </div>
     <div class="page-item table-container">
-      <documentstable/>
+      <documentstable @updateSelected="updateSelectedDocs($event)"/>
     </div>
         <!-- TEXT INPUT -->
       <!-- <texteditor> </texteditor>
@@ -53,6 +55,18 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'DocumentsPage',
+  activated: function () { // testing keep alive. remove after
+    console.log('activated')
+  },
+  deactivated: function () {
+    console.log('deactivated')
+  },
+  mounted: function () {
+    console.log('mounted')
+  },
+  destroyed: function () {
+    console.log('destroyed')
+  },
   components: {
     importdocument: require('components/datalabelling/documents/ImportDocument.vue').default,
     documentstable: require('components/datalabelling/documents/DocumentsTable.vue').default
@@ -62,6 +76,7 @@ export default {
   },
   data () {
     return {
+      selected: [],
       dialog: false,
       documentToSubmit: {
         id: '',
@@ -85,7 +100,13 @@ export default {
     ...mapGetters('documents', ['currentDoc'])
   },
   methods: {
-    ...mapActions('documents', ['addDocument', 'updateInputText']),
+    ...mapActions('documents', ['addDocument', 'updateInputText', 'updateSelected']),
+    annotateSelected () {
+      this.updateSelected(this.selected) // Only when user starts annotating then update annotate page.
+    },
+    updateSelectedDocs (selectedDocsId) { // to keep track of selected documents in documents table
+      this.selected = selectedDocsId
+    },
     addToDocuments () {
       console.log('submitted document successfully')
       let cloneDocumentToSubmit = { ...this.documentToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.

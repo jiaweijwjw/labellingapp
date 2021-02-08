@@ -5,7 +5,7 @@
       :columns="columns"
       :row-key="row => row.id"
       dark
-      visible-columns="['name', 'text']"
+      :visible-columns="visibleColumns"
       color="primary"
       class="q-toolbar"
       rows-per-page-label="Documents per page"
@@ -14,7 +14,6 @@
       :selected-rows-label="getSelectedString"
       selection="multiple"
       :selected.sync="selected"
-
     >
     <!-- COLORING -->
       <!-- <template v-slot:body-cell-color="props">
@@ -47,6 +46,7 @@ export default {
       pagination: {
         rowsPerPage: 10
       },
+      visibleColumns: ['name', 'text'],
       columns: [
         {
           name: 'name',
@@ -77,6 +77,8 @@ export default {
   },
   methods: {
     getSelectedString () {
+      let selectedDocsId = this.selected.map(doc => doc.id)
+      this.$emit('updateSelected', selectedDocsId)
       return this.selected.length === 0 ? '' : `${this.selected.length} document${this.selected.length > 1 ? 's' : ''} selected of ${this.documents.length}`
     }
   }

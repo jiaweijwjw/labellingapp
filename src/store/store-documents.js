@@ -57,6 +57,9 @@ const mutations = {
   updateCurrent (state, payload) {
     state.current = payload
   },
+  updateSelected (state, payload) {
+    state.selected = payload
+  },
   updateInputText (state, payload) {
     state.inputText = payload
   },
@@ -108,6 +111,9 @@ const actions = {
   },
   updateCurrent ({ commit }, currentDoc) {
     commit('updateCurrent', currentDoc)
+  },
+  updateSelected ({ commit }, selection) {
+    commit('updateSelected', selection)
   },
   updateInputText ({ commit }, userInputText) {
     commit('updateInputText', userInputText)
