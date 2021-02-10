@@ -34,7 +34,7 @@
           <div class="column no-wrap flex-center carousel-padding">
             <q-card class="q-toolbar text-white" bordered style="width: 85vw">
         <q-card-section>
-            <annotationbar :marked="document.isMarked" :currentDocId="document.id" :selected="selectedDocs"/>
+            <annotationbar :marked="document.isMarked" :currentDocId="document.id"/>
         </q-card-section>
         <q-card-section class="words-container no-margin no-padding">
             <entitynaming
@@ -51,6 +51,7 @@
           </div>
         </q-scroll-area>
       </q-carousel-slide>
+
       </q-carousel>
     </div>
   </q-page>
@@ -93,9 +94,6 @@ export default {
       let slides = this.selectedDocs.map(docs => docs.id)
       return slides
     }
-    // currentSlide () {
-    //   return '1' // this.selectedDocs[1].id
-    // }
   },
   methods: {
     ...mapActions('documents', ['updateCurrent', 'deleteAnnotation', 'addAnnotation', 'updateAnnotation']),
@@ -106,6 +104,7 @@ export default {
       console.log('newSlideName: ' + newSlideName + ' oldSlideName: ' + oldSlideName)
     },
     slideCarousel (event) {
+      if (this.allSlides.length <= 1) { return }
       let index = this.allSlides.indexOf(this.currentSlide)
       switch (event.srcKey) {
         case 'left':
@@ -120,7 +119,6 @@ export default {
           }
           break
         case 'right':
-          console.log(this.allSlides)
           if (index < 0 || index >= this.allSlides.length) {
             break
           } else if (index !== this.allSlides.length - 1) {

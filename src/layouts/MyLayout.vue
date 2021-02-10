@@ -15,6 +15,10 @@
         <q-btn flat round dense icon="description" class="q-mr-md" clickable to="/datalabelling/documentspage">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Documents</q-tooltip>
           </q-btn>
+          <q-separator vertical dark />
+        <q-btn outline color="primary" icon="account_box" label="Login" class="q-mr-md q-ml-md" clickable to="/auth">
+          <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Login</q-tooltip>
+          </q-btn>
       </q-toolbar>
     </q-header>
     <!-- <q-drawer v-model="leftDrawerOpen" :mini="miniState" :width="250" :breakpoint="500" show-if-above>

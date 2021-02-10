@@ -6,7 +6,7 @@ const state = {
   end: 0, // end of selection
   inputText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
   current: '1',
-  selected: [],
+  selected: ['1'],
   documents: [
     {
       id: '1',
@@ -85,7 +85,6 @@ const mutations = {
   },
   addAnnotation (state, payload) {
     var index = state.documents.map(item => item.id).indexOf(payload.documentId)
-    console.log(index)
     let annotation = {
       id: payload.annotationId,
       prob: 0.0,
@@ -101,7 +100,6 @@ const mutations = {
     const document = state.documents.find(doc => doc.id === state.current)
     const annotation = document.annotations.find(item => item.id === payload.annotationId)
     // var index = state.documents.map(item => item.id).indexOf(payload.documentId)
-    console.log(annotation)
     Object.assign(annotation, payload)
   }
 }

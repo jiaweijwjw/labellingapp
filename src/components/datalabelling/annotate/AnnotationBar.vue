@@ -1,9 +1,8 @@
 <template>
 <div>
     <q-bar class="row">
-        <q-checkbox class="col-2" dark v-model="docStatus" label="Teal" color="teal" @input="updateStatus()"/>
+        <q-checkbox class="col-2" dark v-model="docStatus" :label="this.status ? 'Checked' : 'Unchecked'" color="primary" @input="updateStatus()"/>
         <q-space/>
-        <q-chip clickable @click="onClick" class="col-2" color="primary" text-color="white" icon="cake">test</q-chip>
         <q-btn flat class="col-1" @click="dialog = true"><q-icon name="menubook"/></q-btn>
     </q-bar>
     <div>
@@ -37,10 +36,6 @@ export default {
     currentDocId: {
       type: String,
       default: ''
-    },
-    selected: {
-      type: Array,
-      default: () => ([])
     }
   },
   data () {
@@ -70,12 +65,7 @@ export default {
         newStatus: this.docStatus,
         documentId: this.currentDocId
       }
-      console.log(payload)
       this.updateDocStatus(payload)
-    },
-    onClick () {
-      let test = this.selected.map(doc => doc.isMarked)
-      console.log(test)
     }
   }
 }
