@@ -48,7 +48,7 @@ module.exports = function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: ['Notify'],
+      plugins: ['Notify', 'LocalStorage'],
       config: {
         notify: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ }
       }

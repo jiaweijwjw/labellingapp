@@ -8,7 +8,7 @@
         {{ tab | titleCase }} to access your saved data!
       </q-banner>
     </div>
-    <div class="row q-mb-md">
+    <!-- <div class="row q-mb-md">
       <q-input
         v-model="formData.email"
         :rules="[ val => isValidEmailAddress(val) || 'Please enter a valid email address.']"
@@ -16,6 +16,18 @@
         lazy-rules
         class="col"
         label="Email"
+        outlined
+        stack-label
+      />
+    </div> -->
+    <div class="row q-mb-md">
+      <q-input
+        v-model="formData.username"
+        :rules="[ val => val && val.length > 0 || 'Please input username.' ]"
+        ref="username"
+        lazy-rules
+        class="col"
+        label="Username"
         outlined
         stack-label
       />
@@ -50,24 +62,27 @@ export default {
   data () {
     return {
       formData: {
-        email: '',
+        // email: '',
+        username: '',
         password: ''
       }
     }
   },
   methods: {
-    isValidEmailAddress (email) {
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      return re.test(String(email).toLowerCase())
-    },
+    // isValidEmailAddress (email) {
+    //   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    //   return re.test(String(email).toLowerCase())
+    // },
     submitForm () {
-      this.$refs.email.validate()
+      this.$refs.username.validate()
       this.$refs.password.validate()
-      if (!this.$refs.email.hasError && !this.$refs.password.hasError) {
+      if (!this.$refs.username.hasError && !this.$refs.password.hasError) {
+        let credentials = { ...this.formData }
         if (this.tab === 'login') {
-          console.log('login the user')
-        } else {
-          console.log('register the user')
+          this.$emit('login', credentials)
+        }
+        if (this.tab === 'register') {
+          this.$emit('register', credentials)
         }
       }
     }
