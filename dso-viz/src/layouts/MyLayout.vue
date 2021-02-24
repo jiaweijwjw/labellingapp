@@ -18,9 +18,6 @@
         <q-btn flat round dense icon="folder" class="q-mr-md" clickable to="/datalabelling/projectspage">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Projects</q-tooltip>
           </q-btn>
-
-        <q-btn flat round dense icon="close" class="q-mr-md" @click="test"></q-btn>
-
           <q-separator vertical dark />
         <q-btn v-if="!isLoggedIn" outline color="primary" icon="account_box" label="Login" class="q-mr-md q-ml-md" clickable to="/auth">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Login</q-tooltip>
@@ -129,7 +126,6 @@ export default {
   name: 'MyLayout',
   data () {
     return {
-      // isLoggedIn: this.loginStatus
       // leftDrawerOpen: this.$q.platform.is.desktop,
       // miniState: !this.$q.platform.is.desktop
     }
@@ -146,26 +142,13 @@ export default {
   },
   methods: {
     ...mapActions('general', ['updateLoginStatus', 'updateAccessToken']),
-    test () {
-      console.log(this.isLoggedIn)
-      console.log(this.access_token)
-    },
-    // checkisLoggedIn () {
-    //   if (this.access_token) {
-    //     return true
-    //   } else {
-    //     return false
-    //   }
-    // },
     logout () {
       try {
-        // this.$q.localStorage.set('access_token', null)
         this.updateAccessToken('')
       } catch (e) {
         console.log('Setting access_token to null is unsuccessful.')
         // exit this func?
       }
-      // this.updateisLoggedIn(false)
     }
   }
 }

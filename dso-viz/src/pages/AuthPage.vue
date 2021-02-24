@@ -1,6 +1,6 @@
 <template>
-  <q-page padding>
-    <q-card class="auth-tabs">
+  <q-page class="auth-page">
+    <q-card class="auth-page-item" bordered>
       <q-tabs
         v-model="tab"
         dense
@@ -16,7 +16,7 @@
 
       <q-separator />
 
-      <q-tab-panels v-model="tab" animated>
+      <q-tab-panels v-model="tab" dark animated>
         <q-tab-panel name="login">
           <login-register :tab="tab" @login="login($event.username, $event.password)"/>
         </q-tab-panel>
@@ -26,13 +26,9 @@
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
-    <div>
+    <!-- <div>
     <q-btn type="submit" color="primary" label="test" @click="testtest"/>
-    <!-- <q-btn type="submit" color="primary" label="getusers" @click="getusers"/>
-    <q-btn type="submit" color="primary" label="login" @click="login"/> -->
-    </div>
-    <div class="text-white">
-    </div>
+    </div> -->
   </q-page>
 </template>
 
@@ -55,9 +51,6 @@ export default {
       token: '',
       username: ''
     }
-  },
-  mounted () { // SHOULD BE IN LAYOUT?
-    this.token = this.$q.localStorage.getItem('access_token')
   },
   components: {
     'login-register': require('components/auth/LoginRegister.vue').default
@@ -86,8 +79,10 @@ export default {
     },
     getuser (res) {
       console.log('entered chain axios req')
-      // if res.status == error, do smth
-      // let value = this.$q.localStorage.getItem(key)
+      console.log(res.status)
+      if (res.status === 401) {
+        console.log('Invalid username or password')
+      }
       try {
         this.updateAccessToken(res.data.access_token)
         // this.$q.localStorage.set('access_token', res.data.access_token)
@@ -121,9 +116,26 @@ export default {
 }
 </script>
 
-<style>
-  .auth-tabs {
-    max-width: 500px;
-    margin: 0 auto;
-  }
+<style lang="sass">
+.q-card
+  background-color: $popover-background
+.auth-page
+  display: flex
+  flex-flow: column
+  justify-content: center
+  align-content: center
+  align-items: center
+  width: 1800px
+  max-width: 100vw
+  height: 100%
+  background-color: $body-background
+.auth-page-item
+  display: block
+  width: 40vw
+  max-width: 40vw
+.auth-card
+  position: fixed
+  right: 50%
+  width: 30vw
+  height: 50%
 </style>

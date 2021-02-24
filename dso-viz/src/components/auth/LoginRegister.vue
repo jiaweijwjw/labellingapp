@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submitForm">
     <div class="row q-mb-md">
-      <q-banner class="bg-grey-3 col">
+      <q-banner class="bg-grey-9 col">
         <template v-slot:avatar>
           <q-icon name="account_circle" color="primary" />
         </template>
@@ -28,7 +28,7 @@
         lazy-rules
         class="col"
         label="Username"
-        outlined
+        dark filled
         stack-label
       />
     </div>
@@ -40,14 +40,14 @@
         lazy-rules
         type="password"
         class="col"
-        label="Password"
-        outlined
+        dark filled
         stack-label
       />
     </div>
     <div class="row">
       <q-space />
       <q-btn
+        flat
         color="primary"
         :label="tab"
         type="submit"
