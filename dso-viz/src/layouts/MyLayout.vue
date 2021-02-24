@@ -12,12 +12,21 @@
         <q-btn flat round dense icon="label" class="q-mr-sm" clickable to="/datalabelling/labelspage">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Labels</q-tooltip>
           </q-btn>
-        <q-btn flat round dense icon="description" class="q-mr-md" clickable to="/datalabelling/documentspage">
+        <q-btn flat round dense icon="description" class="q-mr-sm" clickable to="/datalabelling/documentspage">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Documents</q-tooltip>
           </q-btn>
+        <q-btn flat round dense icon="folder" class="q-mr-md" clickable to="/datalabelling/projectspage">
+          <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Projects</q-tooltip>
+          </q-btn>
+
+        <q-btn flat round dense icon="close" class="q-mr-md" @click="test"></q-btn>
+
           <q-separator vertical dark />
-        <q-btn outline color="primary" icon="account_box" label="Login" class="q-mr-md q-ml-md" clickable to="/auth">
+        <q-btn v-if="!isLoggedIn" outline color="primary" icon="account_box" label="Login" class="q-mr-md q-ml-md" clickable to="/auth">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Login</q-tooltip>
+          </q-btn>
+        <q-btn v-if="isLoggedIn" outline color="primary" icon="account_box" label="Logout" class="q-mr-md q-ml-md" @click="logout">
+          <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Logout</q-tooltip>
           </q-btn>
       </q-toolbar>
     </q-header>
@@ -114,13 +123,49 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
+
 export default {
   name: 'MyLayout',
-
   data () {
     return {
+      // isLoggedIn: this.loginStatus
       // leftDrawerOpen: this.$q.platform.is.desktop,
       // miniState: !this.$q.platform.is.desktop
+    }
+  },
+  computed: {
+    ...mapState('general', ['loginStatus', 'access_token']),
+    isLoggedIn: function () {
+      if (this.access_token) {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
+  methods: {
+    ...mapActions('general', ['updateLoginStatus', 'updateAccessToken']),
+    test () {
+      console.log(this.isLoggedIn)
+      console.log(this.access_token)
+    },
+    // checkisLoggedIn () {
+    //   if (this.access_token) {
+    //     return true
+    //   } else {
+    //     return false
+    //   }
+    // },
+    logout () {
+      try {
+        // this.$q.localStorage.set('access_token', null)
+        this.updateAccessToken('')
+      } catch (e) {
+        console.log('Setting access_token to null is unsuccessful.')
+        // exit this func?
+      }
+      // this.updateisLoggedIn(false)
     }
   }
 }

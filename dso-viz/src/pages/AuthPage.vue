@@ -27,15 +27,11 @@
       </q-tab-panels>
     </q-card>
     <div>
-    <q-btn type="submit" color="primary" label="test" @click="testgetuser"/>
+    <q-btn type="submit" color="primary" label="test" @click="testtest"/>
     <!-- <q-btn type="submit" color="primary" label="getusers" @click="getusers"/>
     <q-btn type="submit" color="primary" label="login" @click="login"/> -->
     </div>
     <div class="text-white">
-      {{test}}
-      {{users}}
-      {{token}}
-      {{username}}
     </div>
   </q-page>
 </template>
@@ -43,6 +39,7 @@
 <script>
 import axios from 'axios'
 import qs from 'qs'
+import { mapActions, mapState } from 'vuex'
 // import ApiService from 'src/services/api.service.js'
 
 const axiosInstance = axios.create({
@@ -55,29 +52,30 @@ export default {
     return {
       tab: 'login',
       test: '',
-      users: [],
-      token: 'intial string token',
+      token: '',
       username: ''
     }
+  },
+  mounted () { // SHOULD BE IN LAYOUT?
+    this.token = this.$q.localStorage.getItem('access_token')
   },
   components: {
     'login-register': require('components/auth/LoginRegister.vue').default
   },
+  computed: {
+    ...mapState('general', ['loginStatus', 'access_token'])
+  },
   methods: {
-    // log () {
-    //   console.log(this.test)
-    // },
-    testgetuser () {
+    ...mapActions('general', ['updateLoginStatus', 'updateAccessToken']),
+    testtest () {
       const config = {
         method: 'get',
         url: '/users/me/',
-        headers: { 'Authorization': `Bearer ${this.token}` }
+        headers: { 'Authorization': `Bearer ${this.access_token}` }
       }
       axiosInstance(config).then(console.log(response => (this.username = response.data)))
-      // axiosInstance(config).then(console.log(response => (this.username = response.data.myusername)))
     },
     register (username, password) {
-      console.log('registered')
       let credentials = {
         username: username,
         password: password
@@ -88,36 +86,35 @@ export default {
     },
     getuser (res) {
       console.log('entered chain axios req')
-      // $window.sessionStorage.accessToken = response.body.access_token;
       // if res.status == error, do smth
       // let value = this.$q.localStorage.getItem(key)
       try {
-        this.$q.localStorage.set('access_token', res.data.access_token)
+        this.updateAccessToken(res.data.access_token)
+        // this.$q.localStorage.set('access_token', res.data.access_token)
+        // this.updateLoginStatus(true)
       } catch (e) {
         console.log('data not saved.')
-        // data wasn't successfully saved due to
-        // a Web Storage API error
       }
-      this.token = res.data.access_token
-      // const config = {
-      //   method: 'get',
-      //   url: '/users/me/',
-      //   headers: { 'Authorization': `Bearer ${this.token}` }
-      // }
-      // axiosInstance(config).then(console.log(response => (this.username = response.data.myusername)))
+      // this.token = this.$q.localStorage.getItem('access_token')// res.data.access_token     FOR VISUALIZING ONLY
+      // this.token = this.access_token
+      const config = {
+        method: 'get',
+        url: '/users/me/',
+        headers: { 'Authorization': `Bearer ${this.access_token}` }
+      }
+      axiosInstance(config).then(console.log(response => (this.username = response.data)))
 
       // axiosInstance
       //   .get('/users/me/', data, { headers: { 'Authorization': `Bearer ${this.token}` } })
       //   .then(console.log(response => (this.username = response.data.myusername)))
     },
     login (username, password) {
-      console.log(this.tab)
-      let login = {
+      let credentials = {
         username: username,
         password: password
       }
       axiosInstance
-        .post('/token', qs.stringify(login), { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+        .post('/token', qs.stringify(credentials), { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
         .then(res => { this.getuser(res) })
     }
   }

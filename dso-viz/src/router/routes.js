@@ -11,6 +11,7 @@ const routes = [
       { path: '/datalabelling/annotate', name: 'AnnotatePage', component: () => import('pages/datalabelling/AnnotatePage.vue') }, // lazy loading could have more overhead if the app is small
       { path: '/datalabelling/labelspage', name: 'LabelsPage', component: () => import('pages/datalabelling/LabelsPage.vue') },
       { path: '/datalabelling/documentspage', name: 'DocumentsPage', component: () => import('pages/datalabelling/DocumentsPage.vue') },
+      { path: '/datalabelling/projectspage', name: 'ProjectsPage', component: () => import('pages/datalabelling/ProjectsPage.vue') },
       { path: '/auth', name: 'AuthPage', component: () => import('pages/AuthPage.vue') }
     ]
   }
