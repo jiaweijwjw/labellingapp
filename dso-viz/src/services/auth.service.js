@@ -1,13 +1,20 @@
-import ApiService from '@/services/api.service'
+import ApiService from './api.service'
 
 class AuthService {
   constructor () {
     this.request = ApiService
   }
 
-  postCredential (data) {
+  login (data) {
     this.request.removeHeader()
-    return this.request.post('/auth-token', data)
+    const config = {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    }
+    return this.request.post('/token', data, config)
+  }
+  register (data) {
+    this.request.removeHeader()
+    return this.request.post('/users/register/', data)
   }
 }
 

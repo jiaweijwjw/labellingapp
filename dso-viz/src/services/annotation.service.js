@@ -1,4 +1,4 @@
-import ApiService from '@/services/api.service'
+import ApiService from './api.service'
 
 class AnnotationService {
   constructor () {

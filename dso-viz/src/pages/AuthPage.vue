@@ -36,6 +36,8 @@
 import axios from 'axios'
 import qs from 'qs'
 import { mapActions, mapState } from 'vuex'
+import AuthService from '../services/auth.service'
+import UserService from '../services/user.service'
 // import ApiService from 'src/services/api.service.js'
 
 const axiosInstance = axios.create({
@@ -68,13 +70,22 @@ export default {
       }
       axiosInstance(config).then(console.log(response => (this.username = response.data)))
     },
+    // register (username, password) {
+    //   let credentials = {
+    //     username: username,
+    //     password: password
+    //   }
+    //   axiosInstance
+    //     .post('/users/register/', credentials)
+    //     .then(response => (this.test = response.data))
+    // },
     register (username, password) {
       let credentials = {
         username: username,
         password: password
       }
-      axiosInstance
-        .post('/users/register/', credentials)
+      AuthService
+        .register(credentials)
         .then(response => (this.test = response.data))
     },
     getuser (res) {
@@ -86,19 +97,18 @@ export default {
       try {
         this.updateAccessToken(res.data.access_token)
         // this.$q.localStorage.set('access_token', res.data.access_token)
-        // this.updateLoginStatus(true)
       } catch (e) {
         console.log('data not saved.')
       }
       // this.token = this.$q.localStorage.getItem('access_token')// res.data.access_token     FOR VISUALIZING ONLY
       // this.token = this.access_token
-      const config = {
-        method: 'get',
-        url: '/users/me/',
-        headers: { 'Authorization': `Bearer ${this.access_token}` }
-      }
-      axiosInstance(config).then(console.log(response => (this.username = response.data)))
-
+      // const config = {
+      //   method: 'get',
+      //   url: '/users/me/',
+      //   headers: { 'Authorization': `Bearer ${this.access_token}` }
+      // }
+      // axiosInstance(config).then(console.log(response => (this.username = response.data)))
+      UserService.getMe(this.access_token).then(console.log(response => (this.username = response.data)))
       // axiosInstance
       //   .get('/users/me/', data, { headers: { 'Authorization': `Bearer ${this.token}` } })
       //   .then(console.log(response => (this.username = response.data.myusername)))
@@ -108,9 +118,10 @@ export default {
         username: username,
         password: password
       }
-      axiosInstance
-        .post('/token', qs.stringify(credentials), { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
-        .then(res => { this.getuser(res) })
+      AuthService.login(qs.stringify(credentials)).then(res => { this.getuser(res) })
+      // axiosInstance
+      //   .post('/token', qs.stringify(credentials), { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+      //   .then(res => { this.getuser(res) })
     }
   }
 }

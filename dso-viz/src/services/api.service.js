@@ -3,12 +3,13 @@ import axios from 'axios'
 class ApiService {
   constructor () {
     this.instance = axios.create({
-      baseURL: process.env.baseUrl
+      withCredentials: true,
+      baseURL: 'http://localhost:8000'
     })
   }
 
   setHeader (token) {
-    this.instance.defaults.headers.common.Authorization = `Token ${token}`
+    this.instance.defaults.headers.common.Authorization = `Bearer ${token}`
   }
 
   removeHeader () {

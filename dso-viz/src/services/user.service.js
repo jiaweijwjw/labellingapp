@@ -1,12 +1,13 @@
-import ApiService from '@/services/api.service'
+import ApiService from './api.service'
 
 class UserService {
   constructor () {
     this.request = ApiService
   }
 
-  getMe () {
-    return this.request.get('/me')
+  getMe (token) {
+    this.request.setHeader(token)
+    return this.request.get('/users/me/')
   }
 
   getUserList (query) {
