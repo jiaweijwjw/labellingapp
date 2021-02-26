@@ -1,6 +1,7 @@
 const state = {
   loginStatus: false,
-  access_token: ''
+  access_token: '',
+  currentUserId: null
 }
 
 const mutations = {

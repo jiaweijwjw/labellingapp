@@ -12,45 +12,59 @@ class User(Base):
     # email = Column(String, unique=True, index=True)
     # fullname = Column(String, index=True)
 
-    # labels = relationship("Label", back_populates="user")
-    # documents = relationship("Document", back_populates="user")
+    projects = relationship("Project", back_populates="user")
 
 
-# class Label(Base):
-#     __tablename__ = "labels"
+class Project(Base):
+    __tablename__ = "projects"
 
-#     id = Column(Integer, primary_key=True, index=True)
-#     name = Column(String, index=True)
-#     shortcutkey = Column(String, index=True)
-#     color = Column(String, index=True)
-#     user_id = Column(Integer, ForeignKey("users.id"))
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    proj_type = Column(String)  # make it a tuple?
 
-#     user = relationship("User", back_populates="labels")
+    user_id = Column(Integer, ForeignKey("users.id"))
+    user = relationship("User",  back_populates="projects")
 
-
-# class Document(Base):
-#     __tablename__ = "documents"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     name = Column(String, index=True)
-#     is_marked = Column(Boolean)
-#     text = Column(String, index=True)
-#     user_id = Column(Integer, ForeignKey("users.id"))
-
-#     user = relationship("User", back_populates="documents")
-#     annotations = relationship("Annotation", back_populates="document")
+    labels = relationship("Label", back_populates="project")
+    documents = relationship("Document", back_populates="project")
 
 
-# class Annotation(Base):
-#     __tablename__ = "annotations"
+class Label(Base):
+    __tablename__ = "labels"
 
-#     id = Column(Integer, primary_key=True, index=True)
-#     label = Column(String, index=True)
-#     start_offset = Column(Integer, index=True)
-#     end_offset = Column(Integer, index=True)
-#     document_id = Column(Integer, ForeignKey("documents.id"))
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    shortcutkey = Column(String, index=True)
+    color = Column(String, index=True)
 
-#     document = relationship("Document", back_populates="annotations")
+    proj_id = Column(Integer, ForeignKey("projects.id"))
+    project = relationship("Project", back_populates="labels")
+
+
+class Document(Base):
+    __tablename__ = "documents"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    is_marked = Column(Boolean)
+    text = Column(String, index=True)
+
+    proj_id = Column(Integer, ForeignKey("projects.id"))
+    project = relationship("Project", back_populates="documents")
+
+    annotations = relationship("Annotation", back_populates="document")
+
+
+class Annotation(Base):
+    __tablename__ = "annotations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    label = Column(String, index=True)
+    start_offset = Column(Integer, index=True)
+    end_offset = Column(Integer, index=True)
+
+    document_id = Column(Integer, ForeignKey("documents.id"))
+    document = relationship("Document", back_populates="annotations")
 
 # class User(Base):
 #     __tablename__ = "users"
