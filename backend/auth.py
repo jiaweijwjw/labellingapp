@@ -3,7 +3,7 @@ from passlib.context import CryptContext
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from . import crud
+from .cruds import user_crud
 
 # openssl rand -hex 32
 SECRET_KEY = "ff3bcdbd4bd7ded2824f3536f48dbdc1388348ef40172a7018853b2d97699575"
@@ -20,7 +20,7 @@ def verify_password(plain_password, hashed_password):
 
 
 def authenticate_user(db, username: str, password: str):
-    user = crud.get_user_by_username(db=db, username=username)
+    user = user_crud.get_user_by_username(db=db, username=username)
     if not user:
         return False
     if not verify_password(password, user.hashed_password):

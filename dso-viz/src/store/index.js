@@ -5,6 +5,7 @@ import createPersistedState from 'vuex-persistedstate'
 import labels from './store-labels'
 import documents from './store-documents'
 import general from './store-general'
+import projects from './store-projects'
 
 Vue.use(Vuex)
 
@@ -18,7 +19,8 @@ export default function (/* { ssrContext } */) {
     modules: {
       labels,
       documents,
-      general
+      general,
+      projects
     },
     plugins: [createPersistedState()],
     // enable strict mode (adds overhead!)

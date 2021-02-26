@@ -9,6 +9,8 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
+    current_proj_id = Column(Integer)
+    current_doc_id = Column(Integer)
     # email = Column(String, unique=True, index=True)
     # fullname = Column(String, index=True)
 
@@ -21,6 +23,7 @@ class Project(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     proj_type = Column(String)  # make it a tuple?
+    description = Column(String)
 
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User",  back_populates="projects")

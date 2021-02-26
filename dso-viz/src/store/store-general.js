@@ -1,24 +1,29 @@
 const state = {
-  loginStatus: false,
   access_token: '',
-  currentUserId: null
+  username: '',
+  currentUserId: null,
+  currentProjId: null,
+  currentDocId: null
 }
 
 const mutations = {
-  updateLoginStatus (state, payload) {
-    state.loginStatus = payload
-  },
   updateAccessToken (state, payload) {
     state.access_token = payload
+  },
+  updateUserDetails (state, payload) {
+    state.username = payload.username
+    state.currentUserId = payload.currentUserId
+    state.currentProjId = payload.currentProjId
+    state.currentDocId = payload.currentDocId
   }
 }
 
 const actions = {
-  updateLoginStatus ({ commit }, status) {
-    commit('updateLoginStatus', status)
-  },
   updateAccessToken ({ commit }, status) {
     commit('updateAccessToken', status)
+  },
+  updateUserDetails ({ commit }, userDetails) {
+    commit('updateUserDetails', userDetails)
   }
 }
 

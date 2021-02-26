@@ -32,12 +32,25 @@ class UserInDB(UserBase):
 
 class User(UserBase):  # UserOut
     id: int
+    current_proj_id: int
+    current_doc_id: int
     # labels: List[Label] = []
     # documents: List[Document] = []
     #items: List[Item] = []
 
     class Config:
         orm_mode = True
+
+
+class ProjectBase(BaseModel):
+    name: str
+    proj_type: str
+    description: str
+
+
+class Project(ProjectBase):
+    user_id: int
+    pass
 
 # LABELS
 

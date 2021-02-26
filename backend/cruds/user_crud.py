@@ -1,14 +1,6 @@
 from sqlalchemy.orm import Session
-from . import db_models, schemas, auth
-
 from typing import List, Optional
-from uuid import UUID
-from fastapi import Depends, FastAPI, HTTPException, status
-from sqlalchemy.orm import Session
-from fastapi.middleware.cors import CORSMiddleware
-from . import crud, db_models, schemas, auth
-from .database import SessionLocal, engine
-from .routers import auth_router, user_router, label_router, document_router, annotation_router
+from .. import db_models, schemas, auth
 
 # def get_labels(db: Session):
 #     return db.query(db_models.Label).all()
@@ -38,19 +30,26 @@ def get_user_by_username(db: Session, username: str):
     return db.query(db_models.User).filter(db_models.User.username == username).first()
 
 
+def get_user_by_id(db: Session, user_id: int):
+    return db.query(db_models.User).filter(db_models.User.id == user_id).first()
+
+
 def get_all_users(db: Session):
     return db.query(db_models.User).all()
+
+# ,current_proj_id = 1, current_doc_id = 1
 
 
 def create_user(db: Session, user: schemas.UserCreate):
     hashed_password = auth.get_hashed_password(user.password)
     db_user = db_models.User(username=user.username,
-                             hashed_password=hashed_password)
+                             hashed_password=hashed_password,
+                             current_proj_id=0,
+                             current_doc_id=0)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
-
 
 # def get_user(db, username: str):
 #     if username in db:  # return username already in use please c hoose another username

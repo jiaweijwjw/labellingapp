@@ -33,60 +33,38 @@
 </template>
 
 <script>
-import axios from 'axios'
 import qs from 'qs'
 import { mapActions, mapState } from 'vuex'
 import AuthService from '../services/auth.service'
 import UserService from '../services/user.service'
-// import ApiService from 'src/services/api.service.js'
-
-const axiosInstance = axios.create({
-  withCredentials: true,
-  baseURL: 'http://localhost:8000'
-})
 
 export default {
   data () {
     return {
       tab: 'login',
       test: '',
-      token: '',
-      username: ''
+      token: ''
     }
   },
   components: {
     'login-register': require('components/auth/LoginRegister.vue').default
   },
   computed: {
-    ...mapState('general', ['loginStatus', 'access_token'])
+    ...mapState('general', ['access_token', 'currentUserId', 'currentProjId', 'username'])
   },
   methods: {
-    ...mapActions('general', ['updateLoginStatus', 'updateAccessToken']),
-    testtest () {
-      const config = {
-        method: 'get',
-        url: '/users/me/',
-        headers: { 'Authorization': `Bearer ${this.access_token}` }
-      }
-      axiosInstance(config).then(console.log(response => (this.username = response.data)))
-    },
-    // register (username, password) {
-    //   let credentials = {
-    //     username: username,
-    //     password: password
-    //   }
-    //   axiosInstance
-    //     .post('/users/register/', credentials)
-    //     .then(response => (this.test = response.data))
-    // },
+    ...mapActions('general', ['updateAccessToken', 'updateUserDetails']),
     register (username, password) {
       let credentials = {
         username: username,
         password: password
       }
       AuthService
-        .register(credentials)
-        .then(response => (this.test = response.data))
+        .register(credentials).then((res) => {
+          console.log(res.data)
+        }, (error) => {
+          console.log(error)
+        })
     },
     getuser (res) {
       console.log('entered chain axios req')
@@ -100,28 +78,26 @@ export default {
       } catch (e) {
         console.log('data not saved.')
       }
-      // this.token = this.$q.localStorage.getItem('access_token')// res.data.access_token     FOR VISUALIZING ONLY
-      // this.token = this.access_token
-      // const config = {
-      //   method: 'get',
-      //   url: '/users/me/',
-      //   headers: { 'Authorization': `Bearer ${this.access_token}` }
-      // }
-      // axiosInstance(config).then(console.log(response => (this.username = response.data)))
-      UserService.getMe(this.access_token).then(console.log(response => (this.username = response.data)))
-      // axiosInstance
-      //   .get('/users/me/', data, { headers: { 'Authorization': `Bearer ${this.token}` } })
-      //   .then(console.log(response => (this.username = response.data.myusername)))
+      UserService.getMe(this.access_token).then((res) => {
+        console.log(res.data)
+        const userDetails = {
+          username: res.data.username,
+          currentUserId: res.data.id,
+          currentProjId: res.data.current_proj_id,
+          currentDocId: res.data.current_doc_id
+        }
+        this.updateUserDetails(userDetails)
+        console.log(this.username, this.currentUserId, this.currentProjId)
+      }, (error) => {
+        console.log(error)
+      })
     },
     login (username, password) {
       let credentials = {
         username: username,
         password: password
       }
-      AuthService.login(qs.stringify(credentials)).then(res => { this.getuser(res) })
-      // axiosInstance
-      //   .post('/token', qs.stringify(credentials), { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
-      //   .then(res => { this.getuser(res) })
+      AuthService.login(qs.stringify(credentials)).then(res => { this.getuser(res) }) // qs.stringify is important for form data http request
     }
   }
 }

@@ -15,16 +15,34 @@
         <q-btn flat round dense icon="description" class="q-mr-sm" clickable to="/datalabelling/documentspage">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Documents</q-tooltip>
           </q-btn>
-        <q-btn flat round dense icon="folder" class="q-mr-md" clickable to="/datalabelling/projectspage">
+        <!-- <q-btn flat round dense icon="folder" class="q-mr-md" clickable to="/datalabelling/projectspage">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Projects</q-tooltip>
-          </q-btn>
+          </q-btn> -->
           <q-separator vertical dark />
         <q-btn v-if="!isLoggedIn" outline color="primary" icon="account_box" label="Login" class="q-mr-md q-ml-md" clickable to="/auth">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Login</q-tooltip>
           </q-btn>
-        <q-btn v-if="isLoggedIn" outline color="primary" icon="account_box" label="Logout" class="q-mr-md q-ml-md" @click="logout">
-          <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Logout</q-tooltip>
-          </q-btn>
+        <q-btn-dropdown v-if="isLoggedIn" outline color="primary" icon="account_box" :label="username" class="q-mr-md q-ml-md">
+          <!-- <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Account Settings</q-tooltip> -->
+            <q-list bordered separator>
+              <q-item clickable to="/datalabelling/projectspage" v-close-popup>
+                <q-item-section avatar>
+                  <q-icon name="folder"/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Projects</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item clickable v-close-popup @click="logout">
+                <q-item-section avatar>
+                  <q-icon name="exit_to_app"/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Logout</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+        </q-btn-dropdown>
       </q-toolbar>
     </q-header>
     <!-- <q-drawer v-model="leftDrawerOpen" :mini="miniState" :width="250" :breakpoint="500" show-if-above>
@@ -131,7 +149,12 @@ export default {
     }
   },
   computed: {
-    ...mapState('general', ['loginStatus', 'access_token']),
+    ...mapState('general', ['access_token', 'username']),
+    name: {
+      get () {
+        return this.username
+      }
+    },
     isLoggedIn: function () {
       if (this.access_token) {
         return true
@@ -141,7 +164,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('general', ['updateLoginStatus', 'updateAccessToken']),
+    ...mapActions('general', ['updateAccessToken']),
     logout () {
       try {
         this.updateAccessToken('')

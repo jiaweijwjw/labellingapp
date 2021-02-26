@@ -1,52 +1,23 @@
 <template>
   <q-page class="page projects-page">
     <div class="page-item row q-py-md">
-      <q-btn-dropdown
-        flat
-        text-color="primary"
-        label="Actions"
-        class="col-2 max-width=20vw"
-      >
-        <q-list separator>
-          <q-item
-            clickable
-            v-close-popup
-            @click="dialog = true"
-          >
-            <q-item-section>
-              <q-item-label>Import</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item
-            clickable
-            v-close-popup
-          >
-            <q-item-section>
-              <q-item-label>test</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-btn-dropdown>
-      <q-btn class="col-2 max-width=20vw" label="Annotate Selected" flat text-color="primary" @click="annotateSelected" :to="{ name: 'AnnotatePage' }">
+      <q-btn
+      flat
+      text-color="primary"
+      label="New Project"
+      class="col-2 max-width=20vw"
+      @click="dialog = true">
       </q-btn>
     </div>
-    <h2 class="text-white">THIS IS A TEST PROJECT PAGE</h2>
     <div class="page-item table-container">
       <documentstable @updateSelected="updateSelectedDocs($event)"/>
     </div>
-        <!-- TEXT INPUT -->
-      <!-- <texteditor> </texteditor>
-      <div class="row">
-      <q-space/><submitbtn @submit="addToDocuments"/>
-      </div> -->
-
     <div>
-      <importdocument
+      <newproject
         v-if="dialog"
         :dialog="dialog"
         @close="dialog = false"
-      ></importdocument>
+      ></newproject>
     </div>
   </q-page>
 </template>
@@ -57,7 +28,7 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
   name: 'ProjectsPage',
   components: {
-    importdocument: require('components/datalabelling/documents/ImportDocument.vue').default,
+    newproject: require('components/management/projects/NewProject.vue').default,
     documentstable: require('components/datalabelling/documents/DocumentsTable.vue').default
     // documentlist: require('components/datalabelling/documents/DocumentList.vue').default,
     // texteditor: require('components/datalabelling/annotate/TextEditor.vue').default,
