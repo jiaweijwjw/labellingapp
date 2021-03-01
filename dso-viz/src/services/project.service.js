@@ -5,22 +5,14 @@ class ProjectService {
     this.request = ApiService
   }
 
-  getProjectList () {
-    return this.request.get('/projects')
+  createProject (data) {
+    console.log(data)
+    this.request.setHeader(data.token)
+    return this.request.post('/projects/', data.project)
   }
 
-  createProject (data) {
-    let token = data.token
-    let project = {
-      name: data.project.name,
-      user_id: data.project.user,
-      proj_type: data.project.type,
-      description: data.project.description
-    }
-    console.log(data)
-    console.log(project)
-    this.request.setHeader(token)
-    return this.request.post('/projects', project)
+  getProjectList () {
+    return this.request.get('/projects/')
   }
 
   updateProject (projectId, payload) {

@@ -23,7 +23,7 @@
             <q-select
             dark filled
             ref="type"
-            v-model="projectToSubmit.type"
+            v-model="projectToSubmit.proj_type"
             :options="projectTypes"
             :rules="[val => val !== null && val !== '' || 'Please select a project type.']"
             label="Project Type">
@@ -62,9 +62,9 @@ export default {
       secondDialog: false,
       projectToSubmit: {
         name: '',
-        type: '',
+        proj_type: '',
         description: '',
-        user: null
+        user_id: null
       },
       projectTypes: ['Sequence Labelling', 'Document Classification']
     }
@@ -85,7 +85,7 @@ export default {
     },
     submitProject () {
       console.log('submitted project successfully')
-      this.projectToSubmit.user = this.currentUserId
+      this.projectToSubmit.user_id = this.currentUserId
       let cloneProjectToSubmit = { ...this.projectToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
       console.log(cloneProjectToSubmit, this.access_token)
       const payload = {
@@ -95,7 +95,7 @@ export default {
       this.createProject(payload)
       this.$emit('close')
       this.projectToSubmit.name = ''
-      this.projectToSubmit.type = ''
+      this.projectToSubmit.proj_type = ''
       this.projectToSubmit.description = ''
     },
     close () {

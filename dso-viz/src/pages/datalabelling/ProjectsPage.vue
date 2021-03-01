@@ -10,7 +10,7 @@
       </q-btn>
     </div>
     <div class="page-item table-container">
-      <documentstable @updateSelected="updateSelectedDocs($event)"/>
+      <projectstable @updateSelected="updateSelectedDocs($event)"/>
     </div>
     <div>
       <newproject
@@ -28,8 +28,8 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
   name: 'ProjectsPage',
   components: {
-    newproject: require('components/management/projects/NewProject.vue').default,
-    documentstable: require('components/datalabelling/documents/DocumentsTable.vue').default
+    newproject: require('components/admin/projects/NewProject.vue').default,
+    projectstable: require('components/admin/projects/ProjectsTable.vue').default
     // documentlist: require('components/datalabelling/documents/DocumentList.vue').default,
     // texteditor: require('components/datalabelling/annotate/TextEditor.vue').default,
     // submitbtn: require('components/datalabelling/annotate/SubmitBtn.vue').default
