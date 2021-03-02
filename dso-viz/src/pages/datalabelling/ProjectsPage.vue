@@ -8,9 +8,11 @@
       class="col-2 max-width=20vw"
       @click="dialog = true">
       </q-btn>
+      <q-btn v-if="isSelected" class="col-2 max-width=20vw" label="Delete Selected" flat text-color="primary" @click="annotateSelected" :to="{ name: 'AnnotatePage' }">
+      </q-btn>
     </div>
     <div class="page-item table-container">
-      <projectstable @updateSelected="updateSelectedDocs($event)"/>
+      <projectstable @clearSelected="clearSelectedProjs" @updateSelected="updateSelectedProjs($event)"/>
     </div>
     <!-- <q-btn type="submit" color="primary" label="show projs" @click="getallprojs"/>
     <div class="text-white">{{allprojs}}</div> -->
@@ -40,21 +42,6 @@ export default {
     return {
       selected: [],
       dialog: false,
-      documentToSubmit: {
-        id: '',
-        text: '',
-        annotations: [
-          // {
-          //   id: 17,
-          //   prob: 0.0,
-          //   label: 4,
-          //   start_offset: 60,
-          //   end_offset: 70,
-          //   user: 1,
-          //   document: 8
-          // }
-        ]
-      },
       allprojs: []
     }
   },
@@ -62,7 +49,14 @@ export default {
     ...mapState('documents', ['inputText']),
     ...mapGetters('documents', ['currentDoc']),
     ...mapState('general', ['currentUserId', 'access_token']),
-    ...mapGetters('general', ['getAccessToken'])
+    ...mapGetters('general', ['getAccessToken']),
+    isSelected: function () {
+      if (this.selected.length !== 0) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     ...mapActions('documents', ['addDocument', 'updateInputText', 'updateSelected']),
@@ -70,8 +64,11 @@ export default {
     annotateSelected () {
       this.updateSelected(this.selected) // Only when user starts annotating then update annotate page.
     },
-    updateSelectedDocs (selectedDocsId) { // to keep track of selected documents in documents table
-      this.selected = selectedDocsId
+    updateSelectedProjs (selectedProjsId) { // to keep track of selected documents in documents table
+      this.selected = selectedProjsId
+    },
+    clearSelectedProjs () {
+      this.selected = []
     },
     addToDocuments () {
       console.log('submitted document successfully')

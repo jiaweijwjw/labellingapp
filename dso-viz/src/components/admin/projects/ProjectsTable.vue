@@ -67,6 +67,14 @@ export default {
       ]
     }
   },
+  watch: {
+    selected: function (newSelected, oldSelected) {
+      if (newSelected.length === 0) {
+        console.log('clear selection')
+        this.$emit('clearSelected')
+      }
+    }
+  },
   mounted () {
     this.getProjectList(this.access_token)
   },

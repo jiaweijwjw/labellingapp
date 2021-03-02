@@ -96,6 +96,7 @@ export default {
       }, (error) => {
         console.log(error)
       })
+      this.$router.push({ name: 'ProjectsPage' })
     },
     failedLogin () {
       this.loginFailed = true
