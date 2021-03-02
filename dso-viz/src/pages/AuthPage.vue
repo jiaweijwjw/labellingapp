@@ -18,7 +18,7 @@
 
       <q-tab-panels v-model="tab" dark animated>
         <q-tab-panel name="login">
-          <login-register :tab="tab" @login="login($event.username, $event.password)"/>
+          <login-register :loginFailed="loginFailed" :tab="tab" @login="login($event.username, $event.password)"/>
         </q-tab-panel>
 
         <q-tab-panel name="register">
@@ -43,7 +43,8 @@ export default {
     return {
       tab: 'login',
       test: '',
-      token: ''
+      token: '',
+      loginFailed: false
     }
   },
   components: {
@@ -68,9 +69,7 @@ export default {
         })
     },
     getuser (res) {
-      if (res.status === 401) {
-        console.log('Invalid username or password')
-      }
+      this.loginFailed = false
       try {
         this.updateAccessToken(res.data.access_token)
         // this.$q.localStorage.set('access_token', res.data.access_token)
@@ -93,12 +92,21 @@ export default {
         console.log(error)
       })
     },
+    failedLogin () {
+      this.loginFailed = true
+      console.log(this.loginFailed)
+    },
     login (username, password) {
       let credentials = {
         username: username,
         password: password
       }
-      AuthService.login(qs.stringify(credentials)).then(res => { this.getuser(res) }) // qs.stringify is important for form data http request
+      AuthService.login(qs.stringify(credentials))
+        .then(res => { this.getuser(res) }) // qs.stringify is important for form data http request
+        .catch(error => {
+          console.log(error.response.status)
+          this.failedLogin()
+        })
     }
   }
 }

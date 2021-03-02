@@ -11,7 +11,6 @@ const mutations = {
   },
   updateProjectList (state, payload) {
     state.projects = payload.slice()
-    console.log('fuck')
     console.log(state.projects)
   }
 }

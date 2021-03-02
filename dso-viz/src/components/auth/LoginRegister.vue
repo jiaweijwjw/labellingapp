@@ -39,12 +39,14 @@
         ref="password"
         lazy-rules
         type="password"
+        label="Password"
         class="col"
         dark filled
         stack-label
       />
     </div>
     <div class="row">
+    <div class="text-red" v-if="loginFailed">Incorrect Username or Password.</div>
       <q-space />
       <q-btn
         flat
@@ -58,7 +60,7 @@
 
 <script>
 export default {
-  props: ['tab'],
+  props: ['tab', 'loginFailed'],
   data () {
     return {
       formData: {
@@ -79,12 +81,20 @@ export default {
       if (!this.$refs.username.hasError && !this.$refs.password.hasError) {
         let credentials = { ...this.formData }
         if (this.tab === 'login') {
+          this.resetForm()
           this.$emit('login', credentials)
         }
         if (this.tab === 'register') {
+          this.resetForm()
           this.$emit('register', credentials)
         }
       }
+    },
+    resetForm () {
+      this.formData.username = ''
+      this.formData.password = ''
+      this.$refs.username.resetValidation()
+      this.$refs.password.resetValidation()
     }
   },
   filters: {
