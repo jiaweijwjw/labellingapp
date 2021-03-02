@@ -48,9 +48,16 @@ class ProjectBase(BaseModel):
     description: str
 
 
-class Project(ProjectBase):
+class ProjectCreate(ProjectBase):
     user_id: int
-    pass
+
+
+class Project(ProjectBase):
+    id: int
+    user_id: int
+
+    class Config:
+        orm_mode = True
 
 # LABELS
 

@@ -9,13 +9,13 @@ from typing import List, Optional
 from ..cruds import project_crud, user_crud
 from ..exceptions import credentials_exception, project_create_exception
 
-from ..dependencies import check_token_n_username
+from ..dependencies import check_token, check_token_n_username
 router = APIRouter(prefix="/projects")
 # dependencies=[Depends(check_token_n_username)]
 
 
-@router.post("/")
-async def create_project(project: schemas.Project, db: Session = Depends(get_db), user: schemas.User = Depends(check_token_n_username)):
+@router.post("/", response_model=schemas.Project)
+def create_project(project: schemas.ProjectCreate, db: Session = Depends(get_db), user: schemas.User = Depends(check_token_n_username)):
     if project.user_id is not user.id:
         raise credentials_exception
     db_project = project_crud.create_project(db=db, project=project)
@@ -23,19 +23,27 @@ async def create_project(project: schemas.Project, db: Session = Depends(get_db)
         raise project_create_exception
     return db_project
 
-# add response model
-# dependencies=[Depends(check_user(schemas.Project.id))]
-# @router.post("/projects/")
-# def create_project(project: schemas.Project, db: Session = Depends(get_db), user: schemas.User = Depends(check_user(project.id))):
-#     credentials_exception = HTTPException(
-#         status_code=status.HTTP_401_UNAUTHORIZED,
-#         detail="Could not validate credentials",
-#         headers={"WWW-Authenticate": "Bearer"},
-#     )
-#     db_project = project_crud.create_project(db=db, project=project)
-#     if project is None:
-#         raise credentials_exception
-#     return db_project
+# response_model=List[schemas.Project]
+
+
+@router.get("/", response_model=List[schemas.Project])
+def get_all_projects(user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+    db_projects = project_crud.get_all_projects(db=db, user=user)
+    return db_projects
+
+
+def get_current_user(token_data: schemas.TokenData = Depends(check_token), db: Session = Depends(get_db)):
+    user = user_crud.get_user_by_username(
+        db=db, username=token_data.username)
+    if user is None:
+        raise credentials_exception
+    return user
+
+
+@router.get("/me/", response_model=schemas.User)
+# , ads_id: Optional[str] = Cookie(None)
+def read_user(current_user: schemas.User = Depends(get_current_user)):
+    return current_user
 
 
 # @router.get("/projects/")
@@ -61,22 +69,7 @@ async def create_project(project: schemas.Project, db: Session = Depends(get_db)
 # def get_projects(db: Session = Depends(get_db)):
 #     users = user_crud.get_all_users(db)
 #     return users
-
-
 @router.get("/projects/alla/", response_model=List[schemas.User])
 def read_users(db: Session = Depends(get_db)):
     users = user_crud.get_all_users(db)
     return users
-
-# @router.post("/projects")
-# def create_project(project: schemas.Project, db: Session = Depends(get_db)):
-#     db_user = user_crud.get_user_by_id(db=db, user_id=project.user_id)
-#     if not db_user:
-#         raise HTTPException(
-#             status_code=400, detail="User does not exist")
-#     return project_crud.create_project(db=db, project=project)
-
-
-# @router.post("/projects", response_model=schemas.Project)
-# def create_project(project: schemas.Project = Depends(get_current_user)):
-#     return current_user

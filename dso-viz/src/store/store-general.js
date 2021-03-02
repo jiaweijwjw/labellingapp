@@ -28,7 +28,9 @@ const actions = {
 }
 
 const getters = {
-
+  getAccessToken: (state) => {
+    return state.access_token
+  }
 }
 
 export default {

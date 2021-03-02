@@ -87,7 +87,7 @@ export default {
       console.log('submitted project successfully')
       this.projectToSubmit.user_id = this.currentUserId
       let cloneProjectToSubmit = { ...this.projectToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
-      console.log(cloneProjectToSubmit, this.access_token)
+      // console.log(cloneProjectToSubmit, this.access_token)
       const payload = {
         project: cloneProjectToSubmit,
         token: this.access_token

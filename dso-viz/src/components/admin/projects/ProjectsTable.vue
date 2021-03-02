@@ -1,34 +1,20 @@
 <template>
   <div>
     <q-table
-      :data="documents"
+      :data="projects"
       :columns="columns"
       :row-key="row => row.id"
       dark
       :visible-columns="visibleColumns"
       color="primary"
       class="q-toolbar"
-      rows-per-page-label="Documents per page"
+      rows-per-page-label="Projects per page"
       :rows-per-page-options="[20, 50, 0]"
       :pagination.sync="pagination"
       :selected-rows-label="getSelectedString"
       selection="multiple"
       :selected.sync="selected"
     >
-    <!-- COLORING -->
-      <!-- <template v-slot:body-cell-color="props">
-        <q-td :props="props">
-          <div>
-            <q-badge
-              :style="'background-color:'+props.value+';'+'color:'+autoTextColor(props.value)+';'"
-              :label="props.value"
-            />
-          </div>
-          <div>
-            {{ props.row.details }}
-          </div>
-        </q-td>
-      </template> -->
     </q-table>
     <!-- <div class="q-mt-md text-white">
       Selected: {{ JSON.stringify(selected[0].id) }}
@@ -37,7 +23,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 export default {
   data () {
@@ -46,12 +32,12 @@ export default {
       pagination: {
         rowsPerPage: 10
       },
-      visibleColumns: ['name', 'text'],
+      visibleColumns: ['name', 'type', 'description'],
       columns: [
         {
           name: 'name',
           required: true,
-          label: 'Document Name',
+          label: 'Project Name',
           align: 'left',
           field: row => row.name,
           format: val => `${val}`, // template literals
@@ -60,10 +46,19 @@ export default {
           sortable: true
         },
         {
-          name: 'text',
+          name: 'type',
           align: 'left',
-          label: 'Text',
-          field: 'text',
+          label: 'Type',
+          field: 'proj_type',
+          style: 'max-width: 50vw',
+          classes: 'ellipsis',
+          sortable: true
+        },
+        {
+          name: 'description',
+          align: 'left',
+          label: 'Description',
+          field: 'description',
           style: 'max-width: 50vw',
           classes: 'ellipsis',
           sortable: true
@@ -72,14 +67,22 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.getProjectList(this.access_token)
+  },
   computed: {
-    ...mapGetters('documents', ['documents'])
+    ...mapState('general', ['currentUserId', 'access_token']),
+    ...mapGetters('projects', ['projects'])
   },
   methods: {
+    ...mapActions('projects', ['getProjectList']),
     getSelectedString () {
-      let selectedDocsId = this.selected.map(doc => doc.id)
-      this.$emit('updateSelected', selectedDocsId)
-      return this.selected.length === 0 ? '' : `${this.selected.length} document${this.selected.length > 1 ? 's' : ''} selected of ${this.documents.length}`
+      let selectedProjsId = this.selected.map(proj => proj.id)
+      this.$emit('updateSelected', selectedProjsId)
+      return this.selected.length === 0 ? '' : `${this.selected.length} document${this.selected.length > 1 ? 's' : ''} selected of ${this.projects.length}`
+    },
+    showprojs () {
+      console.log(this.projects)
     }
   }
 }

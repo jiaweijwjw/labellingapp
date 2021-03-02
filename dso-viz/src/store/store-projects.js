@@ -6,7 +6,13 @@ const state = {
 
 const mutations = {
   createProject (state, payload) {
-    state.projects.push(payload.document)
+    state.projects.push(payload)
+    console.log(state.projects)
+  },
+  updateProjectList (state, payload) {
+    state.projects = payload.slice()
+    console.log('fuck')
+    console.log(state.projects)
   }
 }
 
@@ -15,20 +21,28 @@ const actions = {
     ProjectService.createProject(payload)
       .then((response) => {
         console.log(response.data)
-        // commit('createProject', response.data)
+        commit('createProject', response.data)
       })
       .catch((error) => {
         alert(error)
       })
-    // let payload = {
-    //   project: newProject
-    // }
-    // commit('createProject', payload)
+  },
+  getProjectList ({ commit }, token) {
+    ProjectService.getProjectList(token)
+      .then((res) => {
+        commit('updateProjectList', res.data)
+        // return res.data
+      })
+      .catch((err) => {
+        alert(err)
+      })
   }
 }
 
 const getters = {
-
+  projects: (state) => {
+    return state.projects
+  }
 }
 
 export default {

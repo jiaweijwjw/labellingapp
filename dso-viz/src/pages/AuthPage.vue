@@ -34,7 +34,7 @@
 
 <script>
 import qs from 'qs'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import AuthService from '../services/auth.service'
 import UserService from '../services/user.service'
 
@@ -50,7 +50,8 @@ export default {
     'login-register': require('components/auth/LoginRegister.vue').default
   },
   computed: {
-    ...mapState('general', ['access_token', 'currentUserId', 'currentProjId', 'username'])
+    ...mapState('general', ['access_token', 'currentUserId', 'currentProjId', 'username']),
+    ...mapGetters('general', ['getAccessToken'])
   },
   methods: {
     ...mapActions('general', ['updateAccessToken', 'updateUserDetails']),
@@ -67,8 +68,6 @@ export default {
         })
     },
     getuser (res) {
-      console.log('entered chain axios req')
-      console.log(res.status)
       if (res.status === 401) {
         console.log('Invalid username or password')
       }
@@ -78,6 +77,8 @@ export default {
       } catch (e) {
         console.log('data not saved.')
       }
+      // let test = this.getAccessToken
+      // console.log('test: ' + test)
       UserService.getMe(this.access_token).then((res) => {
         console.log(res.data)
         const userDetails = {

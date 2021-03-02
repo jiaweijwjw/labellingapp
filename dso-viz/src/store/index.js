@@ -14,6 +14,9 @@ Vue.use(Vuex)
  * directly export the Store instantiation
  */
 
+const generalState = createPersistedState({
+  paths: ['general']
+})
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
@@ -22,7 +25,8 @@ export default function (/* { ssrContext } */) {
       general,
       projects
     },
-    plugins: [createPersistedState()],
+    // plugins: [createPersistedState()],
+    plugins: [generalState],
     // enable strict mode (adds overhead!)
     // for dev mode only
     strict: process.env.DEV

@@ -12,6 +12,8 @@
     <div class="page-item table-container">
       <projectstable @updateSelected="updateSelectedDocs($event)"/>
     </div>
+    <!-- <q-btn type="submit" color="primary" label="show projs" @click="getallprojs"/>
+    <div class="text-white">{{allprojs}}</div> -->
     <div>
       <newproject
         v-if="dialog"
@@ -24,7 +26,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-
+// import ProjectService from '../../services/project.service'
 export default {
   name: 'ProjectsPage',
   components: {
@@ -52,15 +54,19 @@ export default {
           //   document: 8
           // }
         ]
-      }
+      },
+      allprojs: []
     }
   },
   computed: {
     ...mapState('documents', ['inputText']),
-    ...mapGetters('documents', ['currentDoc'])
+    ...mapGetters('documents', ['currentDoc']),
+    ...mapState('general', ['currentUserId', 'access_token']),
+    ...mapGetters('general', ['getAccessToken'])
   },
   methods: {
     ...mapActions('documents', ['addDocument', 'updateInputText', 'updateSelected']),
+    ...mapActions('projects', ['getProjectList']),
     annotateSelected () {
       this.updateSelected(this.selected) // Only when user starts annotating then update annotate page.
     },
@@ -79,6 +85,12 @@ export default {
       console.log(arr.slice(0, -1))
       console.log(this.currentDoc.text.split('\n'))
       this.updateInputText('') // clear the textfield after user submission
+    },
+    getallprojs () {
+      this.getProjectList(this.access_token)
+      // .then(res => {
+      //   this.allprojs = res.data
+      // })
     }
   }
 }

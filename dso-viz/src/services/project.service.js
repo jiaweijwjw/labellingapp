@@ -6,12 +6,13 @@ class ProjectService {
   }
 
   createProject (data) {
-    console.log(data)
+    // console.log(data)
     this.request.setHeader(data.token)
     return this.request.post('/projects/', data.project)
   }
 
-  getProjectList () {
+  getProjectList (token) {
+    this.request.setHeader(token)
     return this.request.get('/projects/')
   }
 

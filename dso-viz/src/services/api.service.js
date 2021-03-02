@@ -6,9 +6,16 @@ class ApiService {
       withCredentials: true,
       baseURL: 'http://localhost:8000'
     })
+    this.instance.interceptors.request.use(req => {
+      console.log(`${req.method} ${req.url}`)
+      // console.log(req.headers.Authorization = `Bearer ${storeGeneral.state.getters.access_token}`)
+      return req
+    })
   }
 
   setHeader (token) {
+    // let token = store
+    // console.log('setHeader: ' + token)
     this.instance.defaults.headers.common.Authorization = `Bearer ${token}`
   }
 
