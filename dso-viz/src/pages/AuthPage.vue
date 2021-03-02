@@ -22,7 +22,7 @@
         </q-tab-panel>
 
         <q-tab-panel name="register">
-          <login-register :tab="tab" @register="register($event.username, $event.password)"/>
+          <login-register :registerFailed="registerFailed" :tab="tab" @register="register($event.username, $event.password)"/>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -44,7 +44,8 @@ export default {
       tab: 'login',
       test: '',
       token: '',
-      loginFailed: false
+      loginFailed: false,
+      registerFailed: false
     }
   },
   components: {
@@ -62,10 +63,14 @@ export default {
         password: password
       }
       AuthService
-        .register(credentials).then((res) => {
+        .register(credentials)
+        .then((res) => {
           console.log(res.data)
-        }, (error) => {
-          console.log(error)
+          this.registerFailed = false
+        })
+        .catch(error => {
+          console.log(error.response.status)
+          this.failedRegister()
         })
     },
     getuser (res) {
@@ -94,7 +99,9 @@ export default {
     },
     failedLogin () {
       this.loginFailed = true
-      console.log(this.loginFailed)
+    },
+    failedRegister () {
+      this.registerFailed = true
     },
     login (username, password) {
       let credentials = {

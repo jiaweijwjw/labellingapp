@@ -47,6 +47,7 @@
     </div>
     <div class="row">
     <div class="text-red" v-if="loginFailed">Incorrect Username or Password.</div>
+    <div class="text-red" v-if="registerFailed">Username is already taken</div>
       <q-space />
       <q-btn
         flat
@@ -60,7 +61,7 @@
 
 <script>
 export default {
-  props: ['tab', 'loginFailed'],
+  props: ['tab', 'loginFailed', 'registerFailed'],
   data () {
     return {
       formData: {
