@@ -12,7 +12,7 @@
       </q-btn>
     </div>
     <div class="page-item table-container">
-      <projectstable @clearSelected="clearSelectedProjs" @updateSelected="updateSelectedProjs($event)"/>
+      <projectstable :isCleared="isCleared" @clearSelected="clearSelectedProjs" @updateSelected="updateSelectedProjs($event)"/>
     </div>
     <q-btn type="submit" color="primary" label="check selection" @click="checkselection"/>
     <div>
@@ -27,26 +27,21 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-// import ProjectService from '../../services/project.service'
+
 export default {
   name: 'ProjectsPage',
   components: {
     newproject: require('components/admin/projects/NewProject.vue').default,
     projectstable: require('components/admin/projects/ProjectsTable.vue').default
-    // documentlist: require('components/datalabelling/documents/DocumentList.vue').default,
-    // texteditor: require('components/datalabelling/annotate/TextEditor.vue').default,
-    // submitbtn: require('components/datalabelling/annotate/SubmitBtn.vue').default
   },
   data () {
     return {
       selected: [],
       dialog: false,
-      allprojs: []
+      isCleared: false
     }
   },
   computed: {
-    ...mapState('documents', ['inputText']),
-    ...mapGetters('documents', ['currentDoc']),
     ...mapState('general', ['currentUserId', 'currentProjId', 'access_token']),
     ...mapGetters('general', ['getAccessToken']),
     isSelected: function () {
@@ -63,27 +58,17 @@ export default {
     deleteSelected () {
       let payload = { token: this.access_token, selectedProjsId: this.selected }
       this.deleteSelectedProjects(payload) // Only when user starts annotating then update annotate page.
+      this.selected = []
+      this.isCleared = true
     },
     updateSelectedProjs (selectedProjsId) { // to keep track of selected documents in documents table
+      this.isCleared = false
       this.selected = selectedProjsId
       console.log(this.selected)
     },
     clearSelectedProjs () {
       this.selected = []
       console.log(this.selected)
-    },
-    addToDocuments () {
-      console.log('submitted document successfully')
-      let cloneDocumentToSubmit = { ...this.documentToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
-      cloneDocumentToSubmit.text = this.inputText
-      this.addDocument(cloneDocumentToSubmit)
-      this.documentToSubmit.text = ''
-      this.documentToSubmit.annotations = []
-      // console.log(cloneDocumentToSubmit)
-      let arr = ['a', 'b', 'c', 'd', 'e']
-      console.log(arr.slice(0, -1))
-      console.log(this.currentDoc.text.split('\n'))
-      this.updateInputText('') // clear the textfield after user submission
     },
     checkselection () {
       console.log(this.selected)

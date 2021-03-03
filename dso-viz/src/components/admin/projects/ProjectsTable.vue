@@ -26,6 +26,7 @@
 import { mapGetters, mapActions, mapState } from 'vuex'
 
 export default {
+  props: ['isCleared'],
   data () {
     return {
       selected: [],
@@ -64,7 +65,8 @@ export default {
           sortable: true
         }
         // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-      ]
+      ],
+      dbProjects: []
     }
   },
   watch: {
@@ -72,23 +74,36 @@ export default {
       if (newSelected.length === 0) {
         console.log('clear selection')
         this.$emit('clearSelected')
-      } else {
-        console.log('not empty')
+      } else if (newSelected.length > 0) {
+        console.log('emit new selections')
+        let selectedProjsId = this.selected.map(proj => proj.id)
+        this.$emit('updateSelected', selectedProjsId)
+      }
+    },
+    isCleared: function (newVal, OldVal) {
+      if (newVal === true) {
+        this.selected = []
       }
     }
   },
   mounted () {
-    this.getProjectList(this.access_token)
+    this.projectsFromDB = this.getProjectList(this.access_token)
   },
   computed: {
     ...mapState('general', ['currentUserId', 'access_token']),
-    ...mapGetters('projects', ['projects'])
+    ...mapGetters('projects', ['projects']),
+    projectsFromDB: {
+      get: function () {
+        return this.dbProjects
+      },
+      set: function (allLatestProjects) {
+        this.dbProjects = allLatestProjects
+      }
+    }
   },
   methods: {
     ...mapActions('projects', ['getProjectList']),
     getSelectedString () {
-      let selectedProjsId = this.selected.map(proj => proj.id)
-      this.$emit('updateSelected', selectedProjsId)
       return this.selected.length === 0 ? '' : `${this.selected.length} document${this.selected.length > 1 ? 's' : ''} selected of ${this.projects.length}`
     },
     showprojs () {

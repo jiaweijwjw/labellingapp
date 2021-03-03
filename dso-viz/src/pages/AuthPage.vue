@@ -92,7 +92,6 @@ export default {
           currentDocId: res.data.current_doc_id
         }
         this.updateUserDetails(userDetails)
-        console.log(this.username, this.currentUserId, this.currentProjId)
       }, (error) => {
         console.log(error)
       })
