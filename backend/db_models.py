@@ -14,7 +14,8 @@ class User(Base):
     # email = Column(String, unique=True, index=True)
     # fullname = Column(String, index=True)
 
-    projects = relationship("Project", back_populates="user")
+    projects = relationship("Project", back_populates="user",
+                            cascade="all, delete, delete-orphan")
 
 
 class Project(Base):
@@ -28,8 +29,10 @@ class Project(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User",  back_populates="projects")
 
-    labels = relationship("Label", back_populates="project")
-    documents = relationship("Document", back_populates="project")
+    labels = relationship("Label", back_populates="project",
+                          cascade="all, delete, delete-orphan")
+    documents = relationship(
+        "Document", back_populates="project", cascade="all, delete, delete-orphan")
 
 
 class Label(Base):
@@ -55,7 +58,8 @@ class Document(Base):
     proj_id = Column(Integer, ForeignKey("projects.id"))
     project = relationship("Project", back_populates="documents")
 
-    annotations = relationship("Annotation", back_populates="document")
+    annotations = relationship(
+        "Annotation", back_populates="document", cascade="all, delete, delete-orphan")
 
 
 class Annotation(Base):

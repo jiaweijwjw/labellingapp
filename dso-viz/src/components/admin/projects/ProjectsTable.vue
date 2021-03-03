@@ -72,6 +72,8 @@ export default {
       if (newSelected.length === 0) {
         console.log('clear selection')
         this.$emit('clearSelected')
+      } else {
+        console.log('not empty')
       }
     }
   },

@@ -46,6 +46,12 @@ def read_user(current_user: schemas.User = Depends(get_current_user)):
     return current_user
 
 
+@router.put("/")
+def delete_projects(projs_to_del_id: List[int], user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+    db_deleted_projects = project_crud.delete_projects(
+        db=db, user=user, projs_to_del_id=projs_to_del_id)
+    return db_deleted_projects
+
 # @router.get("/projects/")
 # async def get_projects(token: str = Depends(auth.oauth2_scheme), db: Session = Depends(get_db)):
 #     credentials_exception = HTTPException(
@@ -69,7 +75,3 @@ def read_user(current_user: schemas.User = Depends(get_current_user)):
 # def get_projects(db: Session = Depends(get_db)):
 #     users = user_crud.get_all_users(db)
 #     return users
-@router.get("/projects/alla/", response_model=List[schemas.User])
-def read_users(db: Session = Depends(get_db)):
-    users = user_crud.get_all_users(db)
-    return users

@@ -8,14 +8,13 @@
       class="col-2 max-width=20vw"
       @click="dialog = true">
       </q-btn>
-      <q-btn v-if="isSelected" class="col-2 max-width=20vw" label="Delete Selected" flat text-color="primary" @click="annotateSelected" :to="{ name: 'AnnotatePage' }">
+      <q-btn v-if="isSelected" class="col-2 max-width=20vw" label="Delete Selected" flat text-color="primary" @click="deleteSelected">
       </q-btn>
     </div>
     <div class="page-item table-container">
       <projectstable @clearSelected="clearSelectedProjs" @updateSelected="updateSelectedProjs($event)"/>
     </div>
-    <!-- <q-btn type="submit" color="primary" label="show projs" @click="getallprojs"/>
-    <div class="text-white">{{allprojs}}</div> -->
+    <q-btn type="submit" color="primary" label="check selection" @click="checkselection"/>
     <div>
       <newproject
         v-if="dialog"
@@ -48,7 +47,7 @@ export default {
   computed: {
     ...mapState('documents', ['inputText']),
     ...mapGetters('documents', ['currentDoc']),
-    ...mapState('general', ['currentUserId', 'access_token']),
+    ...mapState('general', ['currentUserId', 'currentProjId', 'access_token']),
     ...mapGetters('general', ['getAccessToken']),
     isSelected: function () {
       if (this.selected.length !== 0) {
@@ -60,15 +59,18 @@ export default {
   },
   methods: {
     ...mapActions('documents', ['addDocument', 'updateInputText', 'updateSelected']),
-    ...mapActions('projects', ['getProjectList']),
-    annotateSelected () {
-      this.updateSelected(this.selected) // Only when user starts annotating then update annotate page.
+    ...mapActions('projects', ['getProjectList', 'deleteSelectedProjects']),
+    deleteSelected () {
+      let payload = { token: this.access_token, selectedProjsId: this.selected }
+      this.deleteSelectedProjects(payload) // Only when user starts annotating then update annotate page.
     },
     updateSelectedProjs (selectedProjsId) { // to keep track of selected documents in documents table
       this.selected = selectedProjsId
+      console.log(this.selected)
     },
     clearSelectedProjs () {
       this.selected = []
+      console.log(this.selected)
     },
     addToDocuments () {
       console.log('submitted document successfully')
@@ -83,11 +85,8 @@ export default {
       console.log(this.currentDoc.text.split('\n'))
       this.updateInputText('') // clear the textfield after user submission
     },
-    getallprojs () {
-      this.getProjectList(this.access_token)
-      // .then(res => {
-      //   this.allprojs = res.data
-      // })
+    checkselection () {
+      console.log(this.selected)
     }
   }
 }

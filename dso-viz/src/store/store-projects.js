@@ -12,6 +12,15 @@ const mutations = {
   updateProjectList (state, payload) {
     state.projects = payload.slice()
     console.log(state.projects)
+  },
+  deleteProjects (state, payload) {
+    // for filter, whatever is true will be in the new array
+    state.projects = state.projects.filter(proj => {
+      if (!payload.includes(proj.id)) { // if the proj is not in the list of projs to be deleted, keep it
+        return true
+      }
+    })
+    console.log(state.projects)
   }
 }
 
@@ -23,7 +32,7 @@ const actions = {
         commit('createProject', response.data)
       })
       .catch((error) => {
-        alert(error)
+        console.log(error)
       })
   },
   getProjectList ({ commit }, token) {
@@ -33,7 +42,17 @@ const actions = {
         // return res.data
       })
       .catch((err) => {
-        alert(err)
+        console.log(err)
+      })
+  },
+  deleteSelectedProjects ({ commit }, payload) {
+    ProjectService.deleteProjects(payload.token, payload.selectedProjsId)
+      .then((res) => {
+        // console.log(res.data)
+        commit('deleteProjects', payload.selectedProjsId)
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }
 }
