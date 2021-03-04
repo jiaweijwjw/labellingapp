@@ -2,7 +2,7 @@
   <q-page class="auth-page">
     <q-card class="auth-page-item" bordered>
       <q-tabs
-        v-model="tab"
+        v-model="currentTab"
         dense
         class="text-grey"
         active-color="primary"
@@ -16,7 +16,7 @@
 
       <q-separator />
 
-      <q-tab-panels v-model="tab" dark animated>
+      <q-tab-panels v-model="currentTab" dark animated>
         <q-tab-panel name="login">
           <login-register :loginFailed="loginFailed" :tab="tab" @login="login($event.username, $event.password)"/>
         </q-tab-panel>
@@ -53,7 +53,15 @@ export default {
   },
   computed: {
     ...mapState('general', ['access_token', 'currentUserId', 'currentProjId', 'username']),
-    ...mapGetters('general', ['getAccessToken'])
+    ...mapGetters('general', ['getAccessToken']),
+    currentTab: { //  IMPORTANT. Need getters and setter if v-model computed property.
+      get: function () {
+        return this.tab
+      },
+      set: function (newTab) {
+        this.tab = newTab
+      }
+    }
   },
   methods: {
     ...mapActions('general', ['updateAccessToken', 'updateUserDetails']),
@@ -65,6 +73,7 @@ export default {
       AuthService
         .register(credentials)
         .then((res) => {
+          this.currentTab = 'login'
           console.log(res.data)
           this.registerFailed = false
         })
