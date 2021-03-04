@@ -1,6 +1,6 @@
 <template>
   <q-page class="page documents-page">
-    <div class="page-item row q-py-md">
+    <div v-if="isInProject" class="page-item row q-py-md">
       <q-btn-dropdown
         flat
         text-color="primary"
@@ -31,8 +31,9 @@
       <q-btn class="col-2 max-width=20vw" label="Annotate Selected" flat text-color="primary" @click="annotateSelected" :to="{ name: 'AnnotatePage' }">
       </q-btn>
     </div>
+    <div v-else class="text-white">Add Padding</div>
     <div class="page-item table-container">
-      <documentstable @updateSelected="updateSelectedDocs($event)"/>
+      <documentstable :isInProject="isInProject" @updateSelected="updateSelectedDocs($event)"/>
     </div>
         <!-- TEXT INPUT -->
       <!-- <texteditor> </texteditor>
@@ -97,7 +98,19 @@ export default {
   },
   computed: {
     ...mapState('documents', ['inputText']),
-    ...mapGetters('documents', ['currentDoc'])
+    ...mapGetters('documents', ['currentDoc']),
+    ...mapState('general', ['currentUserId', 'currentProjId', 'access_token']),
+    ...mapGetters('general', ['getAccessToken']),
+    currentProj () {
+      return this.currentProjId
+    },
+    isInProject: function () {
+      if (this.currentProjId === 0) {
+        return false
+      } else {
+        return true
+      }
+    }
   },
   methods: {
     ...mapActions('documents', ['addDocument', 'updateInputText', 'updateSelected']),

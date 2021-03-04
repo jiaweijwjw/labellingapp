@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 # from typing import List, Optional
 from ..exceptions import credentials_exception, registration_exception
 
-from ..dependencies import check_token
+from ..dependencies import check_token, check_token_n_username
 router = APIRouter(prefix="/users")
 # dependencies=[Depends(check_token)]
 
@@ -29,9 +29,18 @@ def get_current_user(token_data: schemas.TokenData = Depends(check_token), db: S
 
 
 @router.get("/me/", response_model=schemas.User)
+# this has to be above the next route
 # , ads_id: Optional[str] = Cookie(None)
 def read_user(current_user: schemas.User = Depends(get_current_user)):
     return current_user
+
+
+@router.put('/me/currentproj/', response_model=schemas.User)
+def update_current_proj(new_id: schemas.UserDetails, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+    db_user = user_crud.update_current_proj(
+        db=db, user=user, new_id=new_id.id)
+    return db_user
+
 
 # It will go and look in the request for that Authorization header, check if the value is Bearer plus some token, and will return the token as a str.
 

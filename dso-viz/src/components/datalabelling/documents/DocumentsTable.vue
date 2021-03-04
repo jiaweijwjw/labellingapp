@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-table
-      :data="documents"
+      :data="whichDocuments"
       :columns="columns"
       :row-key="row => row.id"
       dark
@@ -14,6 +14,7 @@
       :selected-rows-label="getSelectedString"
       selection="multiple"
       :selected.sync="selected"
+      no-data-label="No documents to show."
     >
     <!-- COLORING -->
       <!-- <template v-slot:body-cell-color="props">
@@ -40,6 +41,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  props: ['isInProject'],
   data () {
     return {
       selected: [],
@@ -73,7 +75,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('documents', ['documents'])
+    ...mapGetters('documents', ['documents']),
+    whichDocuments () {
+      if (this.isInProject === true) {
+        return this.documents
+      } else {
+        return []
+      }
+    }
   },
   methods: {
     getSelectedString () {

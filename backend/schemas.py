@@ -42,6 +42,10 @@ class User(UserBase):  # UserOut
         orm_mode = True
 
 
+class UserDetails(BaseModel):
+    id: int
+
+
 class ProjectBase(BaseModel):
     name: str
     proj_type: str

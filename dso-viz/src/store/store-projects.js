@@ -39,7 +39,6 @@ const actions = {
     ProjectService.getProjectList(token)
       .then((res) => {
         commit('updateProjectList', res.data)
-        return res.data
       })
       .catch((err) => {
         console.log(err)

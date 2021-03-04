@@ -27,6 +27,14 @@ def get_all_users(db: Session):
     return db.query(db_models.User).all()
 
 
+def update_current_proj(db: Session, user: schemas.User, new_id: int):
+    db_user = db.query(db_models.User).filter(
+        db_models.User.id == user.id).first()
+    db_user.current_proj_id = new_id
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
 # def get_labels(db: Session):
 #     return db.query(db_models.Label).all()
 

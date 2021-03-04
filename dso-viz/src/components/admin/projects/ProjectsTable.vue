@@ -14,6 +14,8 @@
       :selected-rows-label="getSelectedString"
       selection="multiple"
       :selected.sync="selected"
+      no-data-label="No projects created yet."
+      @row-dblclick="enterProject"
     >
     </q-table>
     <!-- <div class="q-mt-md text-white">
@@ -65,8 +67,7 @@ export default {
           sortable: true
         }
         // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-      ],
-      dbProjects: []
+      ]
     }
   },
   watch: {
@@ -87,27 +88,23 @@ export default {
     }
   },
   mounted () {
-    this.projectsFromDB = this.getProjectList(this.access_token)
+    this.getProjectList(this.access_token)
   },
   computed: {
-    ...mapState('general', ['currentUserId', 'access_token']),
-    ...mapGetters('projects', ['projects']),
-    projectsFromDB: {
-      get: function () {
-        return this.dbProjects
-      },
-      set: function (allLatestProjects) {
-        this.dbProjects = allLatestProjects
-      }
-    }
+    ...mapState('general', ['currentUserId', 'currentDocId', 'access_token']),
+    ...mapGetters('projects', ['projects'])
   },
   methods: {
     ...mapActions('projects', ['getProjectList']),
-    getSelectedString () {
+    ...mapActions('general', ['updateCurrentProjId']),
+    getSelectedString () { // there is a @selection event
       return this.selected.length === 0 ? '' : `${this.selected.length} document${this.selected.length > 1 ? 's' : ''} selected of ${this.projects.length}`
     },
-    showprojs () {
-      console.log(this.projects)
+    enterProject (evt, rowProj, index) {
+      console.log('enter this project')
+      let details = { id: rowProj.id }
+      let payload = { token: this.access_token, details: details }
+      this.updateCurrentProjId(payload)
     }
   }
 }

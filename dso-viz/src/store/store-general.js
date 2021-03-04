@@ -1,3 +1,5 @@
+import GeneralService from '../services/general.service'
+
 const state = {
   access_token: '',
   username: '',
@@ -24,6 +26,16 @@ const actions = {
   },
   updateUserDetails ({ commit }, userDetails) {
     commit('updateUserDetails', userDetails)
+  },
+  updateCurrentProjId ({ commit }, payload) {
+    GeneralService.updateCurrentProjId(payload.token, payload.details)
+      .then((res) => {
+        console.log('updated user: ' + res.data)
+        // commit('updateCurrentProjId', payload.newProjId)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 }
 
