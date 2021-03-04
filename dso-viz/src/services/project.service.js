@@ -6,7 +6,6 @@ class ProjectService {
   }
 
   createProject (data) {
-    // console.log(data)
     this.request.setHeader(data.token)
     return this.request.post('/projects/', data.project)
   }

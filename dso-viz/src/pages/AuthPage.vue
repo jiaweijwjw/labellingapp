@@ -10,8 +10,8 @@
         align="justify"
         narrow-indicator
       >
-        <q-tab name="login" label="Login" />
-        <q-tab name="register" label="Register" />
+        <q-tab name="login" label="Login" @click="registerFailed = false"/>
+        <q-tab name="register" label="Register" @click="loginFailed = false"/>
       </q-tabs>
 
       <q-separator />
