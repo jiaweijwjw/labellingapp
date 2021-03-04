@@ -14,7 +14,7 @@
     <div class="page-item table-container">
       <projectstable :isCleared="isCleared" @clearSelected="clearSelectedProjs" @updateSelected="updateSelectedProjs($event)"/>
     </div>
-    <q-btn type="submit" color="primary" label="check selection" @click="checkselection"/>
+    <!-- <q-btn type="submit" color="primary" label="check selection" @click="checkselection"/> -->
     <div>
       <newproject
         v-if="dialog"

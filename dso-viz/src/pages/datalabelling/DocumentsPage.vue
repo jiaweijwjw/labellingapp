@@ -105,7 +105,7 @@ export default {
       return this.currentProjId
     },
     isInProject: function () {
-      if (this.currentProjId === 0) {
+      if (!this.currentProjId) { // this.currentProjId === 0 || this.currentProjId === null
         return false
       } else {
         return true

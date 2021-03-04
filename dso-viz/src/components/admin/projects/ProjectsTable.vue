@@ -104,7 +104,13 @@ export default {
       console.log('enter this project')
       let details = { id: rowProj.id }
       let payload = { token: this.access_token, details: details }
-      this.updateCurrentProjId(payload)
+      try {
+        this.updateCurrentProjId(payload)
+      } catch (error) {
+        console.log(console.error())
+      } finally {
+        this.$router.push({ name: 'DocumentsPage' })
+      }
     }
   }
 }

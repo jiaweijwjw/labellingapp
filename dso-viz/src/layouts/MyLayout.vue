@@ -164,10 +164,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions('general', ['updateAccessToken']),
+    ...mapActions('general', ['clearUserDetails']),
     logout () {
       try {
-        this.updateAccessToken('')
+        this.clearUserDetails()
+        this.$router.push({ name: 'AuthPage' })
       } catch (e) {
         console.log('Setting access_token to null is unsuccessful.')
         // exit this func?

@@ -9,6 +9,13 @@ const state = {
 }
 
 const mutations = {
+  clearUserDetails (state) {
+    state.access_token = ''
+    state.username = ''
+    state.currentUserId = null
+    state.currentProjId = null
+    state.currentDocId = null
+  },
   updateAccessToken (state, payload) {
     state.access_token = payload
   },
@@ -17,10 +24,16 @@ const mutations = {
     state.currentUserId = payload.currentUserId
     state.currentProjId = payload.currentProjId
     state.currentDocId = payload.currentDocId
+  },
+  updateCurrentProjId (state, payload) {
+    state.currentProjId = payload.id
   }
 }
 
 const actions = {
+  clearUserDetails ({ commit }) {
+    commit('clearUserDetails')
+  },
   updateAccessToken ({ commit }, status) {
     commit('updateAccessToken', status)
   },
@@ -30,8 +43,7 @@ const actions = {
   updateCurrentProjId ({ commit }, payload) {
     GeneralService.updateCurrentProjId(payload.token, payload.details)
       .then((res) => {
-        console.log('updated user: ' + res.data)
-        // commit('updateCurrentProjId', payload.newProjId)
+        commit('updateCurrentProjId', payload.details)
       })
       .catch((err) => {
         console.log(err)
