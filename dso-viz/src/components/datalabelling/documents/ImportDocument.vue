@@ -17,6 +17,7 @@
             placeholder="E.g: All about Singapore"
             :rules="[ val => val && val.length > 0 || 'Please input document name.',
             val => val.length <= 50 || 'Maximum name length is 50 characters.']"
+            lazy-rules
           />
         </q-card-section>
         <q-card-section>
@@ -24,14 +25,13 @@
             name="upload_document"
             ref="uploaddocument"
             clearable multiple append dark filled use-chips bottom-slots
-            max-files="3" counter :counter-label="counterLabelFn"
             v-model="files"
             label="Imports"
             :filter="checkFileSize"
             accept=".txt"
-            :rules="[ val => val.length >= 1 || 'Please select at least 1 document.']"
+            :rules="[ val => val && val.length >= 1 || 'Please select a document']"
             lazy-rules="ondemand"
-             @rejected="onRejected">
+            @rejected="onRejected">
             <template v-slot:prepend>
                 <q-icon name="create_new_folder" @click.prevent/>
             </template>
@@ -41,8 +41,10 @@
             </q-file>
         </q-card-section>
         <q-card-actions align="left" class="text-primary">
-          <div class="text-green" v-if="isUploaded">File successfully uploaded.</div>
+          <div class="text-green" v-if="uploading && uploadSuccessful">File successfully uploaded.</div>
+          <div class="text-red" v-if="uploading && !uploadSuccessful">Upload unsuccessful.</div>
           <q-space/>
+          <q-btn flat type="submit" label="Reset" @click="resetForm"/>
           <q-btn flat type="submit" label="Import" @click="submitNewDocument"/>
         </q-card-actions>
       </q-card>
@@ -59,7 +61,8 @@ export default {
   props: ['dialog'],
   data () {
     return {
-      isUploaded: true,
+      uploadSuccessful: false,
+      uploading: false,
       files: null,
       secondDialog: false,
       documentName: ''
@@ -88,16 +91,37 @@ export default {
       })
     },
     close () {
+      this.uploading = false
+      this.uploadSuccessful = false
       this.$emit('close')
     },
     submitNewDocument () {
+      this.uploading = true
       this.$refs.name.validate()
       this.$refs.uploaddocument.validate()
       if (!this.$refs.name.hasError && !this.$refs.uploaddocument.hasError) {
         // this.uploadDocument(this.files)
-        DocumentService.uploadDocument(this.files)
-          .then(res => console.log(res))
+        DocumentService.uploadDocument(this.documentName, this.files)
+          .then(res => {
+            this.uploadSuccessful = true
+            this.reset()
+          })
+          .catch(error => {
+            console.log(error.response.status)
+            this.uploadSuccessful = false
+          })
       }
+    },
+    resetForm () {
+      this.reset()
+      this.uploadSuccessful = false
+      this.uploading = false
+    },
+    reset () {
+      this.documentName = ''
+      this.files = null
+      this.$refs.name.resetValidation()
+      this.$refs.uploaddocument.resetValidation()
     }
   }
 }

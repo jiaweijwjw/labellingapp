@@ -19,11 +19,11 @@ router = APIRouter(prefix="/documents")
 
 
 @router.post("/upload/")
-def create_upload_file(file: UploadFile = File(...)):
+def create_upload_file(file: UploadFile = File(...), docName: str = Form(...)):
     contents = file.file.read()
     file_name = file.filename
     file_size = len(contents)
-    return {"content": contents, "file_name": file_name, "file_size": file_size, "original": file}
+    return {"docName": docName, "content": contents, "file_name": file_name, "file_size": file_size, "original": file}
     # file1_name = file1.filename
     # if file2 and not file3:
     #     file2_name = file2.filename

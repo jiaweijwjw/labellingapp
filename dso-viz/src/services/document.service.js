@@ -5,13 +5,14 @@ class DocumentService {
     this.request = ApiService
   }
 
-  uploadDocument (files) {
+  uploadDocument (documentName, files) {
     console.log(files[0])
     let formData = new FormData()
     // for (let i = 0; i < files.length; i++) {
     //   formData.append('file', files[i])
     // }
     formData.append('file', files[0])
+    formData.append('docName', documentName)
     this.request.removeHeader()
     const config = {
       headers: { 'Content-Type': undefined }
