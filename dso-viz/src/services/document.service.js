@@ -1,8 +1,22 @@
-import ApiService from '@/services/api.service'
+import ApiService from './api.service'
 
 class DocumentService {
   constructor () {
     this.request = ApiService
+  }
+
+  uploadDocument (files) {
+    console.log(files[0])
+    let formData = new FormData()
+    // for (let i = 0; i < files.length; i++) {
+    //   formData.append('file', files[i])
+    // }
+    formData.append('file', files[0])
+    this.request.removeHeader()
+    const config = {
+      headers: { 'Content-Type': undefined }
+    }
+    return this.request.post('/documents/upload/', formData, config)
   }
 
   getDocumentList ({ projectId, limit = 10, offset = 0, q = '', isChecked = '', filterName = '' }) {

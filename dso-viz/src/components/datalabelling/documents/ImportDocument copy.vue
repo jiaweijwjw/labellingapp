@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-form>
+    <q-form @submit="submitNewDocument">
     <q-dialog :value="dialog" persistent>
       <q-card style="width: 40vw" bordered>
         <q-card-section class="row">
@@ -8,11 +8,12 @@
           <q-space />
           <q-btn v-close-popup flat round dense icon="close" color="primary" @click="close"/>
         </q-card-section>
+        <!-- CUSTOM DOCUMENT NAME -->
         <q-card-section>
           <q-input
             dark filled
             ref="name"
-            v-model="documentName"
+            v-model="documentToSubmit.name"
             label="Document Name"
             placeholder="E.g: All about Singapore"
             :rules="[ val => val && val.length > 0 || 'Please input document name.',
@@ -24,13 +25,12 @@
             name="upload_document"
             ref="uploaddocument"
             clearable multiple append dark filled use-chips bottom-slots
-            max-files="3" counter :counter-label="counterLabelFn"
             v-model="files"
             label="Imports"
+            max-files="3" counter :counter-label="counterLabelFn"
             :filter="checkFileSize"
             accept=".txt"
-            :rules="[ val => val.length >= 1 || 'Please select at least 1 document.']"
-            lazy-rules="ondemand"
+            lazy-rules :rules="[ val => val && val.length > 0 || 'Please select at least 1 document.']"
              @rejected="onRejected">
             <template v-slot:prepend>
                 <q-icon name="create_new_folder" @click.prevent/>
@@ -40,9 +40,7 @@
                 </template>
             </q-file>
         </q-card-section>
-        <q-card-actions align="left" class="text-primary">
-          <div class="text-green" v-if="isUploaded">File successfully uploaded.</div>
-          <q-space/>
+        <q-card-actions align="right" class="text-primary">
           <q-btn flat type="submit" label="Import" @click="submitNewDocument"/>
         </q-card-actions>
       </q-card>
@@ -52,33 +50,40 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
-import DocumentService from '../../../services/document.service'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   props: ['dialog'],
   data () {
     return {
-      isUploaded: true,
       files: null,
+      model: null,
       secondDialog: false,
-      documentName: ''
+      documentToSubmit: {
+        id: '',
+        name: '',
+        text: '',
+        annotations: []
+      },
+      customLabelToSubmit: {
+        id: '',
+        name: '',
+        shortcutkey: '',
+        color: ''
+      }
     }
   },
   computed: {
-    ...mapState('general', ['access_token'])
-    // ...mapGetters()
+    ...mapGetters('labels', ['labels', 'shortcutkeys'])
   },
   methods: {
-    ...mapActions('documents', ['uploadDocument']),
-    checkFileSize (files) {
-      return files.filter(file => file.size < 4096)
+    ...mapActions('labels', ['addLabel']),
+    counterLabelFn ({ totalSize, filesNumber, maxFiles }) {
+      return `${filesNumber} files of ${maxFiles} | ${totalSize}`
     },
-    // clearable multiple append dark filled use-chips bottom-slots
-    // max-files="3" counter :counter-label="counterLabelFn"
-    // counterLabelFn ({ totalSize, filesNumber, maxFiles }) {
-    //   return `${filesNumber} files of ${maxFiles} | ${totalSize}`
-    // },
+    checkFileSize (files) {
+      return files.filter(file => file.size < 2048)
+    },
     onRejected (rejectedEntries) {
       // https://quasar.dev/quasar-plugins/notify#Installation
       console.log(rejectedEntries)
@@ -87,27 +92,32 @@ export default {
         message: `${rejectedEntries.length} file(s) did not pass validation constraints`
       })
     },
-    close () {
-      this.$emit('close')
-    },
     submitNewDocument () {
       this.$refs.name.validate()
       this.$refs.uploaddocument.validate()
       if (!this.$refs.name.hasError && !this.$refs.uploaddocument.hasError) {
-        // this.uploadDocument(this.files)
-        DocumentService.uploadDocument(this.files)
-          .then(res => console.log(res))
+        console.log('Submit')
+        console.log(this.files)
+        // this.submitLabel()
       }
+    },
+    submitLabel () {
+      console.log('submitted successfully')
+      this.customLabelToSubmit.name = this.$hf.toTitleCase(this.customLabelToSubmit.name)
+      let cloneLabelToSubmit = { ...this.customLabelToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
+      this.addLabel(cloneLabelToSubmit)
+      this.$emit('close')
+      this.customLabelToSubmit.name = ''
+      this.customLabelToSubmit.shortcutkey = ''
+    },
+    close () {
+      this.$emit('close')
     }
   }
 }
 </script>
 
 <style lang="sass">
-.uploader
-    margin-left: 0px
-    margin-right: 0px
-    width: 100%
 .my-card
     width: 100%
 .q-card

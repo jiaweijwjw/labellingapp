@@ -1,5 +1,6 @@
 // import Vue from 'vue'
 import { uid } from 'quasar'
+import DocumentService from '../services/document.service'
 
 const state = {
   start: 0, // start of selection
@@ -162,6 +163,10 @@ const actions = {
       annotationId: obj.annotationId
     }
     commit('updateAnnotation', payload)
+  },
+  uploadDocument ({ commit }, files) {
+    DocumentService.uploadDocument(files)
+      .then(res => console.log(res))
   }
 }
 
