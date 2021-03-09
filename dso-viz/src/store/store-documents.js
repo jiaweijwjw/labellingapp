@@ -183,13 +183,7 @@ const actions = {
     commit('updateAnnotation', payload)
   },
   uploadDocument ({ commit }, files) {
-    DocumentService.uploadDocument(files)
-      .then((res) => {
-        commit('addDocument', res.data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    commit('addDocument', files)
   },
   getDocumentList ({ commit }, token) {
     DocumentService.getDocumentList(token)

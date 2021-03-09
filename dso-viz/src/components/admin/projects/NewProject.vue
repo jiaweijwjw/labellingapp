@@ -93,10 +93,10 @@ export default {
         token: this.access_token
       }
       this.createProject(payload)
-      this.$emit('close')
       this.projectToSubmit.name = ''
       this.projectToSubmit.proj_type = ''
       this.projectToSubmit.description = ''
+      this.$emit('close')
     },
     close () {
       this.$emit('close')

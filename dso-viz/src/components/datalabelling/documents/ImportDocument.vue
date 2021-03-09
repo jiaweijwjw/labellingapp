@@ -103,6 +103,7 @@ export default {
         // this.uploadDocument(this.files)
         DocumentService.uploadDocument(this.access_token, this.documentName, this.files)
           .then(res => {
+            this.uploadDocument(res.data)
             this.uploadSuccessful = true
             this.reset()
           })
