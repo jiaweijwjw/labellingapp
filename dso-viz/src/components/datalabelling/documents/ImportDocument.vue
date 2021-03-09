@@ -101,7 +101,7 @@ export default {
       this.$refs.uploaddocument.validate()
       if (!this.$refs.name.hasError && !this.$refs.uploaddocument.hasError) {
         // this.uploadDocument(this.files)
-        DocumentService.uploadDocument(this.documentName, this.files)
+        DocumentService.uploadDocument(this.access_token, this.documentName, this.files)
           .then(res => {
             this.uploadSuccessful = true
             this.reset()

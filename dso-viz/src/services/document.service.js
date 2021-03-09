@@ -5,17 +5,18 @@ class DocumentService {
     this.request = ApiService
   }
 
-  uploadDocument (documentName, files) {
+  uploadDocument (token, documentName, files) {
     console.log(files[0])
     let formData = new FormData()
     // for (let i = 0; i < files.length; i++) {
     //   formData.append('file', files[i])
     // }
     formData.append('file', files[0])
-    formData.append('docName', documentName)
+    formData.append('doc_name', documentName)
     this.request.removeHeader()
+    this.request.setHeader(token)
     const config = {
-      headers: { 'Content-Type': undefined }
+      headers: { 'Content-Type': undefined } // IMPT TO SET TO UNDEFINED AND NOT MANUALLY SET MULTIPART/FORM_DATA
     }
     return this.request.post('/documents/upload/', formData, config)
   }

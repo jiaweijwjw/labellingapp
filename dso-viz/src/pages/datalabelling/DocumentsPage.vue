@@ -78,7 +78,7 @@ export default {
   data () {
     return {
       selected: [],
-      dialog: true,
+      dialog: false,
       documentToSubmit: {
         id: '',
         text: '',

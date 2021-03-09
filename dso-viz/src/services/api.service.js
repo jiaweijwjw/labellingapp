@@ -8,6 +8,8 @@ class ApiService {
     })
     this.instance.interceptors.request.use(req => {
       console.log(`${req.method} ${req.url}`)
+      // console.log(generalStore.getters.getAccessToken)
+      // req.headers = { 'Authorization': generalStore.getters }
       // console.log(req.headers.Authorization = `Bearer ${storeGeneral.state.getters.access_token}`)
       return req
     })

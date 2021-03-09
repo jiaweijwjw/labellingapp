@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, LargeBinary, Numeric
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -35,25 +35,14 @@ class Project(Base):
         "Document", back_populates="project", cascade="all, delete, delete-orphan")
 
 
-class Label(Base):
-    __tablename__ = "labels"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    shortcutkey = Column(String, index=True)
-    color = Column(String, index=True)
-
-    proj_id = Column(Integer, ForeignKey("projects.id"))
-    project = relationship("Project", back_populates="labels")
-
-
 class Document(Base):
     __tablename__ = "documents"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     is_marked = Column(Boolean)
-    text = Column(String, index=True)
+    content = Column(LargeBinary)
+    content_size = Column(Numeric)
 
     proj_id = Column(Integer, ForeignKey("projects.id"))
     project = relationship("Project", back_populates="documents")
@@ -72,6 +61,19 @@ class Annotation(Base):
 
     document_id = Column(Integer, ForeignKey("documents.id"))
     document = relationship("Document", back_populates="annotations")
+
+
+class Label(Base):
+    __tablename__ = "labels"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    shortcutkey = Column(String, index=True)
+    color = Column(String, index=True)
+
+    proj_id = Column(Integer, ForeignKey("projects.id"))
+    project = relationship("Project", back_populates="labels")
+
 
 # class User(Base):
 #     __tablename__ = "users"
