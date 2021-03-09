@@ -16,32 +16,15 @@
       :selected.sync="selected"
       no-data-label="No documents to show."
     >
-    <!-- COLORING -->
-      <!-- <template v-slot:body-cell-color="props">
-        <q-td :props="props">
-          <div>
-            <q-badge
-              :style="'background-color:'+props.value+';'+'color:'+autoTextColor(props.value)+';'"
-              :label="props.value"
-            />
-          </div>
-          <div>
-            {{ props.row.details }}
-          </div>
-        </q-td>
-      </template> -->
     </q-table>
-    <!-- <div class="q-mt-md text-white">
-      Selected: {{ JSON.stringify(selected[0].id) }}
-    </div> -->
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 
 export default {
-  props: ['isInProject'],
+  props: ['isInProject', 'isCleared'],
   data () {
     return {
       selected: [],
@@ -65,7 +48,7 @@ export default {
           name: 'text',
           align: 'left',
           label: 'Text',
-          field: 'text',
+          field: 'content',
           style: 'max-width: 50vw',
           classes: 'ellipsis',
           sortable: true
@@ -74,7 +57,28 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.getDocumentList(this.access_token)
+  },
+  watch: {
+    selected: function (newSelection, oldSelection) {
+      if (newSelection.length === 0) {
+        console.log('clear selection')
+        this.$emit('clearSelection')
+      } else if (newSelection.length > 0) {
+        console.log('emit new selections')
+        let selectedDocsId = this.selected.map(doc => doc.id)
+        this.$emit('updateSelection', selectedDocsId)
+      }
+    },
+    isCleared: function (newVal, OldVal) {
+      if (newVal === true) {
+        this.selected = []
+      }
+    }
+  },
   computed: {
+    ...mapState('general', ['currentUserId', 'currentDocId', 'access_token']),
     ...mapGetters('documents', ['documents']),
     whichDocuments () {
       if (this.isInProject === true) {
@@ -85,9 +89,8 @@ export default {
     }
   },
   methods: {
+    ...mapActions('documents', ['getDocumentList']),
     getSelectedString () {
-      let selectedDocsId = this.selected.map(doc => doc.id)
-      this.$emit('updateSelected', selectedDocsId)
       return this.selected.length === 0 ? '' : `${this.selected.length} document${this.selected.length > 1 ? 's' : ''} selected of ${this.documents.length}`
     }
   }

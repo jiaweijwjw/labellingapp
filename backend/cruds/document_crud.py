@@ -18,14 +18,14 @@ def create_upload_file(doc_name: str, db: Session, user: schemas.User, content: 
     return db_document
 
 
-def get_all_projects(db: Session, user: schemas.User):
-    return db.query(db_models.Project).filter(db_models.Project.user_id == user.id).all()
+def get_all_documents(db: Session, user: schemas.User):
+    return db.query(db_models.Document).filter(db_models.Document.proj_id == user.current_proj_id).all()
 
 
-def delete_projects(db: Session, user: schemas.User, projs_to_del_id: List[int]):
-    for proj_to_del_id in projs_to_del_id:
-        proj_to_del = db.query(db_models.Project).filter(
-            db_models.Project.user_id == user.id).filter(db_models.Project.id == proj_to_del_id).first()
-        db.delete(proj_to_del)
+def delete_documents(db: Session, user: schemas.User, docs_to_del_id: List[int]):
+    for doc_to_del_id in docs_to_del_id:
+        doc_to_del = db.query(db_models.Document).filter(
+            db_models.Document.proj_id == user.current_proj_id).filter(db_models.Document.id == doc_to_del_id).first()
+        db.delete(doc_to_del)
     db.commit()
-    return projs_to_del_id
+    return docs_to_del_id

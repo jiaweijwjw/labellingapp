@@ -71,14 +71,14 @@ export default {
     }
   },
   watch: {
-    selected: function (newSelected, oldSelected) {
-      if (newSelected.length === 0) {
+    selected: function (newSelection, oldSelection) {
+      if (newSelection.length === 0) {
         console.log('clear selection')
-        this.$emit('clearSelected')
-      } else if (newSelected.length > 0) {
+        this.$emit('clearSelection')
+      } else if (newSelection.length > 0) {
         console.log('emit new selections')
         let selectedProjsId = this.selected.map(proj => proj.id)
-        this.$emit('updateSelected', selectedProjsId)
+        this.$emit('updateSelection', selectedProjsId)
       }
     },
     isCleared: function (newVal, OldVal) {

@@ -8,11 +8,10 @@
       class="col-2 max-width=20vw"
       @click="dialog = true">
       </q-btn>
-      <q-btn v-if="isSelected" class="col-2 max-width=20vw" label="Delete Selected" flat text-color="primary" @click="deleteSelected">
-      </q-btn>
+      <q-btn v-if="isSelected" class="col-2 max-width=20vw" label="Delete Selected" flat text-color="primary" @click="deleteSelected"></q-btn>
     </div>
     <div class="page-item table-container">
-      <projectstable :isCleared="isCleared" @clearSelected="clearSelectedProjs" @updateSelected="updateSelectedProjs($event)"/>
+      <projectstable :isCleared="isCleared" @clearSelection="clearProjSelection" @updateSelection="updateProjSelection($event)"/>
     </div>
     <!-- <q-btn type="submit" color="primary" label="check selection" @click="checkselection"/> -->
     <div>
@@ -61,12 +60,12 @@ export default {
       this.selected = []
       this.isCleared = true
     },
-    updateSelectedProjs (selectedProjsId) { // to keep track of selected documents in documents table
+    updateProjSelection (selectedProjsId) { // to keep track of selected documents in documents table
       this.isCleared = false
       this.selected = selectedProjsId
       console.log(this.selected)
     },
-    clearSelectedProjs () {
+    clearProjSelection () {
       this.selected = []
       console.log(this.selected)
     },

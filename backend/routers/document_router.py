@@ -18,7 +18,7 @@ router = APIRouter(prefix="/documents")
 #     return {"file_size": len(file), "file": file, "user": user}
 
 
-@router.post("/upload/")
+@router.post("/upload/", response_model=schemas.Document)
 def create_upload_file(file: UploadFile = File(...), doc_name: str = Form(...), db: Session = Depends(get_db), user: schemas.User = Depends(check_token_n_username)):
     content = file.file.read()
     # file_name = file.filename
@@ -36,3 +36,16 @@ def create_upload_file(file: UploadFile = File(...), doc_name: str = Form(...), 
     # if file2 and file3:
     #     return {"file1_name": file1_name, "file2_name": file2_name, "file3_name": file3_name}
     # return {"file1_name": file1_name}
+
+
+@router.get("/", response_model=List[schemas.Document])
+def get_all_documents(db: Session = Depends(get_db), user: schemas.User = Depends(check_token_n_username)):
+    db_documents = document_crud.get_all_documents(db=db, user=user)
+    return db_documents
+
+
+@router.put("/")
+def delete_documentss(docs_to_del_id: List[int], user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+    db_deleted_documents = document_crud.delete_documents(
+        db=db, user=user, docs_to_del_id=docs_to_del_id)
+    return db_deleted_documents

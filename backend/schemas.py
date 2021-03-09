@@ -88,13 +88,15 @@ class Label(LabelBase):
 
 class DocumentBase(BaseModel):
     name: str
-    isMarked: bool
-    text: str
     # annotations: List[Annotation]
 
 
 class Document(DocumentBase):
     id: int
+    is_marked: bool
+    content: bytes
+    content_size: int
+    proj_id: int
 
     class Config:
         orm_mode = True

@@ -28,12 +28,12 @@
           </q-item>
         </q-list>
       </q-btn-dropdown>
-      <q-btn class="col-2 max-width=20vw" label="Annotate Selected" flat text-color="primary" @click="annotateSelected" :to="{ name: 'AnnotatePage' }">
-      </q-btn>
+      <q-btn v-if="isSelected" class="col-2 max-width=20vw" label="Delete Selected" flat text-color="primary" @click="deleteSelected"></q-btn>
+      <q-btn v-if="isSelected" class="col-2 max-width=20vw" label="Annotate Selected" flat text-color="primary" @click="annotateSelected" :to="{ name: 'AnnotatePage' }"></q-btn>
     </div>
     <div v-else class="text-white">Add Padding</div>
     <div class="page-item table-container">
-      <documentstable :isInProject="isInProject" @updateSelected="updateSelectedDocs($event)"/>
+      <documentstable :isInProject="isInProject" :isCleared="isCleared" @clearSelection="clearDocSelection" @updateSelection="updateDocSelection($event)"/>
     </div>
         <!-- TEXT INPUT -->
       <!-- <texteditor> </texteditor>
@@ -79,21 +79,7 @@ export default {
     return {
       selected: [],
       dialog: false,
-      documentToSubmit: {
-        id: '',
-        text: '',
-        annotations: [
-          // {
-          //   id: 17,
-          //   prob: 0.0,
-          //   label: 4,
-          //   start_offset: 60,
-          //   end_offset: 70,
-          //   user: 1,
-          //   document: 8
-          // }
-        ]
-      }
+      isCleared: false
     }
   },
   computed: {
@@ -110,29 +96,47 @@ export default {
       } else {
         return true
       }
+    },
+    isSelected: function () {
+      if (this.selected.length !== 0) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   methods: {
-    ...mapActions('documents', ['addDocument', 'updateInputText', 'updateSelected']),
-    annotateSelected () {
-      this.updateSelected(this.selected) // Only when user starts annotating then update annotate page.
+    ...mapActions('documents', ['addDocument', 'updateInputText', 'updateSelected', 'deleteSelectedDocuments']),
+    deleteSelected () {
+      console.log('deleted')
+      let payload = { token: this.access_token, selectedDocsId: this.selected }
+      this.deleteSelectedDocuments(payload) // Only when user starts annotating then update annotate page.
+      this.selected = []
+      this.isCleared = true
     },
-    updateSelectedDocs (selectedDocsId) { // to keep track of selected documents in documents table
+    updateDocSelection (selectedDocsId) { // to keep track of selected documents in documents table
       this.selected = selectedDocsId
     },
-    addToDocuments () {
-      console.log('submitted document successfully')
-      let cloneDocumentToSubmit = { ...this.documentToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
-      cloneDocumentToSubmit.text = this.inputText
-      this.addDocument(cloneDocumentToSubmit)
-      this.documentToSubmit.text = ''
-      this.documentToSubmit.annotations = []
-      // console.log(cloneDocumentToSubmit)
-      let arr = ['a', 'b', 'c', 'd', 'e']
-      console.log(arr.slice(0, -1))
-      console.log(this.currentDoc.text.split('\n'))
-      this.updateInputText('') // clear the textfield after user submission
+    clearDocSelection () {
+      this.selected = []
+      console.log(this.selected)
+    },
+    annotateSelected () {
+      this.updateSelected(this.selected) // Only when user starts annotating then update annotate page.
     }
+    // addToDocuments () {
+    //   console.log('submitted document successfully')
+    //   let cloneDocumentToSubmit = { ...this.documentToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
+    //   cloneDocumentToSubmit.text = this.inputText
+    //   this.addDocument(cloneDocumentToSubmit)
+    //   this.documentToSubmit.text = ''
+    //   this.documentToSubmit.annotations = []
+    //   // console.log(cloneDocumentToSubmit)
+    //   let arr = ['a', 'b', 'c', 'd', 'e']
+    //   console.log(arr.slice(0, -1))
+    //   console.log(this.currentDoc.text.split('\n'))
+    //   this.updateInputText('') // clear the textfield after user submission
+    // }
   }
 }
 </script>

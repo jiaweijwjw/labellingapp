@@ -21,8 +21,14 @@ class DocumentService {
     return this.request.post('/documents/upload/', formData, config)
   }
 
-  getDocumentList ({ projectId, limit = 10, offset = 0, q = '', isChecked = '', filterName = '' }) {
-    return this.request.get(`/projects/${projectId}/docs?limit=${limit}&offset=${offset}&q=${q}&${filterName}=${isChecked}`)
+  getDocumentList (token) {
+    this.request.setHeader(token)
+    return this.request.get(`/documents/`)
+  }
+
+  deleteDocuments (token, selectedDocsId) {
+    this.request.setHeader(token)
+    return this.request.put(`/documents/`, selectedDocsId)
   }
 
   addDocument (projectId, payload) {
