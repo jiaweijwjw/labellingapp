@@ -109,7 +109,7 @@ export default {
       } catch (error) {
         console.log(console.error())
       } finally {
-        this.$router.push({ name: 'DocumentsPage' })
+        // this.$router.push({ name: 'DocumentsPage' })
       }
     }
   }

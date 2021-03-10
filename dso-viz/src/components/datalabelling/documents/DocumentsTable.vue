@@ -58,7 +58,11 @@ export default {
     }
   },
   mounted () {
+    console.log('doc table mounted')
     this.getDocumentList(this.access_token)
+  },
+  destroyed: function () {
+    console.log('doc table destroyed')
   },
   watch: {
     selected: function (newSelection, oldSelection) {

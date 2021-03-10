@@ -1,8 +1,13 @@
-import ApiService from '@/services/api.service'
+import ApiService from './api.service'
 
 class LabelService {
   constructor () {
     this.request = ApiService
+  }
+
+  createLabel (token, newLabel) {
+    this.request.setHeader(token)
+    return this.request.post('/labels/', newLabel)
   }
 
   getLabelList (projectId) {

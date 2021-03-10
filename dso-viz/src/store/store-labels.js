@@ -1,5 +1,6 @@
 // import Vue from 'vue'
 import { uid } from 'quasar'
+import LabelService from '../services/label.service'
 
 const state = {
   LabelBtns: [
@@ -41,6 +42,9 @@ const mutations = {
     state.LabelBtns.push(payload.label)
     // Vue.set(state.CustomLabelBtns, payload.id, payload.label)
     // Vue.set(object, propertyName, value)
+  },
+  createLabel (state, payload) {
+    state.LabelBtns.push(payload)
   }
 }
 
@@ -53,6 +57,12 @@ const actions = {
       label: newLabel
     }
     commit('addLabel', payload)
+  },
+  createLabel ({ commit }, payload) {
+    LabelService.createLabel(payload.token, payload.newLabel)
+      .then(res => {
+        commit('createLabel', res.data)
+      })
   }
 }
 

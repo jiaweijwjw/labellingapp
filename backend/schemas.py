@@ -62,6 +62,10 @@ class Project(ProjectBase):
 
     class Config:
         orm_mode = True
+# reading from database, will know id and need orm
+# Pydantic's orm_mode will tell the Pydantic model to read the data (from database) even if it is not a dict, but an ORM model (or any other arbitrary object with attributes).
+# able to return a database model and it will read the data from it.
+
 
 # LABELS
 
@@ -124,10 +128,6 @@ class Annotation(AnnotationBase):
 
 # class ItemCreate(ItemBase):
 #     pass
-
-# reading from database, will know id and need orm
-# Pydantic's orm_mode will tell the Pydantic model to read the data (from database) even if it is not a dict, but an ORM model (or any other arbitrary object with attributes).
-# able to return a database model and it will read the data from it.
 
 
 # class Item(ItemBase):

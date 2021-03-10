@@ -97,16 +97,14 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
   props: ['dialog'],
   data () {
     return {
-    //   dialog: false,
       secondDialog: false,
       customLabelToSubmit: {
-        id: '',
         name: '',
         shortcutkey: '',
         color: ''
@@ -120,10 +118,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('labels', ['labels', 'shortcutkeys'])
+    ...mapGetters('labels', ['labels', 'shortcutkeys']),
+    ...mapState('general', ['currentUserId', 'currentDocId', 'access_token'])
   },
   methods: {
-    ...mapActions('labels', ['addLabel']),
+    ...mapActions('labels', ['createLabel']),
     submitNewLabel () {
       this.$refs.name.validate()
       this.$refs.color.validate()
@@ -136,7 +135,11 @@ export default {
       console.log('submitted successfully')
       this.customLabelToSubmit.name = this.$hf.toTitleCase(this.customLabelToSubmit.name)
       let cloneLabelToSubmit = { ...this.customLabelToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
-      this.addLabel(cloneLabelToSubmit)
+      let payload = {
+        token: this.access_token,
+        newLabel: cloneLabelToSubmit
+      }
+      this.createLabel(payload)
       this.$emit('close')
       this.customLabelToSubmit.name = ''
       this.customLabelToSubmit.shortcutkey = ''
