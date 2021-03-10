@@ -21,10 +21,10 @@ def get_all_labels(db: Session, user: schemas.User):
     return db.query(db_models.Label).filter(db_models.Label.proj_id == user.current_proj_id).all()
 
 
-# def delete_projects(db: Session, user: schemas.User, projs_to_del_id: List[int]):
-#     for proj_to_del_id in projs_to_del_id:
-#         proj_to_del = db.query(db_models.Project).filter(
-#             db_models.Project.user_id == user.id).filter(db_models.Project.id == proj_to_del_id).first()
-#         db.delete(proj_to_del)
-#     db.commit()
-#     return projs_to_del_id
+def delete_labels(db: Session, user: schemas.User, labels_to_del_id: List[int]):
+    for label_to_del_id in labels_to_del_id:
+        label_to_del = db.query(db_models.Label).filter(
+            db_models.Label.proj_id == user.current_proj_id).filter(db_models.Label.id == label_to_del_id).first()
+        db.delete(label_to_del)
+    db.commit()
+    return labels_to_del_id

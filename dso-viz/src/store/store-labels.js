@@ -25,6 +25,14 @@ const mutations = {
     state.labels = payload.slice()
     // let labelsFromDB = payload.slice()
     // state.labels = state.labels.concat(labelsFromDB)
+  },
+  deleteLabels (state, payload) {
+    // for filter, whatever is true will be in the new array
+    state.labels = state.labels.filter(label => {
+      if (!payload.includes(label.id)) { // if the proj is not in the list of projs to be deleted, keep it
+        return true
+      }
+    })
   }
 }
 
@@ -48,6 +56,15 @@ const actions = {
     LabelService.getLabelList(token)
       .then(res => {
         commit('updateLabelList', res.data)
+      })
+  },
+  deleteSelectedLabels ({ commit }, payload) {
+    LabelService.deleteLabels(payload.token, payload.selectedLabelsId)
+      .then((res) => {
+        commit('deleteLabels', payload.selectedLabelsId)
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }
 }

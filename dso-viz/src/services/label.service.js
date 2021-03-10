@@ -15,6 +15,11 @@ class LabelService {
     return this.request.get(`/labels/`)
   }
 
+  deleteLabels (token, selectedLabelsId) {
+    this.request.setHeader(token)
+    return this.request.put(`/labels/`, selectedLabelsId)
+  }
+
   addLabel (projectId, payload) {
     return this.request.post(`/projects/${projectId}/labels`, payload)
   }

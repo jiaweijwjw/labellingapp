@@ -37,10 +37,11 @@
           </q-item>
         </q-list>
       </q-btn-dropdown>
+      <q-btn v-if="isSelected" class="col-2 max-width=20vw" label="Delete Selected" flat text-color="primary" @click="deleteSelected"></q-btn>
     </div>
     <!-- TABLE -->
     <div class="page-item">
-      <labeltable />
+      <labeltable :isCleared="isCleared" @clearSelection="clearLabelSelection" @updateSelection="updateLabelSelection($event)"/>
     </div>
     <div>
       <customlabel
@@ -53,6 +54,8 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
   name: 'LabelsPage',
   components: {
@@ -61,7 +64,35 @@ export default {
   },
   data () {
     return {
-      dialog: false
+      dialog: false,
+      selected: [],
+      isCleared: false
+    }
+  },
+  computed: {
+    ...mapState('general', ['currentUserId', 'currentProjId', 'access_token']),
+    isSelected: function () {
+      if (this.selected.length !== 0) {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
+  methods: {
+    ...mapActions('labels', ['deleteSelectedLabels']),
+    deleteSelected () {
+      let payload = { token: this.access_token, selectedLabelsId: this.selected }
+      this.deleteSelectedLabels(payload) // Only when user starts annotating then update annotate page.
+      this.selected = []
+      this.isCleared = true
+    },
+    updateLabelSelection (selectedLabelsId) { // to keep track of selected documents in documents table
+      this.isCleared = false
+      this.selected = selectedLabelsId
+    },
+    clearLabelSelection () {
+      this.selected = []
     }
   }
 }

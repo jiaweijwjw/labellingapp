@@ -25,6 +25,12 @@ def get_all_labels(user: schemas.User = Depends(check_token_n_username), db: Ses
     return db_labels
 
 
+@router.put("/")
+def delete_labels(labels_to_del_id: List[int], user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+    db_deleted_labels = label_crud.delete_labels(
+        db=db, user=user, labels_to_del_id=labels_to_del_id)
+    return db_deleted_labels
+
 # @router.get("/", response_model=List[schemas.Project])
 # def get_all_projects(user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
 #     db_projects = project_crud.get_all_projects(db=db, user=user)
@@ -43,10 +49,3 @@ def get_all_labels(user: schemas.User = Depends(check_token_n_username), db: Ses
 # # , ads_id: Optional[str] = Cookie(None)
 # def read_user(current_user: schemas.User = Depends(get_current_user)):
 #     return current_user
-
-
-# @router.put("/")
-# def delete_projects(projs_to_del_id: List[int], user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
-#     db_deleted_projects = project_crud.delete_projects(
-#         db=db, user=user, projs_to_del_id=projs_to_del_id)
-#     return db_deleted_projects
