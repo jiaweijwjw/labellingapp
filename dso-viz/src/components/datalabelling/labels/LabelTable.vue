@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -67,10 +67,15 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.getLabelList(this.access_token)
+  },
   computed: {
+    ...mapState('general', ['currentUserId', 'currentDocId', 'access_token']),
     ...mapGetters('labels', ['labels'])
   },
   methods: {
+    ...mapActions('labels', ['getLabelList']),
     autoTextColor (color) {
       return this.$hf.autoChooseTextColor(color)
     }

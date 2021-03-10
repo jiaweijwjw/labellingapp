@@ -3,7 +3,7 @@ import { uid } from 'quasar'
 import LabelService from '../services/label.service'
 
 const state = {
-  LabelBtns: [
+  labels: [
     {
       id: '1',
       name: 'Person',
@@ -39,12 +39,18 @@ const state = {
 
 const mutations = {
   addLabel (state, payload) {
-    state.LabelBtns.push(payload.label)
-    // Vue.set(state.CustomLabelBtns, payload.id, payload.label)
+    state.labels.push(payload.label)
+    // Vue.set(state.Customlabels, payload.id, payload.label)
     // Vue.set(object, propertyName, value)
   },
   createLabel (state, payload) {
-    state.LabelBtns.push(payload)
+    state.labels.push(payload)
+  },
+  updateLabelList (state, payload) {
+    let labelsFromDB = payload.slice()
+    state.labels = state.labels.concat(labelsFromDB)
+    console.log(state.labels)
+    console.log(labelsFromDB)
   }
 }
 
@@ -63,12 +69,18 @@ const actions = {
       .then(res => {
         commit('createLabel', res.data)
       })
+  },
+  getLabelList ({ commit }, token) {
+    LabelService.getLabelList(token)
+      .then(res => {
+        commit('updateLabelList', res.data)
+      })
   }
 }
 
 const getters = {
   labels: (state) => {
-    return state.LabelBtns
+    return state.labels
   },
   shortcutkeys () {
     return 'abcdefghijklmnopqrstuvwxyz0123456789'.split('')

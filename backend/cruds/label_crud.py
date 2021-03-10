@@ -17,25 +17,14 @@ def create_label(label: schemas.LabelCreate, db: Session, user: schemas.User):
     return db_label
 
 
-def create_project(db: Session, project: schemas.ProjectCreate):
-    db_project = db_models.Project(name=project.name,
-                                   proj_type=project.proj_type,
-                                   description=project.description,
-                                   user_id=project.user_id)
-    db.add(db_project)
-    db.commit()
-    db.refresh(db_project)
-    return db_project
+def get_all_labels(db: Session, user: schemas.User):
+    return db.query(db_models.Label).filter(db_models.Label.proj_id == user.current_proj_id).all()
 
 
-def get_all_projects(db: Session, user: schemas.User):
-    return db.query(db_models.Project).filter(db_models.Project.user_id == user.id).all()
-
-
-def delete_projects(db: Session, user: schemas.User, projs_to_del_id: List[int]):
-    for proj_to_del_id in projs_to_del_id:
-        proj_to_del = db.query(db_models.Project).filter(
-            db_models.Project.user_id == user.id).filter(db_models.Project.id == proj_to_del_id).first()
-        db.delete(proj_to_del)
-    db.commit()
-    return projs_to_del_id
+# def delete_projects(db: Session, user: schemas.User, projs_to_del_id: List[int]):
+#     for proj_to_del_id in projs_to_del_id:
+#         proj_to_del = db.query(db_models.Project).filter(
+#             db_models.Project.user_id == user.id).filter(db_models.Project.id == proj_to_del_id).first()
+#         db.delete(proj_to_del)
+#     db.commit()
+#     return projs_to_del_id

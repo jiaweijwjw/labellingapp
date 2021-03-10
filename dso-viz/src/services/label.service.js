@@ -10,8 +10,9 @@ class LabelService {
     return this.request.post('/labels/', newLabel)
   }
 
-  getLabelList (projectId) {
-    return this.request.get(`/projects/${projectId}/labels`)
+  getLabelList (token) {
+    this.request.setHeader(token)
+    return this.request.get(`/labels/`)
   }
 
   addLabel (projectId, payload) {
