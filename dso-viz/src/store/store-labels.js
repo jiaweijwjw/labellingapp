@@ -3,36 +3,13 @@ import { uid } from 'quasar'
 import LabelService from '../services/label.service'
 
 const state = {
-  labels: [
+  labels: [],
+  templateLabels: [
     {
-      id: '1',
+      id: 'a',
       name: 'Person',
       shortcutkey: 'p',
       color: '#3ae8ce'
-    },
-    {
-      id: '2',
-      name: 'Location',
-      shortcutkey: 'l',
-      color: '#b32db5'
-    },
-    {
-      id: '3',
-      name: 'Date',
-      shortcutkey: 'd',
-      color: '#005c2e'
-    },
-    {
-      id: '4',
-      name: 'Organization',
-      shortcutkey: 'o',
-      color: '#000000'
-    },
-    {
-      id: '5',
-      name: 'Country',
-      shortcutkey: 'c',
-      color: '#f0bc13'
     }
   ]
 }
@@ -40,17 +17,14 @@ const state = {
 const mutations = {
   addLabel (state, payload) {
     state.labels.push(payload.label)
-    // Vue.set(state.Customlabels, payload.id, payload.label)
-    // Vue.set(object, propertyName, value)
   },
   createLabel (state, payload) {
     state.labels.push(payload)
   },
   updateLabelList (state, payload) {
-    let labelsFromDB = payload.slice()
-    state.labels = state.labels.concat(labelsFromDB)
-    console.log(state.labels)
-    console.log(labelsFromDB)
+    state.labels = payload.slice()
+    // let labelsFromDB = payload.slice()
+    // state.labels = state.labels.concat(labelsFromDB)
   }
 }
 
