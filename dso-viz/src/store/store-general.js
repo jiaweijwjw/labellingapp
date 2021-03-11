@@ -7,7 +7,8 @@ const state = {
   username: '',
   currentUserId: null,
   currentProjId: null,
-  currentDocId: null
+  currentDocId: null,
+  currentSelectedDocsId: []
 }
 
 const mutations = {
@@ -32,6 +33,9 @@ const mutations = {
   },
   updateCurrentDocId (state, newId) {
     state.currentDocId = newId
+  },
+  updateCurrentSelectedDocsId (state, newIds) {
+    state.currentSelectedDocsId = newIds
   }
 }
 
@@ -63,10 +67,13 @@ const actions = {
       .then((res) => {
         commit('updateCurrentDocId', payload.details.id)
         console.log(util.inspect(res.data, false, null, true /* enable colors */)) // to view [object]
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      }).catch((err) => { console.log(err) })
+  },
+  updateCurrentSelectedDocsId ({ commit }, payload) {
+    GeneralService.updateCurrentSelectedDocsId(payload.token, payload.details)
+      .then(res => {
+        commit('updateCurrentSelectedDocsId', payload.details.ids)
+      }).catch(err => { console.log(err) })
   }
 }
 
@@ -76,6 +83,9 @@ const getters = {
   },
   currentDocId: (state) => {
     return state.currentDocId
+  },
+  currentSelectedDocsId: (state) => {
+    return state.currentSelectedDocsId
   }
 }
 

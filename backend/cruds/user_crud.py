@@ -46,6 +46,26 @@ def update_current_doc(db: Session, user: schemas.User, new_id: int):
     db.refresh(db_user)
     return db_user
 
+
+def update_current_selected_docs(db: Session, user: schemas.User, new_ids: List[int]):
+    selected_docs: List[schemas.UserActiveDocument] = []
+    old_selected = db.query(db_models.ActiveDocument).filter(db_models.ActiveDocument.user_id == user.id).filter(
+        db_models.ActiveDocument.proj_id == user.current_proj_id).all()
+    print(old_selected)
+    if old_selected:
+        for item in old_selected:
+            db.delete(item)
+            db.commit()
+    elif not old_selected:
+        pass
+    for new_doc_id in new_ids:
+        selected_doc = db_models.ActiveDocument(
+            user_id=user.id, proj_id=user.current_proj_id, document_id=new_doc_id)
+        db.add(selected_doc)
+        db.commit()
+    return new_ids
+
+
 # def get_labels(db: Session):
 #     return db.query(db_models.Label).all()
 

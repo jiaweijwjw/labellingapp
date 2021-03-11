@@ -87,7 +87,7 @@ export default {
   computed: {
     ...mapState('documents', ['inputText']),
     ...mapGetters('documents', ['currentDoc', 'selectedDocs']),
-    ...mapState('general', ['currentUserId', 'currentProjId', 'access_token']),
+    ...mapState('general', ['currentUserId', 'currentDocId', 'currentProjId', 'access_token']),
     ...mapGetters('general', ['getAccessToken']),
     currentProj () {
       return this.currentProjId
@@ -109,7 +109,7 @@ export default {
   },
   methods: {
     ...mapActions('documents', ['addDocument', 'updateInputText', 'updateSelectedDocs', 'deleteSelectedDocuments']),
-    ...mapActions('general', ['updateCurrentDocId']),
+    ...mapActions('general', ['updateCurrentDocId', 'updateCurrentSelectedDocsId']),
     deleteSelected () {
       console.log('deleted')
       let payload = { token: this.access_token, selectedDocsId: this.selected }
@@ -125,10 +125,12 @@ export default {
     },
     annotateSelected () {
       let details = { id: this.selected[0] }
-      let payload = { token: this.access_token, details: details }
+      let docIdPayload = { token: this.access_token, details: details }
+      let selectedDocsIdPayload = { token: this.access_token, details: { ids: this.selected } }
       try {
-        this.updateCurrentDocId(payload)
-        this.updateSelectedDocs(this.selected) // Only when user starts annotating then update annotate page.
+        this.updateCurrentDocId(docIdPayload)
+        this.updateCurrentSelectedDocsId(selectedDocsIdPayload)
+        //  this.updateSelectedDocs(this.selected) // Only when user starts annotating then update annotate page.
       } catch (error) {
         console.log(console.error())
       } finally {
@@ -136,6 +138,7 @@ export default {
       }
     },
     test () {
+      console.log(this.currentDocId, this.currentProjId)
       console.log(this.currentDoc)
       console.log(this.selectedDocs)
       console.log(this.$route.name)

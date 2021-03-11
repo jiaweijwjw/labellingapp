@@ -43,6 +43,7 @@ class Document(Base):
     is_marked = Column(Boolean)
     content = Column(LargeBinary)
     content_size = Column(Numeric)
+    selected = Column(Boolean)
 
     proj_id = Column(Integer, ForeignKey("projects.id"))
     project = relationship("Project", back_populates="documents")
@@ -74,3 +75,13 @@ class Label(Base):
 
     proj_id = Column(Integer, ForeignKey("projects.id"))
     project = relationship("Project", back_populates="labels")
+
+
+# Reference table to store currently selected working documents of a project
+class ActiveDocument(Base):
+    __tablename__ = "activedocuments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    proj_id = Column(Integer, ForeignKey("projects.id"))
+    document_id = Column(Integer, ForeignKey("documents.id"))

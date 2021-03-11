@@ -4,7 +4,7 @@ from .. import schemas, auth
 from ..cruds import user_crud
 from ..database import get_db
 from sqlalchemy.orm import Session
-# from typing import List, Optional
+from typing import List, Optional
 from ..exceptions import credentials_exception, registration_exception
 
 from ..dependencies import check_token, check_token_n_username
@@ -47,6 +47,15 @@ def update_current_doc(new_id: schemas.Id, user: schemas.User = Depends(check_to
     db_user = user_crud.update_current_doc(
         db=db, user=user, new_id=new_id.id)
     return db_user
+
+# , response_model=List[schemas.UserActiveDocument]
+
+
+@router.put('/me/currentselecteddocs/')
+def update_current_selected_docs(new_ids: schemas.Ids, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+    new_selected_docs = user_crud.update_current_selected_docs(
+        db=db, user=user, new_ids=new_ids.ids)
+    return new_selected_docs
 
 # It will go and look in the request for that Authorization header, check if the value is Bearer plus some token, and will return the token as a str.
 

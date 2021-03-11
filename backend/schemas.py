@@ -41,6 +41,10 @@ class Id(BaseModel):
     id: int
 
 
+class Ids(BaseModel):
+    ids: List[int]
+
+
 class DocumentBase(BaseModel):
     name: str
 
@@ -124,6 +128,15 @@ class User(UserBase):  # UserOut
 
 class UserFull(User):
     projects: List[Project] = []
+
+    class Config:
+        orm_mode = True
+
+
+class UserActiveDocument(BaseModel):
+    user_id: int
+    proj_id: int
+    document_id: int
 
     class Config:
         orm_mode = True

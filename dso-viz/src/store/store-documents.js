@@ -190,8 +190,11 @@ const getters = {
     // return state.documents.find(doc => doc.id === state.current)
     return state.documents.find(doc => doc.id === currentDocId)
   },
-  selectedDocs (state) {
-    return state.documents.filter(doc => state.selected.includes(doc.id)) // state.selected.map(i => state.documents[i])
+  selectedDocs (state, getters, rootState, rootGetters) {
+    let currentSelectedDocsId = rootGetters['general/currentSelectedDocsId']
+    console.log('currentSelectedDocsId: ' + currentSelectedDocsId)
+    return state.documents.filter(doc => currentSelectedDocsId.includes(doc.id))
+    // return state.documents.filter(doc => state.selected.includes(doc.id)) // state.selected.map(i => state.documents[i])
   }
 }
 
