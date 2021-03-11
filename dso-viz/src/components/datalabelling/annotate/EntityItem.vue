@@ -29,13 +29,13 @@ export default {
       default: '',
       required: true
     },
-    label: {
+    label: { // label.name
       type: String,
       default: ''
     },
     color: {
       type: String,
-      default: '#64FFDA'
+      default: ''
     },
     labels: {
       type: Array,
@@ -46,15 +46,15 @@ export default {
       type: Boolean
     },
     labelId: {
-      type: String,
-      default: ''
+      type: Number,
+      default: null
     },
     isValidSelection: {
       type: Boolean
     },
     entityId: {
-      type: String,
-      default: ''
+      type: Number,
+      default: null
     }
   },
   data () {

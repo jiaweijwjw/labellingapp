@@ -22,7 +22,7 @@ class Project(Base):
     __tablename__ = "projects"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
+    name = Column(String, index=True)
     proj_type = Column(String)  # make it a tuple?
     description = Column(String)
 
@@ -48,16 +48,17 @@ class Document(Base):
     project = relationship("Project", back_populates="documents")
 
     annotations = relationship(
-        "Annotation", back_populates="document", cascade="all, delete, delete-orphan")
+        "Annotation", back_populates="document", cascade="all, delete, delete-orphan", lazy='joined')
 
 
 class Annotation(Base):
     __tablename__ = "annotations"
 
     id = Column(Integer, primary_key=True, index=True)
-    label = Column(String, index=True)
-    start_offset = Column(Integer, index=True)
-    end_offset = Column(Integer, index=True)
+    start_offset = Column(Integer)
+    end_offset = Column(Integer)
+    # label = Column(Integer)
+    label_id = Column(Integer, ForeignKey("labels.id"))
 
     document_id = Column(Integer, ForeignKey("documents.id"))
     document = relationship("Document", back_populates="annotations")
@@ -68,31 +69,8 @@ class Label(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
-    shortcutkey = Column(String, index=True)
-    color = Column(String, index=True)
+    shortcutkey = Column(String)
+    color = Column(String)
 
     proj_id = Column(Integer, ForeignKey("projects.id"))
     project = relationship("Project", back_populates="labels")
-
-
-# class User(Base):
-#     __tablename__ = "users"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     username = Column(String, unique=True, index=True)
-#     email = Column(String, unique=True, index=True)
-#     fullname = Column(String, index=True)
-#     hashed_password = Column(String)
-
-#     #items = relationship("Item", back_populates="owner")
-
-
-# class Item(Base):
-#     __tablename__ = "items"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     title = Column(String, index=True)
-#     description = Column(String, index=True)
-#     owner_id = Column(Integer, ForeignKey("users.id"))
-
-#     owner = relationship("User", back_populates="items")

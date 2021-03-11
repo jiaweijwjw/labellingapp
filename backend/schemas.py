@@ -2,8 +2,11 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 # Pydantic models
+# Order of declaration matters!!
 
-# TOKEN
+# reading from database, will know id and need orm
+# Pydantic's orm_mode will tell the Pydantic model to read the data (from database) even if it is not a dict, but an ORM model (or any other arbitrary object with attributes).
+# able to return a database model and it will read the data from it.
 
 
 class Token(BaseModel):
@@ -15,59 +18,43 @@ class TokenData(BaseModel):
     # username: Optional[str] = None
     username: str
 
-# USERS
+
+class AnnotationBase(BaseModel):
+    label_id: int
+    start_offset: int
+    end_offset: int
 
 
-class UserBase(BaseModel):
-    username: str
+class AnnotationCreate(AnnotationBase):
+    pass
 
 
-class UserCreate(UserBase):  # UserIn
-    password: str
-
-
-class UserInDB(UserBase):
-    hashed_password: str
-
-
-class User(UserBase):  # UserOut
+class Annotation(AnnotationBase):
     id: int
-    current_proj_id: int
-    current_doc_id: int
-    # labels: List[Label] = []
-    # documents: List[Document] = []
-    #items: List[Item] = []
+    document_id: int
 
     class Config:
         orm_mode = True
 
 
-class UserDetails(BaseModel):
+class Id(BaseModel):
     id: int
 
 
-class ProjectBase(BaseModel):
+class DocumentBase(BaseModel):
     name: str
-    proj_type: str
-    description: str
 
 
-class ProjectCreate(ProjectBase):
-    user_id: int
-
-
-class Project(ProjectBase):
+class Document(DocumentBase):
     id: int
-    user_id: int
+    is_marked: bool
+    content: bytes
+    content_size: int
+    proj_id: int
+    annotations: List[Annotation] = []
 
     class Config:
         orm_mode = True
-# reading from database, will know id and need orm
-# Pydantic's orm_mode will tell the Pydantic model to read the data (from database) even if it is not a dict, but an ORM model (or any other arbitrary object with attributes).
-# able to return a database model and it will read the data from it.
-
-
-# LABELS
 
 
 class LabelBase(BaseModel):
@@ -87,52 +74,56 @@ class Label(LabelBase):
     class Config:
         orm_mode = True
 
-# DOCUMENTS
 
-
-class DocumentBase(BaseModel):
+class ProjectBase(BaseModel):
     name: str
-    # annotations: List[Annotation]
+    proj_type: str
+    description: str
 
 
-class Document(DocumentBase):
+class ProjectCreate(ProjectBase):
+    user_id: int
+
+
+class Project(ProjectBase):
     id: int
-    is_marked: bool
-    content: bytes
-    content_size: int
-    proj_id: int
-
-    class Config:
-        orm_mode = True
-
-# ANNOTATIONS
-
-
-class AnnotationBase(BaseModel):
-    label: str
-    start_offset: int
-    end_offset: int
-
-
-class Annotation(AnnotationBase):
-    id: int
+    user_id: int
 
     class Config:
         orm_mode = True
 
 
-# class ItemBase(BaseModel):
-#     title: str
-#     description: Optional[str] = None
+class ProjectFull(Project):
+    documents: List[Document] = []
+    labels: List[Label] = []
+
+    class Config:
+        orm_mode = True
 
 
-# class ItemCreate(ItemBase):
-#     pass
+class UserBase(BaseModel):
+    username: str
 
 
-# class Item(ItemBase):
-#     id: int
-#     owner_id: int
+class UserCreate(UserBase):  # UserIn
+    password: str
 
-#     class Config:
-#         orm_mode = True
+
+class UserInDB(UserBase):
+    hashed_password: str
+
+
+class User(UserBase):  # UserOut
+    id: int
+    current_proj_id: int
+    current_doc_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class UserFull(User):
+    projects: List[Project] = []
+
+    class Config:
+        orm_mode = True

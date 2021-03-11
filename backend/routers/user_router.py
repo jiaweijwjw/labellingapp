@@ -36,11 +36,17 @@ def read_user(current_user: schemas.User = Depends(get_current_user)):
 
 
 @router.put('/me/currentproj/', response_model=schemas.User)
-def update_current_proj(new_id: schemas.UserDetails, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+def update_current_proj(new_id: schemas.Id, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
     db_user = user_crud.update_current_proj(
         db=db, user=user, new_id=new_id.id)
     return db_user
 
+
+@router.put('/me/currentdoc/', response_model=schemas.User)
+def update_current_doc(new_id: schemas.Id, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+    db_user = user_crud.update_current_doc(
+        db=db, user=user, new_id=new_id.id)
+    return db_user
 
 # It will go and look in the request for that Authorization header, check if the value is Bearer plus some token, and will return the token as a str.
 

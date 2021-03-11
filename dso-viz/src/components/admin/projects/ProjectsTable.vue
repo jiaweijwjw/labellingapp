@@ -98,7 +98,7 @@ export default {
     ...mapActions('projects', ['getProjectList']),
     ...mapActions('general', ['updateCurrentProjId']),
     getSelectedString () { // there is a @selection event
-      return this.selected.length === 0 ? '' : `${this.selected.length} document${this.selected.length > 1 ? 's' : ''} selected of ${this.projects.length}`
+      return this.selected.length === 0 ? '' : `${this.selected.length} project${this.selected.length > 1 ? 's' : ''} selected of ${this.projects.length}`
     },
     enterProject (evt, rowProj, index) {
       console.log('enter this project')

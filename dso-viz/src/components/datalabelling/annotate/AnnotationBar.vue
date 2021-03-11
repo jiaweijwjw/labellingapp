@@ -34,8 +34,8 @@ export default {
       type: Boolean
     },
     currentDocId: {
-      type: String,
-      default: ''
+      type: Number,
+      default: null
     }
   },
   data () {

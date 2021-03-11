@@ -105,7 +105,7 @@ export default {
       return this.$hf.autoChooseTextColor(color)
     },
     getSelectedString () { // there is a @selection event
-      return this.selected.length === 0 ? '' : `${this.selected.length} document${this.selected.length > 1 ? 's' : ''} selected of ${this.labels.length}`
+      return this.selected.length === 0 ? '' : `${this.selected.length} label${this.selected.length > 1 ? 's' : ''} selected of ${this.labels.length}`
     }
   }
 }

@@ -1,10 +1,12 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List, Optional
 from .. import db_models, schemas, auth
 
 
 def get_user_by_username(db: Session, username: str):
     return db.query(db_models.User).filter(db_models.User.username == username).first()
+# def get_user_by_username(db: Session, username: str):
+#     return db.query(db_models.User).options(joinedload(db_models.User.projects).joinedload(db_models.Project.documents)).filter(db_models.User.username == username).first()
 
 
 def get_user_by_id(db: Session, user_id: int):
@@ -31,6 +33,15 @@ def update_current_proj(db: Session, user: schemas.User, new_id: int):
     db_user = db.query(db_models.User).filter(
         db_models.User.id == user.id).first()
     db_user.current_proj_id = new_id
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+def update_current_doc(db: Session, user: schemas.User, new_id: int):
+    db_user = db.query(db_models.User).filter(
+        db_models.User.id == user.id).first()
+    db_user.current_doc_id = new_id
     db.commit()
     db.refresh(db_user)
     return db_user

@@ -34,12 +34,12 @@
           <div class="column no-wrap flex-center carousel-padding">
             <q-card class="q-toolbar text-white" bordered style="width: 85vw">
         <q-card-section>
-            <annotationbar :marked="document.isMarked" :currentDocId="document.id"/>
+            <annotationbar :marked="document.is_marked" :currentDocId="document.id"/>
         </q-card-section>
         <q-card-section class="words-container no-margin no-padding">
             <entitynaming
               :labels="labels"
-              :text="document.text"
+              :text="document.content"
               :entities="document.annotations"
               :delete-annotation="removeEntity"
               :update-entity="updateEntity"
@@ -58,16 +58,16 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 export default {
   name: 'AnnotatePage',
   mounted () {
-    this.slide = this.currentDoc.id
+    this.slide = this.currentDocId // OR currentDoc.id???
   },
   data () {
     return {
-      slide: '',
+      slide: null,
       thumbStyle: {
         borderRadius: '10px'
       }
@@ -79,9 +79,9 @@ export default {
     annotationbar: require('components/datalabelling/annotate/AnnotationBar.vue').default
   },
   computed: {
+    ...mapState('general', ['access_token', 'currentDocId']),
     ...mapGetters('documents', ['currentDoc', 'selectedDocs']),
     ...mapGetters('labels', ['labels']),
-
     currentSlide: { //  IMPORTANT. Need getters and setter if v-model computed property.
       get: function () {
         return this.slide
@@ -97,9 +97,12 @@ export default {
   },
   methods: {
     ...mapActions('documents', ['updateCurrent', 'deleteAnnotation', 'addAnnotation', 'updateAnnotation']),
+    ...mapActions('general', ['updateCurrentDocId']),
     switchSlide (newSlideName, oldSlideName) {
-      this.updateCurrent(newSlideName)
-      console.log('currentdocid: ' + this.currentDoc.id)
+      this.updateCurrentDocId({ token: this.access_token, details: { id: newSlideName } })
+      // this.updateCurrent(newSlideName)
+      console.log('currentdoc.id: ' + this.currentDoc.id)
+      console.log('currentDocId: ' + this.currentDocId)
       console.log(this.currentDoc, this.selectedDocs)
       console.log('newSlideName: ' + newSlideName + ' oldSlideName: ' + oldSlideName)
     },
@@ -132,6 +135,31 @@ export default {
         default: break
       }
     },
+    removeEntity (annotationId) {
+      const details = {
+        annotationId: annotationId,
+        token: this.access_token
+      }
+      this.deleteAnnotation(details)
+    },
+    updateEntity (newLabelId, annotationId) {
+      const details = {
+        annotationId,
+        newLabelId,
+        token: this.access_token
+      }
+      console.log(newLabelId, annotationId)
+      this.updateAnnotation(details)
+    },
+    addEntity (startOffset, endOffset, labelId) {
+      const details = {
+        start_offset: startOffset,
+        end_offset: endOffset,
+        label_id: labelId,
+        token: this.access_token
+      }
+      this.addAnnotation(details)
+    }
     // removeEntity (annotationId) {
     //   this.currentDoc.annotations = this.currentDoc.annotations.filter(item => item.id !== annotationId)
     // },
@@ -148,31 +176,6 @@ export default {
     //   }
     //   this.currentDoc.annotations.push(payload)
     // },
-    removeEntity (annotationId) {
-      // const payload = {
-      //   annotationId
-      //   // projectId: this.$route.params.id
-      // }
-      this.deleteAnnotation(annotationId)
-    },
-    updateEntity (newLabelId, annotationId) {
-      const payload = {
-        annotationId,
-        newLabelId
-        // projectId: this.$route.params.id
-      }
-      console.log(newLabelId, annotationId)
-      this.updateAnnotation(payload)
-    },
-    addEntity (startOffset, endOffset, labelId) {
-      const payload = {
-        start_offset: startOffset,
-        end_offset: endOffset,
-        label: labelId
-        // projectId: this.$route.params.id
-      }
-      this.addAnnotation(payload)
-    }
   }
 }
 </script>

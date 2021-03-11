@@ -125,7 +125,7 @@ export default {
         chunks = chunks.concat(this.makeChunks(this.text.slice(startOffset, entity.start_offset)))
         startOffset = entity.end_offset
         // add entities to chunks.
-        const label = this.labelObject[entity.label] // find the matching label that entity is having in the labelobject
+        const label = this.labelObject[entity.label_id] // find the matching label that entity is having in the labelobject
         chunks.push({
           id: entity.id,
           labelId: label.id,
@@ -139,7 +139,7 @@ export default {
       return chunks
     },
 
-    labelObject () { // making array of labels into an object of objects format. property name is label.id
+    labelObject () { // making array of labels into an object of objects format. property name (key) is label.id
       const obj = {}
       for (const label of this.labels) {
         obj[label.id] = label // objectName.propertyName same as objectName["propertyName"]

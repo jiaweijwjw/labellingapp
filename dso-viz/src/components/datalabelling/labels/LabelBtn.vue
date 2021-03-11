@@ -97,7 +97,7 @@ export default {
       return true
     },
     assignLabel (labelId) {
-      console.log('assign')
+      console.log('assign label')
       if (this.validateSpan()) {
         this.addEntity(this.start, this.end, labelId)
         console.log(this.start, this.end)

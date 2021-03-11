@@ -29,12 +29,14 @@
         </q-list>
       </q-btn-dropdown>
       <q-btn v-if="isSelected" class="col-2 max-width=20vw" label="Delete Selected" flat text-color="primary" @click="deleteSelected"></q-btn>
-      <q-btn v-if="isSelected" class="col-2 max-width=20vw" label="Annotate Selected" flat text-color="primary" @click="annotateSelected" :to="{ name: 'AnnotatePage' }"></q-btn>
+      <!-- <q-btn v-if="isSelected" class="col-2 max-width=20vw" label="Annotate Selected" flat text-color="primary" @click="annotateSelected" :to="{ name: 'AnnotatePage' }"></q-btn> -->
+      <q-btn v-if="isSelected" class="col-2 max-width=20vw" label="Annotate Selected" flat text-color="primary" @click="annotateSelected"></q-btn>
     </div>
     <div v-else class="text-white">Add Padding</div>
     <div class="page-item table-container">
       <documentstable :isInProject="isInProject" :isCleared="isCleared" @clearSelection="clearDocSelection" @updateSelection="updateDocSelection($event)"/>
     </div>
+    <q-btn color="primary" label="test" @click="test"/>
         <!-- TEXT INPUT -->
       <!-- <texteditor> </texteditor>
       <div class="row">
@@ -84,7 +86,7 @@ export default {
   },
   computed: {
     ...mapState('documents', ['inputText']),
-    ...mapGetters('documents', ['currentDoc']),
+    ...mapGetters('documents', ['currentDoc', 'selectedDocs']),
     ...mapState('general', ['currentUserId', 'currentProjId', 'access_token']),
     ...mapGetters('general', ['getAccessToken']),
     currentProj () {
@@ -106,7 +108,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('documents', ['addDocument', 'updateInputText', 'updateSelected', 'deleteSelectedDocuments']),
+    ...mapActions('documents', ['addDocument', 'updateInputText', 'updateSelectedDocs', 'deleteSelectedDocuments']),
+    ...mapActions('general', ['updateCurrentDocId']),
     deleteSelected () {
       console.log('deleted')
       let payload = { token: this.access_token, selectedDocsId: this.selected }
@@ -119,10 +122,22 @@ export default {
     },
     clearDocSelection () {
       this.selected = []
-      console.log(this.selected)
     },
     annotateSelected () {
-      this.updateSelected(this.selected) // Only when user starts annotating then update annotate page.
+      let details = { id: this.selected[0] }
+      let payload = { token: this.access_token, details: details }
+      try {
+        this.updateCurrentDocId(payload)
+        this.updateSelectedDocs(this.selected) // Only when user starts annotating then update annotate page.
+      } catch (error) {
+        console.log(console.error())
+      } finally {
+        // this.$router.push({ name: 'AnnotatePage' })
+      }
+    },
+    test () {
+      console.log(this.currentDoc)
+      console.log(this.selectedDocs)
     }
     // addToDocuments () {
     //   console.log('submitted document successfully')
