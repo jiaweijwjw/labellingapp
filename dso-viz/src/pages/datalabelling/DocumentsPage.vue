@@ -138,6 +138,7 @@ export default {
     test () {
       console.log(this.currentDoc)
       console.log(this.selectedDocs)
+      console.log(this.$route.name)
     }
     // addToDocuments () {
     //   console.log('submitted document successfully')

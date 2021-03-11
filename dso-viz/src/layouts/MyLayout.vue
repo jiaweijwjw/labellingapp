@@ -4,7 +4,7 @@
       <q-toolbar class="q-pa-sm">
         <!-- <q-btn flat @click="miniState = !miniState" round dense icon="menu" /> -->
         <q-toolbar-title class="q-ml-lg">
-          DSOViz
+          {{title}}
         </q-toolbar-title>
         <q-btn flat round dense icon="create" class="q-mr-sm" clickable to="/datalabelling/annotate/">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Annotate</q-tooltip>
@@ -160,6 +160,19 @@ export default {
         return true
       } else {
         return false
+      }
+    },
+    title: function () {
+      switch (this.$route.name) {
+        case 'AnnotatePage':
+          return 'Annotate'
+        case 'LabelsPage':
+          return 'Labels'
+        case 'DocumentsPage':
+          return 'Documents'
+        case 'ProjectsPage':
+          return 'Projects'
+        default: return ''
       }
     }
   },
