@@ -97,12 +97,17 @@ class Project(ProjectBase):
         orm_mode = True
 
 
-class ProjectFull(Project):
-    documents: List[Document] = []
-    labels: List[Label] = []
+class UserActiveDocument(BaseModel):
+    document_id: int
 
     class Config:
         orm_mode = True
+
+
+class ProjectFull(Project):
+    documents: List[Document] = []
+    labels: List[Label] = []
+    active_documents: List[UserActiveDocument] = []
 
 
 class UserBase(BaseModel):
@@ -127,16 +132,13 @@ class User(UserBase):  # UserOut
 
 
 class UserFull(User):
-    projects: List[Project] = []
+    projects: List[ProjectFull] = []
+    # is Config necessary?
+    # class Config:
+    #     orm_mode = True
 
-    class Config:
-        orm_mode = True
 
-
-class UserActiveDocument(BaseModel):
+class UserActiveDocument2(UserActiveDocument):
+    id: int
     user_id: int
     proj_id: int
-    document_id: int
-
-    class Config:
-        orm_mode = True

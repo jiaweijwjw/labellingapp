@@ -34,6 +34,9 @@ class Project(Base):
     documents = relationship(
         "Document", back_populates="project", cascade="all, delete, delete-orphan")
 
+    active_documents = relationship(
+        "ActiveDocument", back_populates="project", cascade="all, delete, delete-orphan")
+
 
 class Document(Base):
     __tablename__ = "documents"
@@ -43,7 +46,6 @@ class Document(Base):
     is_marked = Column(Boolean)
     content = Column(LargeBinary)
     content_size = Column(Numeric)
-    selected = Column(Boolean)
 
     proj_id = Column(Integer, ForeignKey("projects.id"))
     project = relationship("Project", back_populates="documents")
@@ -82,6 +84,8 @@ class ActiveDocument(Base):
     __tablename__ = "activedocuments"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer)
+    document_id = Column(Integer)
+
     proj_id = Column(Integer, ForeignKey("projects.id"))
-    document_id = Column(Integer, ForeignKey("documents.id"))
+    project = relationship("Project", back_populates="active_documents")

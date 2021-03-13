@@ -28,7 +28,7 @@ def get_current_user(token_data: schemas.TokenData = Depends(check_token), db: S
     return user
 
 
-@router.get("/me/", response_model=schemas.User)
+@router.get("/me/", response_model=schemas.UserFull)
 # this has to be above the next route
 # , ads_id: Optional[str] = Cookie(None)
 def read_user(current_user: schemas.User = Depends(get_current_user)):
