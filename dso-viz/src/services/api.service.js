@@ -14,9 +14,8 @@ class ApiService {
       return req
     })
   }
+
   setHeader (token) {
-    // let token = store
-    // console.log('setHeader: ' + token)
     this.instance.defaults.headers.common.Authorization = `Bearer ${token}`
   }
 

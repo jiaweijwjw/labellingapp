@@ -73,9 +73,9 @@ const mutations = {
     state.documents[index].annotations.push(annotation)
   },
   updateAnnotation (state, editedEntity) {
+    console.log(editedEntity)
     const document = state.documents.find(doc => doc.id === editedEntity.document_id)
-    const annotation = document.annotations.find(item => item.id === editedEntity.annotation_id)
-    // var index = state.documents.map(item => item.id).indexOf(payload.documentId)
+    const annotation = document.annotations.find(item => item.id === editedEntity.id)
     Object.assign(annotation, editedEntity)
   },
   addDocument (state, payload) {

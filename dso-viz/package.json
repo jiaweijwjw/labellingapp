@@ -5,7 +5,7 @@
   "productName": "DSO Visualisation Toolkit",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
-  "author": "Eugene Siow (DSO)",
+  "author": "Lim Jia Wei",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
