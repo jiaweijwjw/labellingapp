@@ -45,6 +45,10 @@ class Ids(BaseModel):
     ids: List[int]
 
 
+class Bool(BaseModel):
+    status: bool
+
+
 class DocumentBase(BaseModel):
     name: str
 

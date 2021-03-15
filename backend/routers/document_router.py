@@ -45,7 +45,12 @@ def get_all_documents(db: Session = Depends(get_db), user: schemas.User = Depend
 
 
 @router.put("/")
-def delete_documentss(docs_to_del_id: List[int], user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+def delete_documents(docs_to_del_id: List[int], user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
     db_deleted_documents = document_crud.delete_documents(
         db=db, user=user, docs_to_del_id=docs_to_del_id)
     return db_deleted_documents
+
+
+@router.put("/{document_id}/", response_model=schemas.Document)
+def update_doc_status(document_id: int, new_status: schemas.Bool, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+    return document_crud.update_doc_status(db=db, user=user, document_id=document_id, status=new_status.status)

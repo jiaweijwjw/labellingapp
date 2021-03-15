@@ -116,11 +116,15 @@ const actions = {
   updateInputText ({ commit }, userInputText) {
     commit('updateInputText', userInputText)
   },
-  updateDocStatus ({ commit }, payload) {
-    commit('updateDocStatus', payload)
-  },
   updateStartEnd ({ commit }, selectionStartEnd) {
     commit('updateStartEnd', selectionStartEnd)
+  },
+  updateDocStatus ({ commit }, payload) {
+    DocumentService.updateDocStatus(payload.token, payload.newStatus, payload.documentId)
+      .then(res => {
+        console.log(res.data)
+      })
+    // commit('updateDocStatus', payload)
   },
   deleteAnnotation ({ commit, state, rootGetters }, details) {
     // const documentId = state.documents.find(doc => doc.id === state.current).id
@@ -156,7 +160,7 @@ const actions = {
         commit('updateAnnotation', res.data)
       })
   },
-  uploadDocument ({ commit }, files) {
+  uploadDocument ({ commit }, files) { // axios part is in ImportDocument for now
     commit('addDocument', files)
   },
   getDocumentList ({ commit }, token) {

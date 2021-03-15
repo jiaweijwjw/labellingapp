@@ -29,3 +29,12 @@ def delete_documents(db: Session, user: schemas.User, docs_to_del_id: List[int])
         db.delete(doc_to_del)
     db.commit()
     return docs_to_del_id
+
+
+def update_doc_status(db: Session, user: schemas.User, document_id: int, status: bool):
+    db_document = db.query(db_models.Document).filter(db_models.Document.id == document_id).filter(
+        db_models.Document.proj_id == user.current_proj_id).first()
+    db_document.is_marked = status
+    db.commit()
+    db.refresh(db_document)
+    return db_document

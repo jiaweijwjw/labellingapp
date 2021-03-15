@@ -46,7 +46,6 @@ export default {
   },
   mounted () {
     this.docStatus = this.marked
-    console.log(this.currentDocId)
   },
   computed: {
     docStatus: { //  IMPORTANT. Need getters and setter if v-model computed property.
@@ -63,7 +62,8 @@ export default {
     updateStatus () {
       let payload = {
         newStatus: this.docStatus,
-        documentId: this.currentDocId
+        documentId: this.currentDocId,
+        token: this.$store.state.general.access_token
       }
       this.updateDocStatus(payload)
     }

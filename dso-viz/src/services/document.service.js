@@ -31,6 +31,11 @@ class DocumentService {
     return this.request.put(`/documents/`, selectedDocsId)
   }
 
+  updateDocStatus (token, newStatus, documentId) {
+    this.request.setHeader(token)
+    return this.request.put(`/documents/${documentId}/`, { status: newStatus })
+  }
+
   addDocument (projectId, payload) {
     return this.request.post(`/projects/${projectId}/docs`, payload)
   }
