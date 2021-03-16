@@ -96,6 +96,7 @@ class ProjectCreate(ProjectBase):
 class Project(ProjectBase):
     id: int
     user_id: int
+    current_doc_id: Optional[int] = None
 
     class Config:
         orm_mode = True

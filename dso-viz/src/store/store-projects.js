@@ -13,7 +13,7 @@ const mutations = {
     state.projects = payload.slice()
   },
   deleteProjects (state, payload) {
-    // for filter, whatever is true will be in the new array
+    // for filter(), whatever is true will be in the new array
     state.projects = state.projects.filter(proj => {
       if (!payload.includes(proj.id)) { // if the proj is not in the list of projs to be deleted, keep it
         return true

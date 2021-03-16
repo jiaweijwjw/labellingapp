@@ -25,6 +25,7 @@ class Project(Base):
     name = Column(String, index=True)
     proj_type = Column(String)  # make it a tuple?
     description = Column(String)
+    current_doc_id = Column(Integer)
 
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User",  back_populates="projects")

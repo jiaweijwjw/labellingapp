@@ -12,7 +12,8 @@ def create_project(db: Session, project: schemas.ProjectCreate):
     db_project = db_models.Project(name=project.name,
                                    proj_type=project.proj_type,
                                    description=project.description,
-                                   user_id=project.user_id)
+                                   user_id=project.user_id,
+                                   current_doc_id=None)
     db.add(db_project)
     db.commit()
     db.refresh(db_project)
