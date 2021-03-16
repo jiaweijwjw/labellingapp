@@ -10,27 +10,6 @@ const state = {
   current: null,
   selected: [],
   documents: []
-  // documents: [
-  //   {
-  //     id: '1',
-  //     name: 'sample text',
-  //     isMarked: false,
-  //     text: 'Batman is a superhero who appears                  in American comic booksssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss published by DC Comics. Batman was created by artist Bob Kane and writer Bill Finger, and debuted in the 27th issue of the comic book Detective Comics on March 30, 1939. In the DC Universe continuity, Batman is the alias of Bruce Wayne, a wealthy American playboy, philanthropist, and owner of Wayne Enterprises based in Gotham City.' +
-  //       '\n' + '\n' + 'Joker is a 2019 American psychological thriller film directed and produced by Todd Phillips, who co-wrote the screenplay with Scott Silver. The film, based on DC Comics characters, stars Joaquin Phoenix as the Joker and provides an alternative origin story for the character. Set in 1981, it follows Arthur Fleck, a failed clown and stand-up comedian whose descent into insanity and nihilism inspires a violent counter-cultural revolution against the wealthy in a decaying Gotham City. Robert De Niro, Zazie Beetz, Frances Conroy, Brett Cullen, Glenn Fleshler, Bill Camp, Shea Whigham, and Marc Maron appear in supporting roles. Joker was produced by Warner Bros. Pictures, DC Films, and Joint Effort, in association with Bron Creative and Village Roadshow Pictures, and distributed by Warner Bros.' +
-  //       '\n' + '\n' + 'test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test',
-  //     annotations: [
-  //       // {
-  //       //   id: 1,
-  //       //   prob: 0.0,
-  //       //   label: '1',
-  //       //   start_offset: 0,
-  //       //   end_offset: 10,
-  //       //   user: 1,
-  //       //   document: 8
-  //       // }
-  //     ]
-  //   }
-  // ]
 }
 
 const mutations = {
@@ -84,7 +63,6 @@ const mutations = {
   },
   updateDocumentList (state, payload) {
     state.documents = payload.slice()
-    console.log(state.documents)
   },
   deleteDocuments (state, payload) {
     // for filter, whatever is true will be in the new array
@@ -162,6 +140,9 @@ const actions = {
   },
   uploadDocument ({ commit }, files) { // axios part is in ImportDocument for now
     commit('addDocument', files)
+  },
+  setDocuments ({ commit }, documents) {
+    commit('updateDocumentList', documents)
   },
   getDocumentList ({ commit }, token) {
     DocumentService.getDocumentList(token)

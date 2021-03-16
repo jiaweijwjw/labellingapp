@@ -27,6 +27,7 @@ const mutations = {
     state.currentUserId = payload.currentUserId
     state.currentProjId = payload.currentProjId
     state.currentDocId = payload.currentDocId
+    state.currentSelectedDocsId = payload.currentSelectedDocsId
   },
   updateCurrentProjId (state, newId) {
     state.currentProjId = newId

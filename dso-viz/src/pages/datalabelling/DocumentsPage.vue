@@ -142,7 +142,10 @@ export default {
       console.log(this.currentDoc)
       console.log(this.selectedDocs)
       console.log(this.$route.name)
-      this.$q.loading.show({ delay: 400 })
+      console.log('docs here: ' + this.$store.getters['documents/selectedDocs'])
+      // console.log('labels here: ' + this.$store.getters['labels/labels'])
+      // console.log('projs here: ' + this.$store.getters['projects/projects'])
+      // this.$q.loading.show({ delay: 400 })
       // this.$q.loading.hide()
     }
     // addToDocuments () {

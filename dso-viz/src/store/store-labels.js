@@ -37,6 +37,9 @@ const mutations = {
 }
 
 const actions = {
+  setLabels ({ commit }, labels) {
+    commit('updateLabelList', labels)
+  },
   addLabel ({ commit }, newLabel) {
     // let labelId = uid()
     newLabel.id = uid()

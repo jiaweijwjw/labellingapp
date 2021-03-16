@@ -88,34 +88,50 @@ export default {
           this.failedRegister()
         })
     },
-    // async getUser (res) {
-    //   this.loginFailed = false
-    //   this.updateAccessToken(res.data.access_token)
-
-    // },
     getuser (res) {
       this.loginFailed = false
-      try {
-        this.updateAccessToken(res.data.access_token)
-        // this.$q.localStorage.set('access_token', res.data.access_token)
-      } catch (e) {
-        console.log('data not saved.')
+      this.updateAccessToken(res.data.access_token)
+      this.showLoading()
+      UserService.getMe(this.access_token)
+        .then((res) => {
+          this.initialLoadUser(res)
+        }, err => console.log(err))
+    },
+    async initialLoadUser (res) {
+      console.log(res)
+      let projects = res.data.projects
+      let currProjIndex = projects.map(item => item.id).indexOf(res.data.current_proj_id)
+      let documents = res.data.projects[currProjIndex].documents
+      let labels = res.data.projects[currProjIndex].labels
+      let activeDocumentsId = projects[currProjIndex].active_documents.map(item => item.document_id)
+      let username = res.data.username
+      let currentUserId = res.data.id
+      let currentProjId = res.data.current_proj_id
+      let currentDocId = res.data.current_doc_id
+      let currentSelectedDocsId = activeDocumentsId
+      let userDetails = {
+        username,
+        currentUserId,
+        currentProjId,
+        currentDocId,
+        currentSelectedDocsId
       }
-      // let test = this.getAccessToken
-      // console.log('test: ' + test)
-      UserService.getMe(this.access_token).then((res) => {
-        console.log(res.data)
-        const userDetails = {
-          username: res.data.username,
-          currentUserId: res.data.id,
-          currentProjId: res.data.current_proj_id,
-          currentDocId: res.data.current_doc_id
-        }
-        this.updateUserDetails(userDetails)
-      }, (error) => {
-        console.log(error)
-      })
-      this.$router.push({ name: 'ProjectsPage' })
+      this.updateUserDetails(userDetails)
+      const projPromise = this.$store.dispatch('projects/setProjects', projects)
+      const docPromise = this.$store.dispatch('documents/setDocuments', documents)
+      const labelPromise = this.$store.dispatch('labels/setLabels', labels)
+      Promise.all([projPromise, docPromise, labelPromise])
+        .then(res => {
+          this.$q.loading.hide()
+          if (!currentProjId) {
+            this.$router.push({ name: 'ProjectsPage' })
+          } else if (!currentDocId) {
+            this.$router.push({ name: 'DocumentsPage' })
+          } else if (currentProjId && currentDocId) {
+            this.$router.push({ name: 'AnnotatePage' })
+          }
+        })
+        .catch(err => console.log(err))
     },
     failedLogin () {
       this.loginFailed = true
@@ -141,7 +157,7 @@ export default {
       this.timer = setTimeout(() => {
         this.$q.loading.hide()
         this.timer = void 0
-      }, 3000)
+      }, 5000)
     }
     // getuser (res) {
     //   this.loginFailed = false

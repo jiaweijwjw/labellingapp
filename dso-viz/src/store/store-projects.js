@@ -11,7 +11,6 @@ const mutations = {
   },
   updateProjectList (state, payload) {
     state.projects = payload.slice()
-    console.log(state.projects)
   },
   deleteProjects (state, payload) {
     // for filter, whatever is true will be in the new array
@@ -25,6 +24,9 @@ const mutations = {
 }
 
 const actions = {
+  setProjects ({ commit }, projects) {
+    commit('updateProjectList', projects)
+  },
   createProject ({ commit }, payload) {
     ProjectService.createProject(payload)
       .then((response) => {
