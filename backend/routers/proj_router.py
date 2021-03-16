@@ -52,6 +52,13 @@ def delete_projects(projs_to_del_id: List[int], user: schemas.User = Depends(che
         db=db, user=user, projs_to_del_id=projs_to_del_id)
     return db_deleted_projects
 
+
+@router.get("/{project_id}/", response_model=schemas.ProjectFull)
+def get_project(project_id: int, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+    db_project = project_crud.get_project(
+        db=db, user=user, project_id=project_id)
+    return db_project
+
 # @router.get("/projects/")
 # async def get_projects(token: str = Depends(auth.oauth2_scheme), db: Session = Depends(get_db)):
 #     credentials_exception = HTTPException(

@@ -26,6 +26,7 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex'
+import ProjectService from '../../../services/project.service'
 
 export default {
   props: ['isCleared'],
@@ -100,16 +101,46 @@ export default {
     getSelectedString () { // there is a @selection event
       return this.selected.length === 0 ? '' : `${this.selected.length} project${this.selected.length > 1 ? 's' : ''} selected of ${this.projects.length}`
     },
-    enterProject (evt, rowProj, index) {
-      console.log('enter this project')
+    async enterProject (evt, rowProj, index) {
+      this.$hf.showLoadingForTime(3000)
       let details = { id: rowProj.id }
       let payload = { token: this.access_token, details: details }
-      try {
-        this.updateCurrentProjId(payload)
-      } catch (error) {
-        console.log(console.error())
-      } finally {
-        // this.$router.push({ name: 'DocumentsPage' })
+      this.updateCurrentProjId(payload)
+      ProjectService.getProject(this.access_token, rowProj.id)
+        .then(res => {
+          this.loadProject(res)
+        })
+    },
+    async loadProject (res) {
+      console.log(res.data)
+      let documents = res.data.documents
+      let labels = res.data.labels
+      let activeDocumentsId = res.data.active_documents.map(item => item.documents_id)
+      let currentSelectedDocsId = activeDocumentsId
+      this.$store.dispatch('general/setCurrentSelectedDocsId', currentSelectedDocsId)
+      if (!documents && !labels) {
+        this.$q.loading.hide()
+        this.$router.push({ name: 'DocumentsPage' })
+      } else if (!documents && labels) {
+        const labelPromise = this.$store.dispatch('labels/setLabels', labels)
+        labelPromise.then(res => {
+          this.$q.loading.hide()
+          this.$router.push({ name: 'DocumentsPage' })
+        })
+      } else if (documents && !labels) {
+        const docPromise = this.$store.dispatch('documents/setDocuments', documents)
+        docPromise.then(res => {
+          this.$q.loading.hide()
+          this.$router.push({ name: 'DocumentsPage' })
+        })
+      } else {
+        const labelPromise = this.$store.dispatch('labels/setLabels', labels)
+        const docPromise = this.$store.dispatch('documents/setDocuments', documents)
+        Promise.all([labelPromise, docPromise])
+          .then(res => {
+            this.$q.loading.hide()
+            this.$router.push({ name: 'DocumentsPage' })
+          })
       }
     }
   }

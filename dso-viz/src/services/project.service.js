@@ -21,6 +21,11 @@ class ProjectService {
     return this.request.put(`/projects/`, selectedProjsId)
   }
 
+  getProject (token, projectId) {
+    this.request.setHeader(token)
+    return this.request.get(`/projects/${projectId}/`)
+  }
+
   updateProject (projectId, payload) {
     return this.request.patch(`/projects/${projectId}`, payload)
   }

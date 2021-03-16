@@ -30,3 +30,9 @@ def delete_projects(db: Session, user: schemas.User, projs_to_del_id: List[int])
         db.delete(proj_to_del)
     db.commit()
     return projs_to_del_id
+
+
+def get_project(db: Session, user: schemas.User, project_id: int):
+    db_proj = db.query(db_models.Project).filter(
+        db_models.Project.id == project_id).filter(db_models.Project.user_id == user.id).first()
+    return db_proj

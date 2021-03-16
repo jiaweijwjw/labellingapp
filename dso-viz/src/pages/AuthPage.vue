@@ -95,7 +95,7 @@ export default {
       UserService.getMe(this.access_token)
         .then((res) => {
           this.initialLoadUser(res)
-        }, err => console.log(err))
+        }).catch(err => console.log(err))
     },
     async initialLoadUser (res) {
       let projects = res.data.projects
@@ -118,7 +118,7 @@ export default {
         projPromise.then(val => {
           this.$q.loading.hide()
           this.$router.push({ name: 'ProjectsPage' })
-        }).then(err => console.log(err))
+        }).catch(err => console.log(err))
       } else { // there are projects and has selected a project (projects && currentProjId)
         let currProjIndex = projects.map(item => item.id).indexOf(res.data.current_proj_id)
         let documents = projects[currProjIndex].documents
@@ -189,17 +189,12 @@ export default {
       AuthService.login(qs.stringify(credentials))
         .then(res => { this.getuser(res) }) // qs.stringify is important for form data http request
         .catch(error => {
-          console.log(error.response.status)
+          console.log('err status: ' + error.response.status)
           this.failedLogin()
         })
     },
     showLoading () {
-      this.$q.loading.show()
-
-      this.timer = setTimeout(() => {
-        this.$q.loading.hide()
-        this.timer = void 0
-      }, 5000)
+      this.$hf.showLoadingForTime(3000) // time in ms
     }
     // getuser (res) {
     //   this.loginFailed = false
