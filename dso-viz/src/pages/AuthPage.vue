@@ -98,40 +98,82 @@ export default {
         }, err => console.log(err))
     },
     async initialLoadUser (res) {
-      console.log(res)
       let projects = res.data.projects
-      let currProjIndex = projects.map(item => item.id).indexOf(res.data.current_proj_id)
-      let documents = res.data.projects[currProjIndex].documents
-      let labels = res.data.projects[currProjIndex].labels
-      let activeDocumentsId = projects[currProjIndex].active_documents.map(item => item.document_id)
       let username = res.data.username
       let currentUserId = res.data.id
       let currentProjId = res.data.current_proj_id
       let currentDocId = res.data.current_doc_id
-      let currentSelectedDocsId = activeDocumentsId
       let userDetails = {
         username,
         currentUserId,
         currentProjId,
-        currentDocId,
-        currentSelectedDocsId
+        currentDocId
       }
       this.updateUserDetails(userDetails)
-      const projPromise = this.$store.dispatch('projects/setProjects', projects)
-      const docPromise = this.$store.dispatch('documents/setDocuments', documents)
-      const labelPromise = this.$store.dispatch('labels/setLabels', labels)
-      Promise.all([projPromise, docPromise, labelPromise])
-        .then(res => {
+      if (!projects) {
+        this.$q.loading.hide()
+        this.$router.push({ name: 'ProjectsPage' })
+      } else if (projects && !currentProjId) {
+        const projPromise = this.$store.dispatch('projects/setProjects', projects)
+        projPromise.then(val => {
           this.$q.loading.hide()
-          if (!currentProjId) {
-            this.$router.push({ name: 'ProjectsPage' })
-          } else if (!currentDocId) {
-            this.$router.push({ name: 'DocumentsPage' })
-          } else if (currentProjId && currentDocId) {
-            this.$router.push({ name: 'AnnotatePage' })
-          }
-        })
-        .catch(err => console.log(err))
+          this.$router.push({ name: 'ProjectsPage' })
+        }).then(err => console.log(err))
+      } else { // there are projects and has selected a project (projects && currentProjId)
+        let currProjIndex = projects.map(item => item.id).indexOf(res.data.current_proj_id)
+        let documents = projects[currProjIndex].documents
+        let labels = projects[currProjIndex].labels
+        let activeDocumentsId = projects[currProjIndex].active_documents.map(item => item.document_id)
+        let currentSelectedDocsId = activeDocumentsId
+        this.$store.dispatch('general/setCurrentSelectedDocsId', currentSelectedDocsId)
+        if (!documents && !labels) {
+          const projPromise = this.$store.dispatch('projects/setProjects', projects)
+          projPromise.then(val => {
+            this.$q.loading.hide()
+            if (!currentProjId) {
+              this.$router.push({ name: 'ProjectsPage' })
+            } else {
+              this.$router.push({ name: 'DocumentsPage' })
+            }
+          }).then(err => console.log(err))
+        } else if (!documents && labels) {
+          const projPromise = this.$store.dispatch('projects/setProjects', projects)
+          const labelPromise = this.$store.dispatch('labels/setLabels', labels)
+          Promise.all([projPromise, labelPromise])
+            .then(res => {
+              this.$q.loading.hide()
+              this.$router.push({ name: 'DocumentsPage' })
+            })
+        } else if (documents && !labels) {
+          const projPromise = this.$store.dispatch('projects/setProjects', projects)
+          const docPromise = this.$store.dispatch('documents/setDocuments', documents)
+          Promise.all([projPromise, docPromise])
+            .then(res => {
+              this.$q.loading.hide()
+              if (!activeDocumentsId) {
+                this.$router.push({ name: 'DocumentsPage' })
+              } else {
+                this.$router.push({ name: 'AnnotatePage' })
+              }
+            })
+        } else { // projects && documents && labels
+          const projPromise = this.$store.dispatch('projects/setProjects', projects)
+          const docPromise = this.$store.dispatch('documents/setDocuments', documents)
+          const labelPromise = this.$store.dispatch('labels/setLabels', labels)
+          Promise.all([projPromise, docPromise, labelPromise])
+            .then(res => {
+              this.$q.loading.hide()
+              if (!currentProjId) {
+                this.$router.push({ name: 'ProjectsPage' })
+              } else if (!currentDocId) {
+                this.$router.push({ name: 'DocumentsPage' })
+              } else if (currentProjId && currentDocId) {
+                this.$router.push({ name: 'AnnotatePage' })
+              }
+            })
+            .catch(err => console.log(err))
+        }
+      }
     },
     failedLogin () {
       this.loginFailed = true

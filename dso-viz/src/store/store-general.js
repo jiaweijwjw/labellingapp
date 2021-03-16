@@ -27,7 +27,7 @@ const mutations = {
     state.currentUserId = payload.currentUserId
     state.currentProjId = payload.currentProjId
     state.currentDocId = payload.currentDocId
-    state.currentSelectedDocsId = payload.currentSelectedDocsId
+    // state.currentSelectedDocsId = payload.currentSelectedDocsId
   },
   updateCurrentProjId (state, newId) {
     state.currentProjId = newId
@@ -75,6 +75,9 @@ const actions = {
       .then(res => {
         commit('updateCurrentSelectedDocsId', payload.details.ids)
       }).catch(err => { console.log(err) })
+  },
+  setCurrentSelectedDocsId ({ commit }, payload) {
+    commit('updateCurrentSelectedDocsId', payload)
   }
 }
 
