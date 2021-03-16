@@ -26,9 +26,9 @@
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
-    <!-- <div>
-    <q-btn type="submit" color="primary" label="test" @click="testtest"/>
-    </div> -->
+    <div>
+    <q-btn color="primary" label="showLoading" @click="showLoading"/>
+    </div>
   </q-page>
 </template>
 
@@ -39,6 +39,12 @@ import AuthService from '../services/auth.service'
 import UserService from '../services/user.service'
 
 export default {
+  beforeDestroy () {
+    if (this.timer !== void 0) {
+      clearTimeout(this.timer)
+      this.$q.loading.hide()
+    }
+  },
   data () {
     return {
       tab: 'login',
@@ -82,6 +88,11 @@ export default {
           this.failedRegister()
         })
     },
+    // async getUser (res) {
+    //   this.loginFailed = false
+    //   this.updateAccessToken(res.data.access_token)
+
+    // },
     getuser (res) {
       this.loginFailed = false
       try {
@@ -123,7 +134,39 @@ export default {
           console.log(error.response.status)
           this.failedLogin()
         })
+    },
+    showLoading () {
+      this.$q.loading.show()
+
+      this.timer = setTimeout(() => {
+        this.$q.loading.hide()
+        this.timer = void 0
+      }, 3000)
     }
+    // getuser (res) {
+    //   this.loginFailed = false
+    //   try {
+    //     this.updateAccessToken(res.data.access_token)
+    //     // this.$q.localStorage.set('access_token', res.data.access_token)
+    //   } catch (e) {
+    //     console.log('data not saved.')
+    //   }
+    //   // let test = this.getAccessToken
+    //   // console.log('test: ' + test)
+    //   UserService.getMe(this.access_token).then((res) => {
+    //     console.log(res.data)
+    //     const userDetails = {
+    //       username: res.data.username,
+    //       currentUserId: res.data.id,
+    //       currentProjId: res.data.current_proj_id,
+    //       currentDocId: res.data.current_doc_id
+    //     }
+    //     this.updateUserDetails(userDetails)
+    //   }, (error) => {
+    //     console.log(error)
+    //   })
+    //   this.$router.push({ name: 'ProjectsPage' })
+    // }
   }
 }
 </script>

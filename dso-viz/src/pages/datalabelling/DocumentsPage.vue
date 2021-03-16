@@ -142,6 +142,8 @@ export default {
       console.log(this.currentDoc)
       console.log(this.selectedDocs)
       console.log(this.$route.name)
+      this.$q.loading.show({ delay: 400 })
+      // this.$q.loading.hide()
     }
     // addToDocuments () {
     //   console.log('submitted document successfully')

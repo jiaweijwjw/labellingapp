@@ -48,9 +48,16 @@ module.exports = function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: ['Notify', 'LocalStorage'],
+      plugins: ['Notify', 'LocalStorage', 'Loading'],
       config: {
-        notify: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ }
+        notify: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ },
+        loading: {
+          message: 'Fetching your data ...',
+          spinnerSize: 50,
+          spinnerColor: 'primary',
+          messageColor: 'primary'
+          // backgroundColor: 'teal'
+        }
       }
     },
 
