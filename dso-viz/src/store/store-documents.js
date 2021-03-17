@@ -18,7 +18,7 @@ const mutations = {
   },
   updateDocStatus (state, payload) {
     const document = state.documents.find(doc => doc.id === payload.documentId)
-    document.isMarked = payload.newStatus
+    document.is_marked = payload.newStatus
   },
   addAnnotation (state, payload) {
     var index = state.documents.map(item => item.id).indexOf(payload.document_id)
@@ -49,7 +49,7 @@ const mutations = {
     })
     console.log(state.documents)
   },
-  setDocumentList (state, payload) {
+  updateDocumentList (state, payload) {
     state.documents = payload.slice()
   },
   setCurrentDocId (state, newId) {
@@ -67,8 +67,8 @@ const actions = {
   updateDocStatus ({ commit }, payload) {
     DocumentService.updateDocStatus(payload.token, payload.newStatus, payload.documentId)
       .then(res => {
-        console.log(res.data)
-        // commit('updateDocStatus', payload)
+        // console.log(res.data)
+        commit('updateDocStatus', payload)
       })
   },
   addAnnotation ({ commit, state, rootGetters }, details) {
@@ -117,7 +117,7 @@ const actions = {
   getDocumentList ({ commit }, token) {
     DocumentService.getDocumentList(token)
       .then((res) => {
-        commit('setDocumentList', res.data)
+        commit('updateDocumentList', res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -143,7 +143,7 @@ const actions = {
     commit('setCurrentSelectedDocsId', currentSelectedDocsId)
   },
   setDocuments ({ commit }, documents) {
-    commit('setDocumentList', documents)
+    commit('updateDocumentList', documents)
   }
 }
 

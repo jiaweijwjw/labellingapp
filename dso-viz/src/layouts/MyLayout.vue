@@ -6,13 +6,13 @@
         <q-toolbar-title class="q-ml-lg">
           {{title}}
         </q-toolbar-title>
-        <q-btn flat round dense icon="create" class="q-mr-sm" clickable to="/datalabelling/annotate/">
+        <q-btn v-if="isReadyToAnnotate" flat round dense icon="create" class="q-mr-sm" clickable to="/datalabelling/annotate/">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Annotate</q-tooltip>
           </q-btn>
-        <q-btn flat round dense icon="label" class="q-mr-sm" clickable to="/datalabelling/labelspage">
+        <q-btn v-if="isInProject" flat round dense icon="label" class="q-mr-sm" clickable to="/datalabelling/labelspage">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Labels</q-tooltip>
           </q-btn>
-        <q-btn flat round dense icon="description" class="q-mr-sm" clickable to="/datalabelling/documentspage">
+        <q-btn v-if="isInProject" flat round dense icon="description" class="q-mr-sm" clickable to="/datalabelling/documentspage">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Documents</q-tooltip>
           </q-btn>
         <!-- <q-btn flat round dense icon="folder" class="q-mr-md" clickable to="/datalabelling/projectspage">
@@ -149,19 +149,16 @@ export default {
     }
   },
   computed: {
-    ...mapState('general', ['access_token', 'username']),
+    ...mapState('general', ['access_token', 'username', 'currentProjId']),
+    ...mapState('documents', ['currentDocId', 'currentSelectedDocsId']),
     name: {
       get () {
         return this.username
       }
     },
-    isLoggedIn: function () {
-      if (this.access_token) {
-        return true
-      } else {
-        return false
-      }
-    },
+    isLoggedIn: function () { return this.access_token },
+    isReadyToAnnotate: function () { return (this.currentDocId && this.currentSelectedDocsId) },
+    isInProject: function () { return this.currentProjId },
     title: function () {
       switch (this.$route.name) {
         case 'AnnotatePage':

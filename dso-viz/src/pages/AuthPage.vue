@@ -92,7 +92,8 @@ export default {
       this.showLoading()
       UserService.getMe(this.access_token)
         .then((res) => {
-          this.initialLoadUser(res)
+          setTimeout(() => this.initialLoadUser(res), 1000) // just to test loading screen. can remove
+          // this.initialLoadUser(res)
         }).catch(err => console.log(err))
     },
     async initialLoadUser (res) {

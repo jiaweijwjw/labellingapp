@@ -120,7 +120,7 @@ export default {
     clearDocSelection () {
       this.selected = []
     },
-    annotateSelected () {
+    async annotateSelected () {
       // let details = { id: this.selected[0] }
       // let docIdPayload = { token: this.access_token, details: details }
       let docIdPayload = {
@@ -134,15 +134,17 @@ export default {
         ids: this.selected,
         proj_id: this.currentProjId
       }
+
       try {
         console.log(this.currentProjId)
-        this.updateCurrentDocId(docIdPayload)
-        this.updateCurrentSelectedDocsId(selectedDocsIdPayload)
+        await this.updateCurrentDocId(docIdPayload)
+        await this.updateCurrentSelectedDocsId(selectedDocsIdPayload)
+        this.$router.push({ name: 'AnnotatePage' })
         //  this.updateSelectedDocs(this.selected) // Only when user starts annotating then update annotate page.
       } catch (error) {
         console.log(console.error())
       } finally {
-        // this.$router.push({ name: 'AnnotatePage' })
+        // this.$router.push({ name: 'AnnotatePage' }) SHOULD NOT BE HERE BECAUSE IF ERROR, WE DONT WANT TO GO TO ANNOTATE PAGE
       }
     },
     test () {
