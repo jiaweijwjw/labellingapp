@@ -1,5 +1,3 @@
-// import Vue from 'vue'
-import { uid } from 'quasar'
 import LabelService from '../services/label.service'
 
 const state = {
@@ -15,16 +13,8 @@ const state = {
 }
 
 const mutations = {
-  addLabel (state, payload) {
-    state.labels.push(payload.label)
-  },
   createLabel (state, payload) {
     state.labels.push(payload)
-  },
-  updateLabelList (state, payload) {
-    state.labels = payload.slice()
-    // let labelsFromDB = payload.slice()
-    // state.labels = state.labels.concat(labelsFromDB)
   },
   deleteLabels (state, payload) {
     // for filter, whatever is true will be in the new array
@@ -33,6 +23,9 @@ const mutations = {
         return true
       }
     })
+  },
+  updateLabelList (state, payload) {
+    state.labels = payload.slice()
   }
 }
 
@@ -40,25 +33,10 @@ const actions = {
   setLabels ({ commit }, labels) {
     commit('updateLabelList', labels)
   },
-  addLabel ({ commit }, newLabel) {
-    // let labelId = uid()
-    newLabel.id = uid()
-    let payload = {
-      // id: labelId,
-      label: newLabel
-    }
-    commit('addLabel', payload)
-  },
   createLabel ({ commit }, payload) {
     LabelService.createLabel(payload.token, payload.newLabel)
       .then(res => {
         commit('createLabel', res.data)
-      })
-  },
-  getLabelList ({ commit }, token) {
-    LabelService.getLabelList(token)
-      .then(res => {
-        commit('updateLabelList', res.data)
       })
   },
   deleteSelectedLabels ({ commit }, payload) {
@@ -68,6 +46,12 @@ const actions = {
       })
       .catch((err) => {
         console.log(err)
+      })
+  },
+  getLabelList ({ commit }, token) {
+    LabelService.getLabelList(token)
+      .then(res => {
+        commit('updateLabelList', res.data)
       })
   }
 }

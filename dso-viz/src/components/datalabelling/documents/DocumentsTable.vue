@@ -82,7 +82,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('general', ['currentUserId', 'currentDocId', 'access_token']),
+    ...mapState('general', ['currentUserId', 'access_token']),
+    ...mapState('documents', ['currentDocId']),
     ...mapGetters('documents', ['documents']),
     whichDocuments () {
       if (this.isInProject === true) {

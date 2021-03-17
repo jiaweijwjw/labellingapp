@@ -14,6 +14,7 @@ router = APIRouter(prefix="/users")
 
 @router.post("/register/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    print(user)
     db_user = user_crud.get_user_by_username(db=db, username=user.username)
     if db_user:
         raise registration_exception
@@ -41,21 +42,6 @@ def update_current_proj(new_id: schemas.Id, user: schemas.User = Depends(check_t
         db=db, user=user, new_id=new_id.id)
     return db_user
 
-
-@router.put('/me/currentdoc/', response_model=schemas.User)
-def update_current_doc(new_id: schemas.Id, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
-    db_user = user_crud.update_current_doc(
-        db=db, user=user, new_id=new_id.id)
-    return db_user
-
-# , response_model=List[schemas.UserActiveDocument]
-
-
-@router.put('/me/currentselecteddocs/')
-def update_current_selected_docs(new_ids: schemas.Ids, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
-    new_selected_docs = user_crud.update_current_selected_docs(
-        db=db, user=user, new_ids=new_ids.ids)
-    return new_selected_docs
 
 # It will go and look in the request for that Authorization header, check if the value is Bearer plus some token, and will return the token as a str.
 

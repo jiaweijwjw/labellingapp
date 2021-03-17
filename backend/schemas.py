@@ -129,8 +129,7 @@ class UserInDB(UserBase):
 
 class User(UserBase):  # UserOut
     id: int
-    current_proj_id: int
-    current_doc_id: int
+    current_proj_id: Optional[int] = None
 
     class Config:
         orm_mode = True

@@ -115,26 +115,19 @@ export default {
       console.log(res.data)
       let documents = res.data.documents
       let labels = res.data.labels
-      let activeDocumentsId = res.data.active_documents.map(item => item.documents_id)
+      let activeDocumentsId = res.data.active_documents.map(item => item.document_id)
       let currentSelectedDocsId = activeDocumentsId
       let currentDocId = res.data.current_doc_id
-      this.$store.dispatch('general/setCurrentSelectedDocsId', currentSelectedDocsId)
+      this.$store.dispatch('documents/setCurrentSelectedDocsId', currentSelectedDocsId)
+      this.$store.dispatch('documents/setCurrentDocId', currentDocId)
       if (!documents && !labels) {
         this.$q.loading.hide()
-        if (!currentDocId) {
-          this.$router.push({ name: 'DocumentsPage' })
-        } else {
-          this.$router.push({ name: 'AnnotatePage' })
-        }
+        this.$router.push({ name: 'DocumentsPage' })
       } else if (!documents && labels) {
         const labelPromise = this.$store.dispatch('labels/setLabels', labels)
         labelPromise.then(res => {
           this.$q.loading.hide()
-          if (!currentDocId) {
-            this.$router.push({ name: 'DocumentsPage' })
-          } else {
-            this.$router.push({ name: 'AnnotatePage' })
-          }
+          this.$router.push({ name: 'DocumentsPage' })
         })
       } else if (documents && !labels) {
         const docPromise = this.$store.dispatch('documents/setDocuments', documents)

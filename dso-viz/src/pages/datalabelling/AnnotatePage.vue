@@ -79,7 +79,8 @@ export default {
     annotationbar: require('components/datalabelling/annotate/AnnotationBar.vue').default
   },
   computed: {
-    ...mapState('general', ['access_token', 'currentDocId']),
+    ...mapState('general', ['access_token', 'currentProjId']),
+    ...mapState('documents', ['currentDocId']),
     ...mapGetters('documents', ['currentDoc', 'selectedDocs']),
     ...mapGetters('labels', ['labels']),
     currentSlide: { //  IMPORTANT. Need getters and setter if v-model computed property.
@@ -97,9 +98,9 @@ export default {
   },
   methods: {
     ...mapActions('documents', ['updateCurrent', 'deleteAnnotation', 'addAnnotation', 'updateAnnotation']),
-    ...mapActions('general', ['updateCurrentDocId']),
+    ...mapActions('documents', ['updateCurrentDocId']),
     switchSlide (newSlideName, oldSlideName) {
-      this.updateCurrentDocId({ token: this.access_token, details: { id: newSlideName } })
+      this.updateCurrentDocId({ token: this.access_token, id: newSlideName, proj_id: this.currentProjId })
       // this.updateCurrent(newSlideName)
       console.log('currentdoc.id: ' + this.currentDoc.id)
       console.log('currentDocId: ' + this.currentDocId)

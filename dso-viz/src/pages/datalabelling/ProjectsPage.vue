@@ -52,7 +52,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions('documents', ['addDocument', 'updateInputText', 'updateSelected']),
     ...mapActions('projects', ['getProjectList', 'deleteSelectedProjects']),
     deleteSelected () {
       let payload = { token: this.access_token, selectedProjsId: this.selected }

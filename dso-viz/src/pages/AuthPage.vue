@@ -48,7 +48,6 @@ export default {
   data () {
     return {
       tab: 'login',
-      test: '',
       token: '',
       loginFailed: false,
       registerFailed: false
@@ -80,7 +79,6 @@ export default {
         .register(credentials)
         .then((res) => {
           this.currentTab = 'login'
-          console.log(res.data)
           this.registerFailed = false
         })
         .catch(error => {
@@ -102,12 +100,10 @@ export default {
       let username = res.data.username
       let currentUserId = res.data.id
       let currentProjId = res.data.current_proj_id
-      let currentDocId = res.data.current_doc_id
       let userDetails = {
         username,
         currentUserId,
-        currentProjId,
-        currentDocId
+        currentProjId
       }
       this.updateUserDetails(userDetails)
       if (!projects) {
@@ -125,7 +121,7 @@ export default {
         let labels = projects[currProjIndex].labels
         let activeDocumentsId = projects[currProjIndex].active_documents.map(item => item.document_id)
         let currentSelectedDocsId = activeDocumentsId
-        this.$store.dispatch('general/setCurrentSelectedDocsId', currentSelectedDocsId)
+        this.$store.dispatch('documents/setCurrentSelectedDocsId', currentSelectedDocsId)
         if (!documents && !labels) {
           const projPromise = this.$store.dispatch('projects/setProjects', projects)
           projPromise.then(val => {
@@ -145,6 +141,8 @@ export default {
               this.$router.push({ name: 'DocumentsPage' })
             })
         } else if (documents && !labels) {
+          let currentDocId = projects[currProjIndex].current_doc_id
+          this.$store.dispatch('documents/setCurrentDocId', currentDocId)
           const projPromise = this.$store.dispatch('projects/setProjects', projects)
           const docPromise = this.$store.dispatch('documents/setDocuments', documents)
           Promise.all([projPromise, docPromise])
@@ -157,6 +155,8 @@ export default {
               }
             })
         } else { // projects && documents && labels
+          let currentDocId = projects[currProjIndex].current_doc_id
+          this.$store.dispatch('documents/setCurrentDocId', currentDocId)
           const projPromise = this.$store.dispatch('projects/setProjects', projects)
           const docPromise = this.$store.dispatch('documents/setDocuments', documents)
           const labelPromise = this.$store.dispatch('labels/setLabels', labels)
@@ -204,8 +204,6 @@ export default {
     //   } catch (e) {
     //     console.log('data not saved.')
     //   }
-    //   // let test = this.getAccessToken
-    //   // console.log('test: ' + test)
     //   UserService.getMe(this.access_token).then((res) => {
     //     console.log(res.data)
     //     const userDetails = {

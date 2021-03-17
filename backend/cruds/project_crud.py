@@ -37,3 +37,31 @@ def get_project(db: Session, user: schemas.User, project_id: int):
     db_proj = db.query(db_models.Project).filter(
         db_models.Project.id == project_id).filter(db_models.Project.user_id == user.id).first()
     return db_proj
+
+
+def update_current_doc(db: Session, user: schemas.User, new_id: int, project_id: int):
+    db_proj = db.query(db_models.Project).filter(
+        db_models.Project.id == project_id).filter(db_models.Project.user_id == user.id).first()
+    db_proj.current_doc_id = new_id
+    db.commit()
+    db.refresh(db_proj)
+    return db_proj
+
+
+def update_current_selected_docs(db: Session, user: schemas.User, new_ids: List[int], project_id: int):
+    selected_docs: List[schemas.UserActiveDocument] = []
+    old_selected = db.query(db_models.ActiveDocument).filter(db_models.ActiveDocument.user_id == user.id).filter(
+        db_models.ActiveDocument.proj_id == project_id).all()
+    print(old_selected)
+    if old_selected:
+        for item in old_selected:
+            db.delete(item)
+            db.commit()
+    elif not old_selected:
+        pass
+    for new_doc_id in new_ids:
+        selected_doc = db_models.ActiveDocument(
+            user_id=user.id, proj_id=project_id, document_id=new_doc_id)
+        db.add(selected_doc)
+        db.commit()
+    return new_ids

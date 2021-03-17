@@ -85,10 +85,9 @@ export default {
     }
   },
   computed: {
-    ...mapState('documents', ['inputText']),
+    ...mapState('documents', ['currentDocId']),
     ...mapGetters('documents', ['currentDoc', 'selectedDocs']),
-    ...mapState('general', ['currentUserId', 'currentDocId', 'currentProjId', 'access_token']),
-    ...mapGetters('general', ['getAccessToken']),
+    ...mapState('general', ['currentUserId', 'currentProjId', 'access_token']),
     currentProj () {
       return this.currentProjId
     },
@@ -108,10 +107,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('documents', ['addDocument', 'updateInputText', 'updateSelectedDocs', 'deleteSelectedDocuments']),
-    ...mapActions('general', ['updateCurrentDocId', 'updateCurrentSelectedDocsId']),
+    ...mapActions('documents', ['updateCurrentDocId', 'updateCurrentSelectedDocsId', 'deleteSelectedDocuments']),
     deleteSelected () {
-      console.log('deleted')
       let payload = { token: this.access_token, selectedDocsId: this.selected }
       this.deleteSelectedDocuments(payload) // Only when user starts annotating then update annotate page.
       this.selected = []
@@ -124,9 +121,19 @@ export default {
       this.selected = []
     },
     annotateSelected () {
-      let details = { id: this.selected[0] }
-      let docIdPayload = { token: this.access_token, details: details }
-      let selectedDocsIdPayload = { token: this.access_token, details: { ids: this.selected } }
+      // let details = { id: this.selected[0] }
+      // let docIdPayload = { token: this.access_token, details: details }
+      let docIdPayload = {
+        token: this.access_token,
+        id: this.selected[0],
+        proj_id: this.currentProjId
+      }
+      // let selectedDocsIdPayload = { token: this.access_token, details: { ids: this.selected } }
+      let selectedDocsIdPayload = {
+        token: this.access_token,
+        ids: this.selected,
+        proj_id: this.currentProjId
+      }
       try {
         this.updateCurrentDocId(docIdPayload)
         this.updateCurrentSelectedDocsId(selectedDocsIdPayload)
@@ -148,19 +155,6 @@ export default {
       // this.$q.loading.show({ delay: 400 })
       // this.$q.loading.hide()
     }
-    // addToDocuments () {
-    //   console.log('submitted document successfully')
-    //   let cloneDocumentToSubmit = { ...this.documentToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
-    //   cloneDocumentToSubmit.text = this.inputText
-    //   this.addDocument(cloneDocumentToSubmit)
-    //   this.documentToSubmit.text = ''
-    //   this.documentToSubmit.annotations = []
-    //   // console.log(cloneDocumentToSubmit)
-    //   let arr = ['a', 'b', 'c', 'd', 'e']
-    //   console.log(arr.slice(0, -1))
-    //   console.log(this.currentDoc.text.split('\n'))
-    //   this.updateInputText('') // clear the textfield after user submission
-    // }
   }
 }
 </script>

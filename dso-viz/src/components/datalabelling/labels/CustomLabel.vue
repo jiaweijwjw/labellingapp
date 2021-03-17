@@ -113,7 +113,7 @@ export default {
   },
   computed: {
     ...mapGetters('labels', ['labels', 'shortcutkeys']),
-    ...mapState('general', ['currentUserId', 'currentDocId', 'access_token'])
+    ...mapState('general', ['currentUserId', 'access_token'])
   },
   methods: {
     ...mapActions('labels', ['createLabel']),

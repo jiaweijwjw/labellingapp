@@ -59,6 +59,22 @@ def get_project(project_id: int, user: schemas.User = Depends(check_token_n_user
         db=db, user=user, project_id=project_id)
     return db_project
 
+
+@router.put('/{project_id}/currentdoc/', response_model=schemas.Project)
+def update_current_doc(project_id: int, new_id: schemas.Id, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+    db_user = project_crud.update_current_doc(
+        db=db, user=user, new_id=new_id.id, project_id=project_id)
+    return db_user
+
+# , response_model=List[schemas.UserActiveDocument]
+
+
+@router.put('/{project_id}/currentselecteddocs/')
+def update_current_selected_docs(project_id: int, new_ids: schemas.Ids, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+    new_selected_docs = project_crud.update_current_selected_docs(
+        db=db, user=user, new_ids=new_ids.ids, project_id=project_id)
+    return new_selected_docs
+
 # @router.get("/projects/")
 # async def get_projects(token: str = Depends(auth.oauth2_scheme), db: Session = Depends(get_db)):
 #     credentials_exception = HTTPException(

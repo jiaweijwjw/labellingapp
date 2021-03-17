@@ -16,7 +16,6 @@ class ProjectService {
   }
 
   deleteProjects (token, selectedProjsId) {
-    console.log(selectedProjsId)
     this.request.setHeader(token)
     return this.request.put(`/projects/`, selectedProjsId)
   }
@@ -26,16 +25,14 @@ class ProjectService {
     return this.request.get(`/projects/${projectId}/`)
   }
 
-  updateProject (projectId, payload) {
-    return this.request.patch(`/projects/${projectId}`, payload)
+  updateCurrentDocId (token, id, projectId) {
+    this.request.setHeader(token)
+    return this.request.put(`/projects/${projectId}/currentdoc/`, { id: id })
   }
 
-  deleteProject (projectId) {
-    return this.request.delete(`/projects/${projectId}`)
-  }
-
-  fetchProjectById (projectId) {
-    return this.request.get(`/projects/${projectId}`)
+  updateCurrentSelectedDocsId (token, ids, projectId) {
+    this.request.setHeader(token)
+    return this.request.put(`/projects/${projectId}/currentselecteddocs/`, { ids: ids })
   }
 }
 
