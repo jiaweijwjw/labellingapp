@@ -1,10 +1,19 @@
 import ProjectService from '../services/project.service'
 
-const state = {
-  projects: []
+const defaultState = () => {
+  return {
+    projects: []
+  }
 }
 
+const state = defaultState()
+
 const mutations = {
+  resetState (state) {
+    // Merge rather than replace so we don't lose observers
+    // https://github.com/vuejs/vuex/issues/1118
+    Object.assign(state, defaultState())
+  },
   createProject (state, payload) {
     state.projects.push(payload)
   },
@@ -23,6 +32,9 @@ const mutations = {
 }
 
 const actions = {
+  resetState ({ commit }) {
+    commit('resetState')
+  },
   setProjects ({ commit }, projects) {
     commit('updateProjectList', projects)
   },

@@ -1,18 +1,26 @@
 import LabelService from '../services/label.service'
 
-const state = {
-  labels: [],
-  templateLabels: [
-    {
-      id: 'a',
-      name: 'Person',
-      shortcutkey: 'p',
-      color: '#3ae8ce'
-    }
-  ]
+const defaultState = () => {
+  return {
+    labels: [],
+    templateLabels: [
+      {
+        id: 'a',
+        name: 'Person',
+        shortcutkey: 'p',
+        color: '#3ae8ce'
+      }
+    ]
+  }
 }
+const state = defaultState()
 
 const mutations = {
+  resetState (state) {
+    // Merge rather than replace so we don't lose observers
+    // https://github.com/vuejs/vuex/issues/1118
+    Object.assign(state, defaultState())
+  },
   createLabel (state, payload) {
     state.labels.push(payload)
   },
@@ -30,6 +38,9 @@ const mutations = {
 }
 
 const actions = {
+  resetState ({ commit }) {
+    commit('resetState')
+  },
   setLabels ({ commit }, labels) {
     commit('updateLabelList', labels)
   },

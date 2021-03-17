@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpr fff">
-    <q-header elevated class="bg-black">
+    <q-header v-if="isLoggedIn" elevated class="bg-black">
       <q-toolbar class="q-pa-sm">
         <!-- <q-btn flat @click="miniState = !miniState" round dense icon="menu" /> -->
         <q-toolbar-title class="q-ml-lg">
@@ -149,14 +149,14 @@ export default {
     }
   },
   computed: {
-    ...mapState('general', ['access_token', 'username', 'currentProjId']),
+    ...mapState('general', ['access_token', 'username', 'currentProjId', 'currentUserId']),
     ...mapState('documents', ['currentDocId', 'currentSelectedDocsId']),
     name: {
       get () {
         return this.username
       }
     },
-    isLoggedIn: function () { return this.access_token },
+    isLoggedIn: function () { return (this.access_token && this.currentUserId && this.username) },
     isReadyToAnnotate: function () { return (this.currentDocId && this.currentSelectedDocsId) },
     isInProject: function () { return this.currentProjId },
     title: function () {
@@ -175,14 +175,22 @@ export default {
   },
   methods: {
     ...mapActions('general', ['clearUserDetails']),
-    logout () {
+    async logout () {
       try {
-        this.clearUserDetails()
+        await this.resetStore()
+        // this.clearUserDetails()
         this.$router.push({ name: 'AuthPage' })
       } catch (e) {
+        console.log(e)
         console.log('Setting access_token to null is unsuccessful.')
         // exit this func?
       }
+    },
+    async resetStore () {
+      this.$store.dispatch('documents/resetState')
+      this.$store.dispatch('general/resetState')
+      this.$store.dispatch('labels/resetState')
+      this.$store.dispatch('projects/resetState')
     }
   }
 }

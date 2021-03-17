@@ -2,14 +2,23 @@ import GeneralService from '../services/general.service'
 
 const util = require('util')
 
-const state = {
-  access_token: '',
-  username: '',
-  currentUserId: null,
-  currentProjId: null
+const defaultState = () => {
+  return {
+    access_token: '',
+    username: '',
+    currentUserId: null,
+    currentProjId: null
+  }
 }
 
+const state = defaultState()
+
 const mutations = {
+  resetState (state) {
+    // Merge rather than replace so we don't lose observers
+    // https://github.com/vuejs/vuex/issues/1118
+    Object.assign(state, defaultState())
+  },
   clearUserDetails (state) {
     state.access_token = ''
     state.username = ''
@@ -30,6 +39,9 @@ const mutations = {
 }
 
 const actions = {
+  resetState ({ commit }) {
+    commit('resetState')
+  },
   clearUserDetails ({ commit }) {
     commit('clearUserDetails')
   },

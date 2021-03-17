@@ -1,17 +1,26 @@
 import DocumentService from '../services/document.service'
 import AnnotationService from '../services/annotation.service'
 import ProjectService from '../services/project.service'
+
 const util = require('util')
 
-const state = {
-  start: 0, // start of selection
-  end: 0, // end of selection
-  currentDocId: null,
-  currentSelectedDocsId: [],
-  documents: []
+const defaultState = () => {
+  return {
+    start: 0, // start of selection
+    end: 0, // end of selection
+    currentDocId: null,
+    currentSelectedDocsId: [],
+    documents: []
+  }
 }
+const state = defaultState()
 
 const mutations = {
+  resetState (state) {
+    // Merge rather than replace so we don't lose observers
+    // https://github.com/vuejs/vuex/issues/1118
+    Object.assign(state, defaultState())
+  },
   updateStartEnd (state, payload) {
     state.start = payload.start
     state.end = payload.end
@@ -61,6 +70,9 @@ const mutations = {
 }
 
 const actions = {
+  resetState ({ commit }) {
+    commit('resetState')
+  },
   updateStartEnd ({ commit }, selectionStartEnd) {
     commit('updateStartEnd', selectionStartEnd)
   },
