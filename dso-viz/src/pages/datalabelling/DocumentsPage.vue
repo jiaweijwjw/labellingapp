@@ -135,6 +135,7 @@ export default {
         proj_id: this.currentProjId
       }
       try {
+        console.log(this.currentProjId)
         this.updateCurrentDocId(docIdPayload)
         this.updateCurrentSelectedDocsId(selectedDocsIdPayload)
         //  this.updateSelectedDocs(this.selected) // Only when user starts annotating then update annotate page.

@@ -26,5 +26,16 @@ def delete_labels(db: Session, user: schemas.User, labels_to_del_id: List[int]):
         label_to_del = db.query(db_models.Label).filter(
             db_models.Label.proj_id == user.current_proj_id).filter(db_models.Label.id == label_to_del_id).first()
         db.delete(label_to_del)
+        annotations_to_del = db.query(db_models.Annotation).filter(
+            db_models.Annotation.label_id == label_to_del_id).delete()
     db.commit()
     return labels_to_del_id
+
+
+# def delete_labels(db: Session, user: schemas.User, labels_to_del_id: List[int]):
+#     for label_to_del_id in labels_to_del_id:
+#         label_to_del = db.query(db_models.Label).filter(
+#             db_models.Label.proj_id == user.current_proj_id).filter(db_models.Label.id == label_to_del_id).first()
+#         db.delete(label_to_del)
+#     db.commit()
+#     return labels_to_del_id

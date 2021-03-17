@@ -39,10 +39,11 @@ const actions = {
         commit('createLabel', res.data)
       })
   },
-  deleteSelectedLabels ({ commit }, payload) {
+  deleteSelectedLabels ({ commit, dispatch }, payload) {
     LabelService.deleteLabels(payload.token, payload.selectedLabelsId)
       .then((res) => {
         commit('deleteLabels', payload.selectedLabelsId)
+        dispatch('documents/getDocumentList', payload.token, { root: true })
       })
       .catch((err) => {
         console.log(err)
