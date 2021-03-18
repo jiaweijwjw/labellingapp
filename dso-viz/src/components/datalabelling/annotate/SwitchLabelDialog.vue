@@ -21,7 +21,6 @@
         </q-card-section>
         <q-card-section>
         <div v-if="remainingLabels.length !== 0" class="row justify-center q-gutter-x-sm q-gutter-y-sm no-padding">
-          <div class="text-white">hello</div>
           <q-btn-group size="0.8rem" class="no-padding row roundedbtn"
           v-for="(labelbtn, key) in remainingLabels"
           :key="key"

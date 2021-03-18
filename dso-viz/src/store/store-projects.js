@@ -71,6 +71,11 @@ const actions = {
 const getters = {
   projects: (state) => {
     return state.projects
+  },
+  currentProjName: (state, getters, rootState, rootGetters) => {
+    let currentProjId = rootGetters['general/currentProjId']
+    const proj = state.projects.find(proj => proj.id === currentProjId)
+    return currentProjId ? proj.name : ''
   }
 }
 

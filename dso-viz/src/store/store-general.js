@@ -69,6 +69,9 @@ const actions = {
 const getters = {
   getAccessToken: (state) => {
     return state.access_token
+  },
+  currentProjId: (state) => {
+    return state.currentProjId
   }
 }
 

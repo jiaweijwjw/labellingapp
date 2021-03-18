@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'MyLayout',
@@ -151,6 +151,7 @@ export default {
   computed: {
     ...mapState('general', ['access_token', 'username', 'currentProjId', 'currentUserId']),
     ...mapState('documents', ['currentDocId', 'currentSelectedDocsId']),
+    ...mapGetters('projects', ['currentProjName']),
     name: {
       get () {
         return this.username
@@ -160,15 +161,19 @@ export default {
     isReadyToAnnotate: function () { return (this.currentDocId && this.currentSelectedDocsId) },
     isInProject: function () { return this.currentProjId },
     title: function () {
+      let extra = ''
+      if (!this.currentProjName) {
+        extra = ''
+      } else { extra = ` > ${this.currentProjName}` }
       switch (this.$route.name) {
         case 'AnnotatePage':
-          return 'Annotate'
+          return 'Annotate' + extra
         case 'LabelsPage':
-          return 'Labels'
+          return 'Labels' + extra
         case 'DocumentsPage':
-          return 'Documents'
+          return 'Documents' + extra
         case 'ProjectsPage':
-          return 'Projects'
+          return 'Projects' + extra
         default: return ''
       }
     }
@@ -191,6 +196,10 @@ export default {
       this.$store.dispatch('general/resetState')
       this.$store.dispatch('labels/resetState')
       this.$store.dispatch('projects/resetState')
+    },
+    showProjectName () {
+      return ' hello'
+      // return this.currentProjName ? ` > ${this.currentProjName}` : ''
     }
   }
 }
