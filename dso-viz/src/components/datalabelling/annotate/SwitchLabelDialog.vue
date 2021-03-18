@@ -20,26 +20,28 @@
           />
         </q-card-section>
         <q-card-section>
-        <div class="row justify-center q-gutter-x-sm q-gutter-y-sm no-padding">
-        <q-btn-group size="0.8rem" class="no-padding row roundedbtn"
-        v-for="(labelbtn, key) in remainingLabels"
-        :key="key"
-        v-bind:class="{ border: labelbtn.id === newLabelId }"
-        clickable>
-          <q-btn class="q-px-sm no-margin ellipsis roundedbtn"
-          v-shortkey="[labelbtn.shortcutkey]"
-          @shortkey="selectedNewLabel(labelbtn.id)"
-          @click="selectedNewLabel(labelbtn.id)"
-          :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:15vw'" v-text="labelbtn.name">
-          </q-btn>
-          <q-btn class="q-px-sm no-margin roundedbtn"
-          v-shortkey="[labelbtn.shortcutkey]"
-          @shortkey="selectedNewLabel(labelbtn.id)"
-          @click="selectedNewLabel(labelbtn.id)"
-          :style="'background-color: white'" v-text="labelbtn.shortcutkey">
-          </q-btn>
-        </q-btn-group>
-  </div>
+        <div v-if="remainingLabels.length !== 0" class="row justify-center q-gutter-x-sm q-gutter-y-sm no-padding">
+          <div class="text-white">hello</div>
+          <q-btn-group size="0.8rem" class="no-padding row roundedbtn"
+          v-for="(labelbtn, key) in remainingLabels"
+          :key="key"
+          v-bind:class="{ border: labelbtn.id === newLabelId }"
+          clickable>
+            <q-btn class="q-px-sm no-margin ellipsis roundedbtn"
+            v-shortkey="[labelbtn.shortcutkey]"
+            @shortkey="selectedNewLabel(labelbtn.id)"
+            @click="selectedNewLabel(labelbtn.id)"
+            :style="'background-color:'+labelbtn.color+';'+'color:'+autoTextColor(labelbtn.color)+';' + 'max-width:15vw'" v-text="labelbtn.name">
+            </q-btn>
+            <q-btn class="q-px-sm no-margin roundedbtn"
+            v-shortkey="[labelbtn.shortcutkey]"
+            @shortkey="selectedNewLabel(labelbtn.id)"
+            @click="selectedNewLabel(labelbtn.id)"
+            :style="'background-color: white'" v-text="labelbtn.shortcutkey">
+            </q-btn>
+          </q-btn-group>
+        </div>
+        <div v-else class="row justify-center q-gutter-x-sm q-gutter-y-sm no-padding text-white">No other labels to change to. Create more labels!</div>
         </q-card-section>
         <q-card-actions class="text-primary">
         <span class="hint" v-if="!selected">Please select a label</span>
@@ -81,6 +83,8 @@ export default {
   computed: {
     remainingLabels () {
       let arr = this.labels.filter(item => item.id !== this.labelToEdit.currentLabelId)
+      console.log(arr)
+      console.log(arr.length)
       return arr // this.labels.filter(item => item.name !== this.currentlabelId)
     }
   },

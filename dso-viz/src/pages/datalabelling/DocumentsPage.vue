@@ -137,9 +137,11 @@ export default {
 
       try {
         console.log(this.currentProjId)
-        await this.updateCurrentDocId(docIdPayload)
-        await this.updateCurrentSelectedDocsId(selectedDocsIdPayload)
-        this.$router.push({ name: 'AnnotatePage' })
+        const currDocPromise = this.updateCurrentDocId(docIdPayload)
+        const currSelectedDocsPromise = this.updateCurrentSelectedDocsId(selectedDocsIdPayload)
+        Promise.all([currDocPromise, currSelectedDocsPromise]).then(res => {
+          this.$router.push({ name: 'AnnotatePage' })
+        })
         //  this.updateSelectedDocs(this.selected) // Only when user starts annotating then update annotate page.
       } catch (error) {
         console.log(console.error())

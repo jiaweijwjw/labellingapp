@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpr fff">
-    <q-header v-if="isLoggedIn" elevated class="bg-black">
+    <q-header v-if="this.$route.name !== 'AuthPage'" elevated class="bg-black">
       <q-toolbar class="q-pa-sm">
         <!-- <q-btn flat @click="miniState = !miniState" round dense icon="menu" /> -->
         <q-toolbar-title class="q-ml-lg">
