@@ -5,8 +5,7 @@
         <q-chip  v-if="docSentiment !== ''"
         :icon="docSentiment === 'positive' ? 'sentiment_very_satisfied' : (docSentiment === 'negative' ? 'sentiment_very_dissatisfied' : 'remove') "
         dense
-        :color="getSentimentColor()"
-        :text-color="autoTextColor('#000000')"
+        :style="'background-color:'+getSentimentColor()+';'+'color:'+autoTextColor(getSentimentColor())+';' + 'max-width:15vw'"
         :label="docSentiment"></q-chip>
         <q-space/>
         <q-btn flat class="col-1" @click="dialog = true"><q-icon name="menubook"/></q-btn>
@@ -82,7 +81,14 @@ export default {
       return this.$hf.autoChooseTextColor(color)
     },
     getSentimentColor () {
-      return 'primary'
+      switch (this.docSentiment) {
+        case 'positive':
+          return '#7ffc03'
+        case 'negative':
+          return '#fc3503'
+        default:
+          return 'primary'
+      }
     }
   }
 }
