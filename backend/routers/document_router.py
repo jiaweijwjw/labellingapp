@@ -53,4 +53,9 @@ def delete_documents(docs_to_del_id: List[int], user: schemas.User = Depends(che
 
 @router.put("/{document_id}/", response_model=schemas.Document)
 def update_doc_status(document_id: int, new_status: schemas.Bool, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
-    return document_crud.update_doc_status(db=db, user=user, document_id=document_id, status=new_status.status)
+    return document_crud.update_doc_status(db=db, user=user, document_id=document_id, status=new_status.bool_val)
+
+
+@router.post("/{document_id}/sentiment/{project_id}/{user_id}/", response_model=schemas.Document)
+def update_sentiment(document_id: int, project_id: int, user_id: int, sentiment: schemas.String, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
+    return document_crud.update_pos_sentiment(db=db, user=user, document_id=document_id, project_id=project_id, user_id=user_id, sentiment=sentiment.string_val)

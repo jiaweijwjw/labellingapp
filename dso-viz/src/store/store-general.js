@@ -70,6 +70,9 @@ const getters = {
   getAccessToken: (state) => {
     return state.access_token
   },
+  currentUserId: (state) => {
+    return state.currentUserId
+  },
   currentProjId: (state) => {
     return state.currentProjId
   }

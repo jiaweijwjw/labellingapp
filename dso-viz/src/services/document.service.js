@@ -33,9 +33,23 @@ class DocumentService {
 
   updateDocStatus (token, newStatus, documentId) {
     this.request.setHeader(token)
-    return this.request.put(`/documents/${documentId}/`, { status: newStatus })
+    return this.request.put(`/documents/${documentId}/`, { bool_val: newStatus })
   }
 
+  addSentiment (token, classificationId, documentId, projectId, userId) {
+    this.request.setHeader(token)
+    let val = () => {
+      switch (classificationId) {
+        case 1:
+          return 'positive'
+        case 2:
+          return 'negative'
+        default:
+          return ''
+      }
+    }
+    return this.request.post(`/documents/${documentId}/sentiment/${projectId}/${userId}`, { string_val: val() })
+  }
   // addDocument (projectId, payload) {
   //   return this.request.post(`/projects/${projectId}/docs`, payload)
   // }

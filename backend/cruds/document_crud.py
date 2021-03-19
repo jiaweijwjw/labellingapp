@@ -11,7 +11,7 @@ from sqlalchemy import and_
 def create_upload_file(doc_name: str, db: Session, user: schemas.User, content: bytes):
     proj_id = user.current_proj_id
     db_document = db_models.Document(
-        name=doc_name, is_marked=False, content=content, content_size=len(content), proj_id=proj_id)
+        name=doc_name, is_marked=False, sentiment='', content=content, content_size=len(content), proj_id=proj_id)
     db.add(db_document)
     db.commit()
     db.refresh(db_document)
@@ -35,6 +35,15 @@ def update_doc_status(db: Session, user: schemas.User, document_id: int, status:
     db_document = db.query(db_models.Document).filter(db_models.Document.id == document_id).filter(
         db_models.Document.proj_id == user.current_proj_id).first()
     db_document.is_marked = status
+    db.commit()
+    db.refresh(db_document)
+    return db_document
+
+
+def update_pos_sentiment(db: Session, user: schemas.User, document_id: int, project_id: int, user_id: int, sentiment: str):
+    db_document = db.query(db_models.Document).filter(db_models.Document.id == document_id).filter(
+        db_models.Document.proj_id == project_id).first()
+    db_document.sentiment = sentiment
     db.commit()
     db.refresh(db_document)
     return db_document

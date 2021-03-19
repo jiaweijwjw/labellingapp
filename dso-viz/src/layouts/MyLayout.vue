@@ -9,7 +9,7 @@
         <q-btn v-if="isReadyToAnnotate" flat round dense icon="create" class="q-mr-sm" clickable to="/datalabelling/annotate/">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Annotate</q-tooltip>
           </q-btn>
-        <q-btn v-if="isInProject" flat round dense icon="label" class="q-mr-sm" clickable to="/datalabelling/labelspage">
+        <q-btn v-if="isInProject && (this.currentProjType === 'Sequence Labelling')" flat round dense icon="label" class="q-mr-sm" clickable to="/datalabelling/labelspage">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Labels</q-tooltip>
           </q-btn>
         <q-btn v-if="isInProject" flat round dense icon="description" class="q-mr-sm" clickable to="/datalabelling/documentspage">
@@ -151,7 +151,7 @@ export default {
   computed: {
     ...mapState('general', ['access_token', 'username', 'currentProjId', 'currentUserId']),
     ...mapState('documents', ['currentDocId', 'currentSelectedDocsId']),
-    ...mapGetters('projects', ['currentProjName']),
+    ...mapGetters('projects', ['currentProjName', 'currentProjType']),
     name: {
       get () {
         return this.username
@@ -196,6 +196,7 @@ export default {
       this.$store.dispatch('general/resetState')
       this.$store.dispatch('labels/resetState')
       this.$store.dispatch('projects/resetState')
+      this.$store.dispatch('classify/resetState')
     },
     showProjectName () {
       return ' hello'

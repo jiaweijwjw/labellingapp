@@ -46,7 +46,11 @@ class Ids(BaseModel):
 
 
 class Bool(BaseModel):
-    status: bool
+    bool_val: bool
+
+
+class String(BaseModel):
+    string_val: str
 
 
 class DocumentBase(BaseModel):
@@ -56,6 +60,7 @@ class DocumentBase(BaseModel):
 class Document(DocumentBase):
     id: int
     is_marked: bool
+    sentiment: str
     content: bytes
     content_size: int
     proj_id: int

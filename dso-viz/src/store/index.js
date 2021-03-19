@@ -6,6 +6,7 @@ import labels from './store-labels'
 import documents from './store-documents'
 import general from './store-general'
 import projects from './store-projects'
+import classify from './store-classification'
 
 Vue.use(Vuex)
 
@@ -24,7 +25,8 @@ export default function (/* { ssrContext } */) {
       labels,
       documents,
       general,
-      projects
+      projects,
+      classify
     },
     plugins: [createPersistedState()],
     // plugins: [generalState],

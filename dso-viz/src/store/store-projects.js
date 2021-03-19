@@ -1,5 +1,7 @@
 import ProjectService from '../services/project.service'
 
+const projectTypeEnum = Object.freeze({ 'Sequence Labelling': 1, 'Document Classification': 2 })
+
 const defaultState = () => {
   return {
     projects: []
@@ -72,10 +74,19 @@ const getters = {
   projects: (state) => {
     return state.projects
   },
+  getProjectTypes: (state) => {
+    var projectTypeArr = Object.keys(projectTypeEnum)
+    return projectTypeArr
+  },
   currentProjName: (state, getters, rootState, rootGetters) => {
     let currentProjId = rootGetters['general/currentProjId']
     const proj = state.projects.find(proj => proj.id === currentProjId)
     return currentProjId ? proj.name : ''
+  },
+  currentProjType: (state, getters, rootState, rootGetters) => {
+    let currentProjId = rootGetters['general/currentProjId']
+    const proj = state.projects.find(proj => proj.id === currentProjId)
+    return currentProjId ? proj.proj_type : null
   }
 }
 

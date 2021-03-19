@@ -2,12 +2,20 @@
   <q-page v-shortkey="{left: ['arrowleft'], right: ['arrowright']}" @shortkey="slideCarousel" class="page">
     <div>
       <!-- LABELS -->
-      <labels
+      <labelctrls
+        v-if="this.currentProjType === 'Sequence Labelling'"
         class="labels-box page-item"
         :labels="labels"
         :entities="currentDoc.annotations"
         :add-entity="addEntity"
-      > </labels>
+      > </labelctrls>
+      <classificationctrls
+        v-if="this.currentProjType === 'Document Classification' && showClassificationCtrls === true"
+        class="labels-box page-item"
+        :classifyDocument="classifyDocument"
+      ></classificationctrls>
+      <div v-if="this.currentProjType === null">
+      </div>
       <!-- ANNOTATOR -->
     <q-carousel
       @before-transition="switchSlide"
@@ -68,21 +76,24 @@ export default {
   data () {
     return {
       slide: null,
+      showClassificationCtrls: true,
       thumbStyle: {
         borderRadius: '10px'
       }
     }
   },
   components: {
-    labels: require('components/datalabelling/annotate/Labels.vue').default,
+    labelctrls: require('components/datalabelling/annotate/LabelCtrls.vue').default,
     entitynaming: require('components/datalabelling/annotate/EntityNaming.vue').default,
-    annotationbar: require('components/datalabelling/annotate/AnnotationBar.vue').default
+    annotationbar: require('components/datalabelling/annotate/AnnotationBar.vue').default,
+    classificationctrls: require('components/datalabelling/classification/ClassificationCtrls.vue').default
   },
   computed: {
     ...mapState('general', ['access_token', 'currentProjId']),
     ...mapState('documents', ['currentDocId']),
     ...mapGetters('documents', ['currentDoc', 'selectedDocs']),
     ...mapGetters('labels', ['labels']),
+    ...mapGetters('projects', ['currentProjType']),
     currentSlide: { //  IMPORTANT. Need getters and setter if v-model computed property.
       get: function () {
         return this.slide
@@ -98,7 +109,7 @@ export default {
   },
   methods: {
     ...mapActions('documents', ['updateCurrent', 'deleteAnnotation', 'addAnnotation', 'updateAnnotation']),
-    ...mapActions('documents', ['updateCurrentDocId']),
+    ...mapActions('documents', ['updateCurrentDocId', 'addSentiment']),
     switchSlide (newSlideName, oldSlideName) {
       this.updateCurrentDocId({ token: this.access_token, id: newSlideName, proj_id: this.currentProjId })
       // this.updateCurrent(newSlideName)
@@ -160,6 +171,13 @@ export default {
         token: this.access_token
       }
       this.addAnnotation(details)
+    },
+    classifyDocument (classificationId) {
+      let details = {
+        token: this.access_token,
+        classificationId
+      }
+      this.addSentiment(details)
     }
     // removeEntity (annotationId) {
     //   this.currentDoc.annotations = this.currentDoc.annotations.filter(item => item.id !== annotationId)

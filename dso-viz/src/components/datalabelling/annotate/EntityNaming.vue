@@ -230,7 +230,7 @@ export default {
       if (this.start === this.end) {
         return false
       }
-      for (const entity of this.entities) {
+      for (const entity of this.entities) { // if the selection goes into any of the annotation entities
         if ((entity.start_offset <= this.start) && (this.start < entity.end_offset)) {
           return false
         }

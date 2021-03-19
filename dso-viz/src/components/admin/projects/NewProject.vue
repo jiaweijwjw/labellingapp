@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
   props: ['dialog'],
@@ -66,11 +66,24 @@ export default {
         description: '',
         user_id: null
       },
-      projectTypes: ['Sequence Labelling', 'Document Classification']
+      projTypes: []
     }
   },
+  mounted () {
+    console.log(this.getProjectTypes)
+    this.projectTypes = this.getProjectTypes
+  },
   computed: {
-    ...mapState('general', ['currentUserId', 'access_token'])
+    ...mapState('general', ['currentUserId', 'access_token']),
+    ...mapGetters('projects', ['getProjectTypes']),
+    projectTypes: { //  IMPORTANT. Need getters and setter if v-model computed property.
+      get: function () {
+        return this.projTypes
+      },
+      set: function (types) {
+        this.projTypes = types
+      }
+    }
   },
   methods: {
     ...mapActions('projects', ['createProject']),

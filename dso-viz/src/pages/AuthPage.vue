@@ -26,9 +26,9 @@
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
-    <div>
+    <!-- <div>
     <q-btn color="primary" label="showLoading" @click="showLoading"/>
-    </div>
+    </div> -->
   </q-page>
 </template>
 

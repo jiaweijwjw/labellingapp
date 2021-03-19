@@ -45,6 +45,7 @@ class Document(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     is_marked = Column(Boolean)
+    sentiment = Column(String)
     content = Column(LargeBinary)
     content_size = Column(Numeric)
 
