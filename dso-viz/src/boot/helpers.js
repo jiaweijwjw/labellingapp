@@ -43,7 +43,7 @@ const helperFunctions = {
   //     return 'black'
   //   }
   // }
-  autoChooseTextColor (hexColor) {
+  autoChooseTextColor (hexColor) { // string type hexColor
     // https://www.w3.org/TR/AERT/#color-contrast
     const r = parseInt(hexColor.substr(1, 2), 16)
     const g = parseInt(hexColor.substr(3, 2), 16)

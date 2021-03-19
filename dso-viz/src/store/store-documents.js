@@ -66,6 +66,11 @@ const mutations = {
   },
   setCurrentSelectedDocsId (state, newIds) {
     state.currentSelectedDocsId = newIds
+  },
+  updateSentiment (state, fullDoc) {
+    let documentId = fullDoc.id
+    const document = state.documents.find(doc => doc.id === documentId)
+    document.sentiment = fullDoc.sentiment
   }
 }
 
@@ -164,8 +169,8 @@ const actions = {
     console.log(userId, projectId, documentId)
     DocumentService.addSentiment(details.token, details.classificationId, documentId, projectId, userId)
       .then(res => {
-        console.log(res.data)
-      })
+        commit('updateSentiment', res.data)
+      }).catch(err => { console.log(err) })
   }
 }
 
@@ -183,6 +188,10 @@ const getters = {
   selectedDocs: (state, getters, rootState, rootGetters) => {
     // let currentSelectedDocsId = rootGetters['general/currentSelectedDocsId']
     return state.documents.filter(doc => state.currentSelectedDocsId.includes(doc.id))
+  },
+  currentDocSentiment: (state, getters) => {
+    let currentDoc = getters['currentDoc']
+    return currentDoc.sentiment
   }
 }
 

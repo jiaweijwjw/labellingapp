@@ -2,6 +2,12 @@
 <div>
     <q-bar class="row">
         <q-checkbox class="col-2" dark v-model="docStatus" :label="this.status ? 'Checked' : 'Unchecked'" color="primary" @input="updateStatus()"/>
+        <q-chip  v-if="docSentiment !== ''"
+        :icon="docSentiment === 'positive' ? 'sentiment_very_satisfied' : (docSentiment === 'negative' ? 'sentiment_very_dissatisfied' : 'remove') "
+        dense
+        :color="getSentimentColor()"
+        :text-color="autoTextColor('#000000')"
+        :label="docSentiment"></q-chip>
         <q-space/>
         <q-btn flat class="col-1" @click="dialog = true"><q-icon name="menubook"/></q-btn>
     </q-bar>
@@ -26,7 +32,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -48,6 +54,8 @@ export default {
     this.docStatus = this.marked
   },
   computed: {
+    ...mapGetters('classify', ['classifyBtns']),
+    ...mapGetters('documents', ['currentDocSentiment']),
     docStatus: { //  IMPORTANT. Need getters and setter if v-model computed property.
       get: function () {
         return this.status
@@ -55,6 +63,9 @@ export default {
       set: function (marked) {
         this.status = marked
       }
+    },
+    docSentiment: {
+      get: function () { return this.currentDocSentiment }
     }
   },
   methods: {
@@ -66,6 +77,12 @@ export default {
         token: this.$store.state.general.access_token
       }
       this.updateDocStatus(payload)
+    },
+    autoTextColor (color) {
+      return this.$hf.autoChooseTextColor(color)
+    },
+    getSentimentColor () {
+      return 'primary'
     }
   }
 }
