@@ -197,6 +197,7 @@ export default {
       this.$store.dispatch('labels/resetState')
       this.$store.dispatch('projects/resetState')
       this.$store.dispatch('classify/resetState')
+      this.$store.dispatch('settings/resetState')
     },
     showProjectName () {
       return ' hello'

@@ -11,7 +11,7 @@
         <q-btn flat class="col-1" @click="dialog = true"><q-icon name="menubook"/></q-btn>
         <q-option-group
           :options="options"
-          v-model="annotationToggles"
+          v-model="toggles"
           type="toggle"
           inline dense dark
           color="primary"
@@ -55,20 +55,40 @@ export default {
   data () {
     return {
       status: false,
-      annotationToggles: [],
-      options: [
-        { label: 'Fast Mode', value: 'fast', checkedIcon: 'speed', iconColor: 'black' },
-        { label: 'Focus Mode', value: 'focus', checkedIcon: 'zoom_out_map', uncheckedIcon: 'unfold_less', iconColor: 'black' }
-      ],
+      // annotationToggles: [],
+      // options: [
+      //   { label: 'Fast Mode', value: 'fast', checkedIcon: 'speed', iconColor: 'black', disable: true },
+      //   { label: 'Focus Mode', value: 'focus', checkedIcon: 'zoom_out_map', uncheckedIcon: 'unfold_less', iconColor: 'black' }
+      // ],
       dialog: false
     }
   },
   mounted () {
     this.docStatus = this.marked
+    console.log('what type: ' + this.currentProjType)
   },
   computed: {
     ...mapGetters('classify', ['classifyBtns']),
     ...mapGetters('documents', ['currentDocSentiment']),
+    ...mapGetters('projects', ['currentProjType']),
+    ...mapGetters('settings', ['getAnnotationSettings']),
+    options: { // SINCE DISABLE IS DYNAMIC< HAVE TO BE COMPUTED
+      get: function () {
+        let optionsArr = [
+          { label: 'Fast Mode', value: 'fast', checkedIcon: 'speed', iconColor: 'black', disable: this.currentProjType !== 'Document Classification' },
+          { label: 'Focus Mode', value: 'focus', checkedIcon: 'zoom_out_map', uncheckedIcon: 'unfold_less', iconColor: 'black' }
+        ]
+        return optionsArr
+      }
+    },
+    toggles: {
+      get: function () {
+        return this.getAnnotationSettings
+      },
+      set: function (settingsArr) {
+        this.setAnnotationSettings(settingsArr)
+      }
+    },
     docStatus: { //  IMPORTANT. Need getters and setter if v-model computed property.
       get: function () { return this.status },
       set: function (marked) { this.status = marked }
@@ -79,6 +99,7 @@ export default {
   },
   methods: {
     ...mapActions('documents', ['updateDocStatus']),
+    ...mapActions('settings', ['setAnnotationSettings']),
     updateStatus () {
       let payload = {
         newStatus: this.docStatus,
@@ -108,6 +129,9 @@ export default {
         this.$emit('focus-on')
         this.$emit('fast-on')
       } else if (isFocus) {
+        console.log('currentprojtype: ' + this.currentProjType)
+        console.log(this.currentProjType !== 'Document Classification')
+        console.log(this.currentProjType === 'Document Classification')
         this.$emit('focus-on')
         this.$emit('fast-off')
       } else if (isFast) {
