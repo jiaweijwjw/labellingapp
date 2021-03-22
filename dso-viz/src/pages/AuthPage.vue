@@ -224,8 +224,6 @@ export default {
 </script>
 
 <style lang="sass">
-.q-card
-  background-color: $popover-background
 .auth-page
   display: flex
   flex-flow: column

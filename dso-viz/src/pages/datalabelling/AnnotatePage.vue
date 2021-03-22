@@ -259,4 +259,6 @@ export default {
   font-weight: 400
   color: $primary
   margin: 4rem 0 1.5rem
+.q-toolbar
+  background-color: $toolbar-color
 </style>
