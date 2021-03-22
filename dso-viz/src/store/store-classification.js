@@ -6,13 +6,13 @@ const defaultState = () => {
         id: 1,
         name: 'positive',
         shortcutkey: 'arrowup',
-        color: '#7ffc03'
+        color: '#a4ff70'
       },
       {
         id: 2,
         name: 'negative',
         shortcutkey: 'arrowdown',
-        color: '#fc3503'
+        color: '#ff5252'
       }
     ]
   }

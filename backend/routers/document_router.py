@@ -58,4 +58,4 @@ def update_doc_status(document_id: int, new_status: schemas.Bool, user: schemas.
 
 @router.post("/{document_id}/sentiment/{project_id}/{user_id}/", response_model=schemas.Document)
 def update_sentiment(document_id: int, project_id: int, user_id: int, sentiment: schemas.String, user: schemas.User = Depends(check_token_n_username), db: Session = Depends(get_db)):
-    return document_crud.update_pos_sentiment(db=db, user=user, document_id=document_id, project_id=project_id, user_id=user_id, sentiment=sentiment.string_val)
+    return document_crud.update_sentiment(db=db, user=user, document_id=document_id, project_id=project_id, user_id=user_id, sentiment=sentiment.string_val)

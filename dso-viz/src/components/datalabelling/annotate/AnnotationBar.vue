@@ -9,6 +9,15 @@
         :label="docSentiment"></q-chip>
         <q-space/>
         <q-btn flat class="col-1" @click="dialog = true"><q-icon name="menubook"/></q-btn>
+        <q-option-group
+          :options="options"
+          v-model="annotationToggles"
+          type="toggle"
+          inline dense dark
+          color="primary"
+          @input="changeMode"
+          size="xs">
+        </q-option-group>
     </q-bar>
     <div>
     <q-dialog v-model="dialog">
@@ -46,6 +55,11 @@ export default {
   data () {
     return {
       status: false,
+      annotationToggles: [],
+      options: [
+        { label: 'Fast Mode', value: 'fast', checkedIcon: 'speed', iconColor: 'black' },
+        { label: 'Focus Mode', value: 'focus', checkedIcon: 'zoom_out_map', uncheckedIcon: 'unfold_less', iconColor: 'black' }
+      ],
       dialog: false
     }
   },
@@ -56,12 +70,8 @@ export default {
     ...mapGetters('classify', ['classifyBtns']),
     ...mapGetters('documents', ['currentDocSentiment']),
     docStatus: { //  IMPORTANT. Need getters and setter if v-model computed property.
-      get: function () {
-        return this.status
-      },
-      set: function (marked) {
-        this.status = marked
-      }
+      get: function () { return this.status },
+      set: function (marked) { this.status = marked }
     },
     docSentiment: {
       get: function () { return this.currentDocSentiment }
@@ -83,11 +93,29 @@ export default {
     getSentimentColor () {
       switch (this.docSentiment) {
         case 'positive':
-          return '#7ffc03'
+          return '#a4ff70'
         case 'negative':
-          return '#fc3503'
+          return '#ff5252'
         default:
           return 'primary'
+      }
+    },
+    changeMode (togglesState) {
+      let isFocus = togglesState.includes('focus')
+      let isFast = togglesState.includes('fast')
+      console.log(togglesState)
+      if (isFocus && isFast) {
+        this.$emit('focus-on')
+        this.$emit('fast-on')
+      } else if (isFocus) {
+        this.$emit('focus-on')
+        this.$emit('fast-off')
+      } else if (isFast) {
+        this.$emit('focus-off')
+        this.$emit('fast-on')
+      } else {
+        this.$emit('focus-off')
+        this.$emit('fast-off')
       }
     }
   }

@@ -48,7 +48,7 @@ module.exports = function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: ['Notify', 'LocalStorage', 'Loading'],
+      plugins: ['Notify', 'LocalStorage', 'Loading', 'AppFullscreen'],
       config: {
         notify: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ },
         loading: {

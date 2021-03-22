@@ -1,5 +1,6 @@
 <template>
   <q-page v-shortkey="{left: ['arrowleft'], right: ['arrowright']}" @shortkey="slideCarousel" class="page">
+    <div><q-btn class="text-primary" label="testfullscreen" @click="toggle"/></div>
     <div>
       <!-- LABELS -->
       <labelctrls
@@ -42,7 +43,9 @@
           <div class="column no-wrap flex-center carousel-padding">
             <q-card class="q-toolbar text-white" bordered style="width: 85vw">
         <q-card-section>
-            <annotationbar :marked="document.is_marked" :currentDocId="document.id"/>
+            <annotationbar :marked="document.is_marked" :currentDocId="document.id"
+            @focus-on="enterFullscreen" @fast-on="enterFastMode"
+            @focus-off="exitFullscreen" @fast-off="exitFastMode"/>
         </q-card-section>
         <q-card-section class="words-container no-margin no-padding">
             <entitynaming
@@ -178,6 +181,30 @@ export default {
         classificationId
       }
       this.addSentiment(details)
+    },
+    toggle (e) {
+      const target = e.target.parentNode.parentNode.parentNode
+      this.$q.fullscreen.toggle(target)
+        .then(() => {
+          // success!
+        })
+        .catch((err) => {
+          alert(err)
+          // uh, oh, error!!
+          // console.error(err)
+        })
+    },
+    enterFullscreen () {
+      console.log('enterfullscreen')
+    },
+    exitFullscreen () {
+      console.log('exitfullscreen')
+    },
+    enterFastMode () {
+      console.log('enterfastmode')
+    },
+    exitFastMode () {
+      console.log('exitfastmode')
     }
     // removeEntity (annotationId) {
     //   this.currentDoc.annotations = this.currentDoc.annotations.filter(item => item.id !== annotationId)
