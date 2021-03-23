@@ -131,7 +131,7 @@
     </q-drawer> -->
 
     <!-- pages will be inserted here -->
-    <q-page-container class="absolute-center">
+    <q-page-container>
       <router-view />
     </q-page-container>
   </q-layout>
@@ -198,10 +198,6 @@ export default {
       this.$store.dispatch('projects/resetState')
       this.$store.dispatch('classify/resetState')
       this.$store.dispatch('settings/resetState')
-    },
-    showProjectName () {
-      return ' hello'
-      // return this.currentProjName ? ` > ${this.currentProjName}` : ''
     }
   }
 }

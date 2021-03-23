@@ -1,7 +1,7 @@
 <template>
 <div>
     <q-bar class="row">
-        <q-checkbox class="col-2" dark v-model="docStatus" :label="this.status ? 'Checked' : 'Unchecked'" color="primary" @input="updateStatus()"/>
+        <q-checkbox class="col-2" dark v-model="docStatus" :label="this.status ? 'Checked' : 'Unchecked'" color="primary"/>
         <q-chip  v-if="docSentiment !== ''"
         :icon="docSentiment === 'positive' ? 'sentiment_very_satisfied' : (docSentiment === 'negative' ? 'sentiment_very_dissatisfied' : 'remove') "
         dense
@@ -54,7 +54,7 @@ export default {
   },
   data () {
     return {
-      status: false,
+      status: this.marked,
       // annotationToggles: [],
       // options: [
       //   { label: 'Fast Mode', value: 'fast', checkedIcon: 'speed', iconColor: 'black', disable: true },
@@ -65,11 +65,10 @@ export default {
   },
   mounted () {
     this.docStatus = this.marked
-    console.log('what type: ' + this.currentProjType)
   },
   computed: {
     ...mapGetters('classify', ['classifyBtns']),
-    ...mapGetters('documents', ['currentDocSentiment']),
+    ...mapGetters('documents', ['currentDocSentiment', 'currentDocStatus']),
     ...mapGetters('projects', ['currentProjType']),
     ...mapGetters('settings', ['getAnnotationSettings']),
     options: { // SINCE DISABLE IS DYNAMIC< HAVE TO BE COMPUTED
@@ -90,8 +89,10 @@ export default {
       }
     },
     docStatus: { //  IMPORTANT. Need getters and setter if v-model computed property.
-      get: function () { return this.status },
-      set: function (marked) { this.status = marked }
+      get: function () { return this.currentDocStatus },
+      set: function (status) {
+        this.updateStatus(status)
+      }
     },
     docSentiment: {
       get: function () { return this.currentDocSentiment }
@@ -100,9 +101,9 @@ export default {
   methods: {
     ...mapActions('documents', ['updateDocStatus']),
     ...mapActions('settings', ['setAnnotationSettings']),
-    updateStatus () {
+    updateStatus (status) {
       let payload = {
-        newStatus: this.docStatus,
+        newStatus: status,
         documentId: this.currentDocId,
         token: this.$store.state.general.access_token
       }

@@ -162,14 +162,23 @@ const actions = {
   setDocuments ({ commit }, documents) {
     commit('updateDocumentList', documents)
   },
-  addSentiment ({ commit, rootGetters, state }, details) {
+  addSentiment ({ commit, rootGetters, state, dispatch }, details) {
     let userId = rootGetters['general/currentUserId']
     let projectId = rootGetters['general/currentProjId']
     let documentId = state.currentDocId
+    let isFastMode = rootGetters['settings/getFastMode']
     console.log(userId, projectId, documentId)
     DocumentService.addSentiment(details.token, details.classificationId, documentId, projectId, userId)
       .then(res => {
         commit('updateSentiment', res.data)
+        if (isFastMode) {
+          let payload = {
+            newStatus: true,
+            token: details.token,
+            documentId
+          }
+          dispatch('updateDocStatus', payload)
+        }
       }).catch(err => { console.log(err) })
   }
 }
@@ -192,6 +201,10 @@ const getters = {
   currentDocSentiment: (state, getters) => {
     let currentDoc = getters['currentDoc']
     return currentDoc.sentiment
+  },
+  currentDocStatus: (state, getters) => {
+    let currentDoc = getters['currentDoc']
+    return currentDoc.is_marked
   }
 }
 

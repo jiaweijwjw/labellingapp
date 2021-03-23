@@ -1,6 +1,5 @@
 <template>
   <q-page v-shortkey="{left: ['arrowleft'], right: ['arrowright']}" @shortkey="slideCarousel" class="page">
-    <div><q-btn class="text-primary" label="testfullscreen" @click="toggle"/></div>
     <div>
       <!-- LABELS -->
       <labelctrls
@@ -37,7 +36,7 @@
       control-color="black"
       control-text-color="primary"
     >
-    <q-carousel-slide v-for="document in selectedDocs" v-bind:key="document.id" :name="document.id" class="q-pa-none">
+    <q-carousel-slide v-for="document in selectedDocuments" v-bind:key="document.id" :name="document.id" class="q-pa-none">
         <q-scroll-area dark :thumb-style="thumbStyle" class="fit">
           <!-- q-carousel--padding -->
           <div class="column no-wrap flex-center carousel-padding">
@@ -46,6 +45,7 @@
             <annotationbar :marked="document.is_marked" :currentDocId="document.id"
             @focus-on="enterFullscreen" @fast-on="enterFastMode"
             @focus-off="exitFullscreen" @fast-off="exitFastMode"/>
+            <div><q-btn class="text-primary" label="testfullscreen" @click="toggle"/></div>
         </q-card-section>
         <q-card-section class="words-container no-margin no-padding">
             <entitynaming
@@ -97,6 +97,9 @@ export default {
     ...mapGetters('documents', ['currentDoc', 'selectedDocs']),
     ...mapGetters('labels', ['labels']),
     ...mapGetters('projects', ['currentProjType']),
+    selectedDocuments: { // Vuex getters are not reactive, have to use computed porperty
+      get: function () { return this.selectedDocs }
+    },
     currentSlide: { //  IMPORTANT. Need getters and setter if v-model computed property.
       get: function () {
         return this.slide
@@ -106,7 +109,7 @@ export default {
       }
     },
     allSlides () {
-      let slides = this.selectedDocs.map(docs => docs.id)
+      let slides = this.selectedDocuments.map(docs => docs.id)
       return slides
     }
   },

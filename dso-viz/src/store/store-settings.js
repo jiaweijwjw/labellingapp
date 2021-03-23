@@ -15,6 +15,12 @@ const mutations = {
   setAnnotationSettings (state, settingsArr) {
     state.annotationSettings = settingsArr
   }
+//   setFastMode (state, mode) {
+//     state.fastMode = mode
+//   },
+//   setFocusMode (state, mode) {
+//     state.focusMode = mode
+//   }
 }
 
 const actions = {
@@ -24,11 +30,23 @@ const actions = {
   setAnnotationSettings ({ commit }, settingsArr) {
     commit('setAnnotationSettings', settingsArr)
   }
+//   setFastMode ({ commit }, mode) { // mode is boolean value
+//     commit('setFastMode', mode)
+//   },
+//   setFocusMode ({ commit }, mode) {
+//     commit('setFocusMode', mode)
+//   }
 }
 
 const getters = {
   getAnnotationSettings: (state) => {
     return state.annotationSettings
+  },
+  getFastMode: (state) => {
+    return state.annotationSettings.includes('fast')
+  },
+  getFocusMode: (state) => {
+    return state.annotationSettings.includes('focus')
   }
 }
 
