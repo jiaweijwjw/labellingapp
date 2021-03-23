@@ -3,7 +3,7 @@
     <q-bar class="row">
         <q-checkbox class="col-2" dark v-model="docStatus" :label="this.status ? 'Checked' : 'Unchecked'" color="primary"/>
         <q-chip  v-if="docSentiment !== ''"
-        :icon="docSentiment === 'positive' ? 'sentiment_very_satisfied' : (docSentiment === 'negative' ? 'sentiment_very_dissatisfied' : 'remove') "
+        :icon="whichIcon()"
         dense
         :style="'background-color:'+getSentimentColor()+';'+'color:'+autoTextColor(getSentimentColor())+';' + 'max-width:15vw'"
         :label="docSentiment"></q-chip>
@@ -117,9 +117,23 @@ export default {
         case 'positive':
           return '#a4ff70'
         case 'negative':
-          return '#ff5252'
+          return '#ff5454'
+        case 'neutral':
+          return '#fff0e3'
         default:
           return 'primary'
+      }
+    },
+    whichIcon () {
+      switch (this.docSentiment) {
+        case 'positive':
+          return 'sentiment_very_satisfied'
+        case 'negative':
+          return 'sentiment_very_dissatisfied'
+        case 'neutral':
+          return 'sentiment_satisfied'
+        default:
+          return 'remove'
       }
     },
     changeMode (togglesState) {

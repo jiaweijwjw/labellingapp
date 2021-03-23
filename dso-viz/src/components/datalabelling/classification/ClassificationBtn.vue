@@ -19,8 +19,8 @@
           @shortkey="classify(btn.id)"
           @click="classify(btn.id)"
           :style="'background-color: white'"
-          :icon="btn.shortcutkey === 'arrowup' ? 'arrow_upward' : (btn.shortcutkey === 'arrowdown' ? 'arrow_downward' : '') "
-          :label="btn.shortcutkey === 'arrowup' ||  'arrowdown' ? '' :  btn.shortcutkey ">
+          :icon="whichIcon(btn.shortcutkey)"
+          :label="whichLabel(btn.shortcutkey)">
           </q-btn>
         </q-btn-group>
   </div>
@@ -54,6 +54,25 @@ export default {
     classify (classificationId) {
       console.log('classificationId: ' + classificationId)
       this.classifyDocument(classificationId)
+    },
+    whichIcon (shortkey) {
+      switch (shortkey) {
+        case 'arrowup':
+          return 'arrow_upward'
+        case 'arrowdown':
+          return 'arrow_downward'
+        case 'space':
+          return 'space_bar'
+        default:
+          return ''
+      }
+    },
+    whichLabel (shortkey) {
+      if (shortkey === 'arrowup' || shortkey === 'arrowdown' || shortkey === 'space') {
+        return ''
+      } else {
+        return shortkey
+      }
     }
   }
 }

@@ -44,6 +44,8 @@ class DocumentService {
           return 'positive'
         case 2:
           return 'negative'
+        case 3:
+          return 'neutral'
         default:
           return ''
       }
