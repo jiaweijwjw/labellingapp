@@ -1,6 +1,6 @@
 <template>
   <q-page class="auth-page">
-    <q-card class="auth-page-item" bordered>
+    <q-card class="auth-page-item auth-card" bordered>
       <q-tabs
         v-model="currentTab"
         dense
@@ -223,7 +223,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style scoped lang="sass">
 .auth-page
   display: flex
   flex-flow: column
@@ -239,8 +239,5 @@ export default {
   width: 40vw
   max-width: 40vw
 .auth-card
-  position: fixed
-  right: 50%
-  width: 30vw
-  height: 50%
+  background-color: $toolbar-color
 </style>
