@@ -31,8 +31,8 @@ export default {
       pagination: {
         rowsPerPage: 10
       },
-      visibleColumns: ['name', 'text'],
-      columns: [
+      visibleColumns: ['name', 'text', 'status', 'sentiment'],
+      standardColumns: [
         {
           name: 'name',
           required: true,
@@ -41,7 +41,7 @@ export default {
           field: row => row.name,
           format: val => `${val}`, // template literals
           style: '',
-          classes: 'test',
+          classes: '',
           sortable: true
         },
         {
@@ -52,14 +52,35 @@ export default {
           style: 'max-width: 50vw',
           classes: 'ellipsis',
           sortable: true
+        },
+        {
+          name: 'status',
+          label: 'Checked?',
+          align: 'left',
+          field: row => row.is_marked ? 'Yes' : 'No',
+          sortable: true
         }
-        // { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
       ]
     }
   },
   mounted () {
     console.log('doc table mounted')
     this.getDocumentList(this.access_token)
+    if (this.currentProjType === 'Document Classification') {
+      this.columns = {
+        name: 'sentiment',
+        label: 'Sentiment',
+        align: 'left',
+        field: row => {
+          if (row.sentiment !== null) {
+            return row.sentiment
+          } else {
+            return ''
+          }
+        },
+        sortable: true
+      }
+    }
   },
   destroyed: function () {
     console.log('doc table destroyed')
@@ -85,6 +106,13 @@ export default {
     ...mapState('general', ['currentUserId', 'access_token']),
     ...mapState('documents', ['currentDocId']),
     ...mapGetters('documents', ['documents']),
+    ...mapGetters('projects', ['currentProjType']),
+    columns: {
+      get: function () { return this.standardColumns },
+      set: function (additionalColObj) {
+        return this.standardColumns.push(additionalColObj)
+      }
+    },
     whichDocuments () {
       if (this.isInProject === true) {
         return this.documents
