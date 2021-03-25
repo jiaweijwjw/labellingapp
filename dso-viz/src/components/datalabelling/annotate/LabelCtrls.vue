@@ -21,10 +21,12 @@
     <q-card class="col-12 my-card bg-grey-4">
       <q-card-section>
         <labelbtn
+        v-if="labels.length !== 0"
         :labels="labels"
         :add-entity="addEntity"
         :entities="entities">
         </labelbtn>
+        <div class="text-subtitle1 text-center" v-else>No Labels added yet. Proceed to labels page to add your first label!</div>
       </q-card-section>
     </q-card>
   </div>
