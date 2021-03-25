@@ -75,7 +75,6 @@ export default {
   name: 'AnnotatePage',
   mounted () {
     console.log('currentDocId on mount annotatepage: ' + this.currentDocId)
-    console.log('currentDoc.Id: ' + this.currentDoc.Id)
     this.slide = this.currentDocId // OR currentDoc.id???
   },
   data () {

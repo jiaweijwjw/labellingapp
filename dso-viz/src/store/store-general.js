@@ -34,7 +34,11 @@ const mutations = {
     state.currentProjId = payload.currentProjId
   },
   updateCurrentProjId (state, newId) {
-    state.currentProjId = newId
+    if (newId === -1) {
+      state.currentProjId = null
+    } else {
+      state.currentProjId = newId
+    }
   }
 }
 

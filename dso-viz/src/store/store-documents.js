@@ -73,7 +73,11 @@ const mutations = {
     state.documents = payload.slice()
   },
   setCurrentDocId (state, newId) {
-    state.currentDocId = newId
+    if (newId === -1) {
+      state.currentDocId = null
+    } else {
+      state.currentDocId = newId
+    }
   },
   setCurrentSelectedDocsId (state, newIds) {
     state.currentSelectedDocsId = newIds
@@ -164,8 +168,6 @@ const actions = {
       let selectedDocsPayload = { token: payload.token, ids: currentSelectedDocsIdAfterDeletion, proj_id: currentProjId }
       dispatch('updateCurrentSelectedDocsId', selectedDocsPayload)
         .then(() => {
-          // let afterRemove = state.currentSelectedDocsId
-          // console.log('currentSelectedDocsId afterRemove : ' + afterRemove)
           if (payload.selectedDocsId.includes(currentDocId)) {
             console.log('the currDoc kena deleted too')
             console.log('choose the next in line')
@@ -252,7 +254,13 @@ const getters = {
   },
   currentDoc: (state, getters, rootState, rootGetters) => {
     // let currentDocId = rootGetters['general/currentDocId']
-    return state.documents.find(doc => doc.id === state.currentDocId)
+    if (state.currentDocId === null) {
+      return null
+    } else {
+      let currentDoc = state.documents.find(doc => doc.id === state.currentDocId)
+      return currentDoc
+    }
+    // return state.documents.find(doc => doc.id === state.currentDocId)
   },
   selectedDocs: (state, getters, rootState, rootGetters) => {
     // let currentSelectedDocsId = rootGetters['general/currentSelectedDocsId']

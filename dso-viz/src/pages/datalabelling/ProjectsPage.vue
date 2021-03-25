@@ -55,11 +55,11 @@ export default {
     ...mapActions('projects', ['getProjectList', 'deleteSelectedProjects']),
     deleteSelected () {
       let payload = { token: this.access_token, selectedProjsId: this.selected }
-      this.deleteSelectedProjects(payload) // Only when user starts annotating then update annotate page.
+      this.deleteSelectedProjects(payload)
       this.selected = []
       this.isCleared = true
     },
-    updateProjSelection (selectedProjsId) { // to keep track of selected documents in documents table
+    updateProjSelection (selectedProjsId) {
       this.isCleared = false
       this.selected = selectedProjsId
       console.log(this.selected)

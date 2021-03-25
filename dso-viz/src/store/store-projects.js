@@ -50,7 +50,7 @@ const actions = {
         console.log(error)
       })
   },
-  deleteSelectedProjects ({ commit }, payload) {
+  deleteSelectedProjects ({ commit, rootGetters, dispatch }, payload) {
     ProjectService.deleteProjects(payload.token, payload.selectedProjsId)
       .then((res) => {
         commit('deleteProjects', payload.selectedProjsId)
@@ -58,6 +58,15 @@ const actions = {
       .catch((err) => {
         console.log(err)
       })
+    let currentProjId = rootGetters['general/currentProjId']
+    let isCurrentProjDeleted = () => {
+      if (payload.selectedProjsId.includes(currentProjId)) {
+        return true
+      } else { return false }
+    }
+    if (isCurrentProjDeleted) {
+      dispatch('general/updateCurrentProjId', { token: payload.token, details: { id: -1 } }, { root: true })
+    }
   },
   getProjectList ({ commit }, token) {
     ProjectService.getProjectList(token)
@@ -80,8 +89,14 @@ const getters = {
   },
   currentProjName: (state, getters, rootState, rootGetters) => {
     let currentProjId = rootGetters['general/currentProjId']
-    const proj = state.projects.find(proj => proj.id === currentProjId)
-    return currentProjId ? proj.name : ''
+    if (currentProjId === null) {
+      console.log('null currprojid')
+      return null
+    } else {
+      console.log('not null currprojid')
+      const proj = state.projects.find(proj => proj.id === currentProjId)
+      return proj.name
+    }
   },
   currentProjType: (state, getters, rootState, rootGetters) => {
     let currentProjId = rootGetters['general/currentProjId']

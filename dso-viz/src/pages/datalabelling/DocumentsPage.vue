@@ -147,7 +147,7 @@ export default {
         const currDocPromise = this.updateCurrentDocId(docIdPayload)
         const currSelectedDocsPromise = this.updateCurrentSelectedDocsId(selectedDocsIdPayload)
         Promise.all([currDocPromise, currSelectedDocsPromise]).then(res => {
-          // this.$router.push({ name: 'AnnotatePage' })
+          this.$router.push({ name: 'AnnotatePage' })
           console.log(this.getCurrentDocId)
           console.log(this.getCurrentSelectedDocsId)
         })
@@ -155,7 +155,8 @@ export default {
       } catch (error) {
         console.log(console.error())
       } finally {
-        // this.$router.push({ name: 'AnnotatePage' }) SHOULD NOT BE HERE BECAUSE IF ERROR, WE DONT WANT TO GO TO ANNOTATE PAGE
+        // finally will occur even if error
+        // this.$router.push({ name: 'AnnotatePage' }) // SHOULD NOT BE HERE BECAUSE IF ERROR, WE DONT WANT TO GO TO ANNOTATE PAGE
       }
     },
     test () {
