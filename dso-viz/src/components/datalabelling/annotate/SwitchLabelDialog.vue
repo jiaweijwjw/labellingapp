@@ -82,8 +82,8 @@ export default {
   computed: {
     remainingLabels () {
       let arr = this.labels.filter(item => item.id !== this.labelToEdit.currentLabelId)
-      console.log(arr)
-      console.log(arr.length)
+      // console.log(arr)
+      // console.log(arr.length)
       return arr // this.labels.filter(item => item.name !== this.currentlabelId)
     }
   },

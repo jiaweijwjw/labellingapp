@@ -85,9 +85,16 @@ export default {
     }
   },
   computed: {
-    ...mapState('documents', ['currentDocId']),
+    ...mapState('documents', ['currentDocId', 'currentSelectedDocsId']),
     ...mapGetters('documents', ['currentDoc', 'selectedDocs']),
     ...mapState('general', ['currentUserId', 'currentProjId', 'access_token']),
+    ...mapGetters('documents', ['currentDocId', 'currentSelectedDocsId']),
+    getCurrentDocId: { // Vuex getters are not reactive, have to use computed porperty
+      get: function () { return this.currentDocId }
+    },
+    getCurrentSelectedDocsId: { // Vuex getters are not reactive, have to use computed porperty
+      get: function () { return this.currentSelectedDocsId }
+    },
     currentProj () {
       return this.currentProjId
     },
@@ -136,11 +143,13 @@ export default {
       }
 
       try {
-        console.log(this.currentProjId)
+        console.log('currProjId: ' + this.currentProjId)
         const currDocPromise = this.updateCurrentDocId(docIdPayload)
         const currSelectedDocsPromise = this.updateCurrentSelectedDocsId(selectedDocsIdPayload)
         Promise.all([currDocPromise, currSelectedDocsPromise]).then(res => {
-          this.$router.push({ name: 'AnnotatePage' })
+          // this.$router.push({ name: 'AnnotatePage' })
+          console.log(this.getCurrentDocId)
+          console.log(this.getCurrentSelectedDocsId)
         })
         //  this.updateSelectedDocs(this.selected) // Only when user starts annotating then update annotate page.
       } catch (error) {
@@ -150,9 +159,8 @@ export default {
       }
     },
     test () {
-      console.log(this.currentDocId, this.currentProjId)
-      console.log(this.currentDoc)
-      console.log(this.selectedDocs)
+      console.log('currentDocId: ' + this.currentDocId)
+      console.log('currentSelectedDocsId: ' + this.currentSelectedDocsId)
       console.log(this.$route.name)
       console.log('docs here: ' + this.$store.getters['documents/selectedDocs'])
       // console.log('labels here: ' + this.$store.getters['labels/labels'])

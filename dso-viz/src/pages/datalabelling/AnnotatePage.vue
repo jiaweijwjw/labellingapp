@@ -10,7 +10,7 @@
         :add-entity="addEntity"
       > </labelctrls>
       <classificationctrls
-        v-if="this.currentProjType === 'Document Classification' && showClassificationCtrls === true"
+        v-if="this.currentProjType === 'Document Classification'"
         class="labels-box page-item"
         :classifyDocument="classifyDocument"
       ></classificationctrls>
@@ -74,12 +74,13 @@ import { mapGetters, mapActions, mapState } from 'vuex'
 export default {
   name: 'AnnotatePage',
   mounted () {
+    console.log('currentDocId on mount annotatepage: ' + this.currentDocId)
+    console.log('currentDoc.Id: ' + this.currentDoc.Id)
     this.slide = this.currentDocId // OR currentDoc.id???
   },
   data () {
     return {
       slide: null,
-      showClassificationCtrls: true,
       thumbStyle: {
         borderRadius: '10px'
       }
@@ -93,8 +94,7 @@ export default {
   },
   computed: {
     ...mapState('general', ['access_token', 'currentProjId']),
-    ...mapState('documents', ['currentDocId']),
-    ...mapGetters('documents', ['currentDoc', 'selectedDocs']),
+    ...mapGetters('documents', ['currentDoc', 'selectedDocs', 'currentDocId', 'currentSelectedDocsId']),
     ...mapGetters('labels', ['labels']),
     ...mapGetters('projects', ['currentProjType']),
     selectedDocuments: { // Vuex getters are not reactive, have to use computed porperty
@@ -117,12 +117,13 @@ export default {
     ...mapActions('documents', ['updateCurrent', 'deleteAnnotation', 'addAnnotation', 'updateAnnotation']),
     ...mapActions('documents', ['updateCurrentDocId', 'addSentiment']),
     switchSlide (newSlideName, oldSlideName) {
+      console.log('entered switch slide')
+      console.log('newSlideName: ' + newSlideName + ' oldSlideName: ' + oldSlideName)
       this.updateCurrentDocId({ token: this.access_token, id: newSlideName, proj_id: this.currentProjId })
       // this.updateCurrent(newSlideName)
       console.log('currentdoc.id: ' + this.currentDoc.id)
       console.log('currentDocId: ' + this.currentDocId)
-      console.log(this.currentDoc, this.selectedDocs)
-      console.log('newSlideName: ' + newSlideName + ' oldSlideName: ' + oldSlideName)
+      // console.log(this.currentDoc, this.selectedDocs)
     },
     slideCarousel (event) {
       if (this.allSlides.length <= 1) { return }

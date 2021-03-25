@@ -2,7 +2,18 @@ import DocumentService from '../services/document.service'
 import AnnotationService from '../services/annotation.service'
 import ProjectService from '../services/project.service'
 
-const util = require('util')
+// const util = require('util')
+
+const equalsIgnoreOrder = (a, b) => {
+  if (a.length !== b.length) return false
+  const uniqueValues = new Set([...a, ...b])
+  for (const v of uniqueValues) {
+    const aCount = a.filter(e => e === v).length
+    const bCount = b.filter(e => e === v).length
+    if (aCount !== bCount) return false
+  }
+  return true
+}
 
 const defaultState = () => {
   return {
@@ -121,15 +132,49 @@ const actions = {
   uploadDocument ({ commit }, files) { // axios part is in ImportDocument for now
     commit('addDocument', files)
   },
-  deleteSelectedDocuments ({ commit }, payload) {
+  deleteSelectedDocuments ({ commit, dispatch, state, rootGetters }, payload) {
+    // no matter what, we delete the documents from the DB and Vuex first.
     DocumentService.deleteDocuments(payload.token, payload.selectedDocsId)
       .then((res) => {
-        // console.log(res.data)
         commit('deleteDocuments', payload.selectedDocsId)
       })
       .catch((err) => {
         console.log(err)
       })
+    /* Get the currentSelectedDocs and the currentDoc.
+       filter the currentSelected to after deletion
+       compare this currentSelectedAfterDeletion with the original to see if any of the currentSelected was deleted */
+    let currentProjId = rootGetters['general/currentProjId']
+    let currentSelectedDocsId = state.currentSelectedDocsId
+    let currentDocId = state.currentDocId
+    let currentSelectedDocsIdAfterDeletion = currentSelectedDocsId.filter(docId => {
+      if (!payload.selectedDocsId.includes(docId)) {
+        return true
+      }
+    })
+    if (currentSelectedDocsIdAfterDeletion.length === 0) {
+      // every currentSel was deleted, including the currentDoc
+      dispatch('updateCurrentSelectedDocsId', { token: payload.token, ids: [], proj_id: currentProjId })
+        .then(() => {
+          console.log('there is no other documents in line, set currDocId to null.')
+          dispatch('updateCurrentDocId', { token: payload.token, id: -1, proj_id: currentProjId })
+        })
+    } else if (currentSelectedDocsIdAfterDeletion.length !== 0 && !equalsIgnoreOrder(state.currentSelectedDocsId, currentSelectedDocsIdAfterDeletion)) { // at least one of the documents being deleted are currently being annotated.
+      console.log('at least one deleted doc is in currSel')
+      let selectedDocsPayload = { token: payload.token, ids: currentSelectedDocsIdAfterDeletion, proj_id: currentProjId }
+      dispatch('updateCurrentSelectedDocsId', selectedDocsPayload)
+        .then(() => {
+          // let afterRemove = state.currentSelectedDocsId
+          // console.log('currentSelectedDocsId afterRemove : ' + afterRemove)
+          if (payload.selectedDocsId.includes(currentDocId)) {
+            console.log('the currDoc kena deleted too')
+            console.log('choose the next in line')
+            console.log('show the currentSelectedDocsId array AFTER the updated dispatch: ' + currentSelectedDocsIdAfterDeletion)
+            console.log('the next in line would be: ' + currentSelectedDocsIdAfterDeletion[0])
+            dispatch('updateCurrentDocId', { token: payload.token, id: currentSelectedDocsIdAfterDeletion[0], proj_id: currentProjId })
+          }
+        })
+    }
   },
   getDocumentList ({ commit }, token) {
     DocumentService.getDocumentList(token)
@@ -141,17 +186,28 @@ const actions = {
       })
   },
   updateCurrentDocId ({ commit }, payload) {
+    console.log('currdocid: ' + payload.id)
     ProjectService.updateCurrentDocId(payload.token, payload.id, payload.proj_id)
       .then((res) => {
         commit('setCurrentDocId', payload.id)
-        console.log(util.inspect(res.data, false, null, true /* enable colors */)) // to view [object]
+        // console.log(util.inspect(res.data, false, null, true /* enable colors */)) // to view [object]
       }).catch((err) => { console.log(err) })
   },
   updateCurrentSelectedDocsId ({ commit }, payload) {
-    ProjectService.updateCurrentSelectedDocsId(payload.token, payload.ids, payload.proj_id)
-      .then(res => {
-        commit('setCurrentSelectedDocsId', payload.ids)
-      }).catch(err => { console.log(err) })
+    console.log('currseldocsid: ' + payload.ids)
+    return new Promise((resolve, reject) => {
+      ProjectService.updateCurrentSelectedDocsId(payload.token, payload.ids, payload.proj_id)
+        .then(res => {
+          commit('setCurrentSelectedDocsId', payload.ids)
+          resolve(res)
+        }, err => {
+          reject(err)
+        })
+    })
+    // ProjectService.updateCurrentSelectedDocsId(payload.token, payload.ids, payload.proj_id)
+    //   .then(res => {
+    //     commit('setCurrentSelectedDocsId', payload.ids)
+    //   }).catch(err => { console.log(err) })
   },
   setCurrentDocId ({ commit }, currentDocId) {
     commit('setCurrentDocId', currentDocId)
@@ -190,6 +246,9 @@ const getters = {
   },
   currentDocId: (state) => {
     return state.currentDocId
+  },
+  currentSelectedDocsId: (state) => {
+    return state.currentSelectedDocsId
   },
   currentDoc: (state, getters, rootState, rootGetters) => {
     // let currentDocId = rootGetters['general/currentDocId']

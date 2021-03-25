@@ -42,7 +42,10 @@ def get_project(db: Session, user: schemas.User, project_id: int):
 def update_current_doc(db: Session, user: schemas.User, new_id: int, project_id: int):
     db_proj = db.query(db_models.Project).filter(
         db_models.Project.id == project_id).filter(db_models.Project.user_id == user.id).first()
-    db_proj.current_doc_id = new_id
+    if new_id == -1:
+        db_proj.current_doc_id = None
+    else:
+        db_proj.current_doc_id = new_id
     db.commit()
     db.refresh(db_proj)
     return db_proj
