@@ -16,12 +16,25 @@
       :selected.sync="selected"
       no-data-label="No documents to show."
     >
+      <template v-if="currentProjType === 'Document Classification'" v-slot:body-cell-sentiment="props">
+        <q-td :props="props">
+          <div>
+            <q-badge
+              v-if="props.value"
+              :style="'background-color:'+whichChipColor(props.value)+';'+'color:'+autoTextColor(whichChipColor(props.value))+';'"
+              :label="props.value"
+            />
+          </div>
+        </q-td>
+      </template>
     </q-table>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
+
+var SentimentEnum = Object.freeze({ POSITIVE: 'positive', NEGATIVE: 'negative', NEUTRAL: 'neutral' })
 
 export default {
   props: ['isInProject', 'isCleared'],
@@ -56,9 +69,9 @@ export default {
         {
           name: 'status',
           label: 'Checked?',
-          align: 'left',
-          field: row => row.is_marked ? 'Yes' : 'No',
-          sortable: true
+          align: 'center',
+          field: row => row.is_marked ? 'Yes' : 'No'
+          // sortable: true
         }
       ]
     }
@@ -70,15 +83,15 @@ export default {
       this.columns = {
         name: 'sentiment',
         label: 'Sentiment',
-        align: 'left',
+        align: 'center',
         field: row => {
           if (row.sentiment !== null) {
             return row.sentiment
           } else {
             return ''
           }
-        },
-        sortable: true
+        }
+        // sortable: true
       }
     }
   },
@@ -123,8 +136,23 @@ export default {
   },
   methods: {
     ...mapActions('documents', ['getDocumentList']),
+    autoTextColor (color) {
+      return this.$hf.autoChooseTextColor(color)
+    },
     getSelectedString () {
       return this.selected.length === 0 ? '' : `${this.selected.length} document${this.selected.length > 1 ? 's' : ''} selected of ${this.documents.length}`
+    },
+    whichChipColor (propVal) {
+      switch (propVal) {
+        case SentimentEnum.POSITIVE:
+          return '#a4ff70'
+        case SentimentEnum.NEGATIVE:
+          return '#ff5454'
+        case SentimentEnum.NEUTRAL:
+          return '#fff0e3'
+        default:
+          return '#000000'
+      }
     }
   }
 }
