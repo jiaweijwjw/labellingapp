@@ -26,9 +26,9 @@
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
-    <!-- <div>
-    <q-btn color="primary" label="showLoading" @click="showLoading"/>
-    </div> -->
+    <div>
+    <q-btn color="primary" label="testnotify" @click="handleLoginError"/>
+    </div>
   </q-page>
 </template>
 
@@ -92,9 +92,18 @@ export default {
       this.showLoading()
       UserService.getMe(this.access_token)
         .then((res) => {
-          setTimeout(() => this.initialLoadUser(res), 1000) // just to test loading screen. can remove
+          setTimeout(() => this.initialLoadUser(res).catch(() => this.handleLoginError()), 1000) // just to test loading screen. can remove
           // this.initialLoadUser(res)
-        }).catch(err => console.log(err))
+        }).catch(() => this.handleLoginError())
+    },
+    handleLoginError () {
+      this.$q.notify({
+        type: 'negative',
+        message: `Failed to fetch user data.`,
+        caption: 'The server could be busy, please try again later.',
+        position: 'top',
+        timeout: '3000'
+      })
     },
     async initialLoadUser (res) {
       let projects = res.data.projects
@@ -115,7 +124,7 @@ export default {
         projPromise.then(val => {
           this.$q.loading.hide()
           this.$router.push({ name: 'ProjectsPage' })
-        }).catch(err => console.log(err))
+        }).catch(() => this.handleLoginError())
       } else { // there are projects and has selected a project (projects && currentProjId)
         let currProjIndex = projects.map(item => item.id).indexOf(res.data.current_proj_id)
         let documents = projects[currProjIndex].documents
@@ -132,7 +141,7 @@ export default {
             } else {
               this.$router.push({ name: 'DocumentsPage' })
             }
-          }).then(err => console.log(err))
+          }).catch(() => this.handleLoginError())
         } else if (!documents && labels) {
           const projPromise = this.$store.dispatch('projects/setProjects', projects)
           const labelPromise = this.$store.dispatch('labels/setLabels', labels)
@@ -140,7 +149,7 @@ export default {
             .then(res => {
               this.$q.loading.hide()
               this.$router.push({ name: 'DocumentsPage' })
-            })
+            }).catch(() => this.handleLoginError())
         } else if (documents && !labels) {
           let currentDocId = projects[currProjIndex].current_doc_id
           this.$store.dispatch('documents/setCurrentDocId', currentDocId)
@@ -154,7 +163,7 @@ export default {
               } else {
                 this.$router.push({ name: 'AnnotatePage' })
               }
-            })
+            }).catch(() => this.handleLoginError())
         } else { // projects && documents && labels
           let currentDocId = projects[currProjIndex].current_doc_id
           this.$store.dispatch('documents/setCurrentDocId', currentDocId)
@@ -172,7 +181,7 @@ export default {
                 this.$router.push({ name: 'AnnotatePage' })
               }
             })
-            .catch(err => console.log(err))
+            .catch(() => this.handleLoginError())
         }
       }
     },

@@ -87,7 +87,8 @@ export default {
       console.log(rejectedEntries)
       this.$q.notify({
         type: 'negative',
-        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
+        message: `${rejectedEntries.length} file(s) did not pass validation constraints`,
+        position: 'top'
       })
     },
     close () {

@@ -93,10 +93,8 @@ const getters = {
   currentProjName: (state, getters, rootState, rootGetters) => {
     let currentProjId = rootGetters['general/currentProjId']
     if (currentProjId === null) {
-      console.log('null currprojid')
       return null
     } else {
-      console.log('not null currprojid')
       const proj = state.projects.find(proj => proj.id === currentProjId)
       return proj.name
     }
