@@ -151,6 +151,7 @@ export default {
   computed: {
     ...mapState('general', ['access_token', 'username', 'currentProjId', 'currentUserId']),
     ...mapState('documents', ['currentDocId', 'currentSelectedDocsId']),
+    ...mapGetters('documents', ['currentDoc']),
     ...mapGetters('projects', ['currentProjName', 'currentProjType']),
     name: {
       get () {
@@ -158,7 +159,7 @@ export default {
       }
     },
     isLoggedIn: function () { return (this.access_token && this.currentUserId && this.username) },
-    isReadyToAnnotate: function () { return (this.currentDocId && this.currentSelectedDocsId) },
+    isReadyToAnnotate: function () { return (this.currentDocId && this.currentSelectedDocsId && this.currentDoc) },
     isInProject: function () { return this.currentProjId },
     title: function () {
       let extra = ''
