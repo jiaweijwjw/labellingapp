@@ -264,15 +264,19 @@ const getters = {
   },
   selectedDocs: (state, getters, rootState, rootGetters) => {
     // let currentSelectedDocsId = rootGetters['general/currentSelectedDocsId']
-    return state.documents.filter(doc => state.currentSelectedDocsId.includes(doc.id))
+    let currentSelectedDocsId = state.currentSelectedDocsId
+    // return state.documents.filter(doc => state.currentSelectedDocsId.includes(doc.id))
+    return currentSelectedDocsId ? state.documents.filter(doc => state.currentSelectedDocsId.includes(doc.id)) : null
   },
   currentDocSentiment: (state, getters) => {
     let currentDoc = getters['currentDoc']
-    return currentDoc.sentiment
+    return currentDoc ? currentDoc.sentiment : null
+    // return currentDoc.sentiment
   },
   currentDocStatus: (state, getters) => {
     let currentDoc = getters['currentDoc']
-    return currentDoc.is_marked
+    return currentDoc ? currentDoc.is_marked : null
+    // return currentDoc.is_marked
   }
 }
 
