@@ -159,7 +159,7 @@ export default {
       }
     },
     isLoggedIn: function () { return (this.access_token && this.currentUserId && this.username) },
-    isReadyToAnnotate: function () { return (this.currentDocId && this.currentSelectedDocsId && this.currentDoc) },
+    isReadyToAnnotate: function () { return (this.currentDocId && this.currentSelectedDocsId && this.currentDoc && this.currentProjId) },
     isInProject: function () { return this.currentProjId },
     title: function () {
       let extra = ''

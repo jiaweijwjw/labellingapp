@@ -66,6 +66,9 @@ const actions = {
     }
     if (isCurrentProjDeleted) {
       dispatch('general/updateCurrentProjId', { token: payload.token, details: { id: -1 } }, { root: true })
+        .then(() => {
+          dispatch('documents/resetState', '', { root: true })
+        })
     }
   },
   getProjectList ({ commit }, token) {
