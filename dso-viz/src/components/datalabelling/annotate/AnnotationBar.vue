@@ -65,6 +65,12 @@ export default {
   },
   mounted () {
     this.docStatus = this.marked
+    if (this.currentProjType !== 'Document Classification') {
+      let withoutFast = this.getAnnotationSettings.filter(option => option !== 'fast')
+      console.log('getAnnotationSettings: ' + this.getAnnotationSettings)
+      console.log('withoutFast: ' + withoutFast)
+      this.toggles = withoutFast
+    }
   },
   computed: {
     ...mapGetters('classify', ['classifyBtns']),

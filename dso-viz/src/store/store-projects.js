@@ -99,7 +99,7 @@ const getters = {
       return proj ? proj.name : null
     }
   },
-  currentProjType: (state, getters, rootState, rootGetters) => {
+  currentProjType: (state, getters, rootState, rootGetters) => { // same implementation as currentProjName but different code
     let currentProjId = rootGetters['general/currentProjId']
     const proj = state.projects.find(proj => proj.id === currentProjId)
     return currentProjId && proj ? proj.proj_type : null
