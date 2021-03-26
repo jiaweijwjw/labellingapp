@@ -4,28 +4,45 @@
       <q-toolbar class="q-pa-sm">
         <!-- <q-btn flat @click="miniState = !miniState" round dense icon="menu" /> -->
         <q-toolbar-title class="q-ml-lg">
-          {{title}}
+          Hello
         </q-toolbar-title>
-        <q-btn v-if="isReadyToAnnotate" flat round dense icon="create" class="q-mr-sm" clickable to="/datalabelling/annotate/">
+        <div class="q-mr-sm">
+          <q-breadcrumbs gutter="xs">
+            <template v-slot:separator>
+              <q-icon
+                size="1.5em"
+                name="chevron_right"
+                color="primary"
+              />
+            </template>
+            <!-- <q-breadcrumbs-el icon="home" to="/" /> -->
+            <q-breadcrumbs-el :label="`Project` + `${whichProjectName()}`" icon="folder" :to="{ name: 'ProjectsPage' }" />
+            <q-breadcrumbs-el v-if="this.$route.name === 'DocumentsPage'" label="Documents" icon="description" :to="{ name: 'DocumentsPage' }" />
+            <q-breadcrumbs-el v-if="this.$route.name === 'LabelsPage'"  label="Labels" icon="label" :to="{ name: 'LabelsPage' }" />
+            <q-breadcrumbs-el v-if="this.$route.name === 'AnnotatePage'" label="Annotate" icon="create" :to="{ name: 'AnnotatePage' }" />
+          </q-breadcrumbs>
+        </div>
+        <q-space/>
+        <q-btn v-if="isReadyToAnnotate" flat round dense icon="create" class="q-mr-sm" clickable :to="{ name: 'AnnotatePage' }">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Annotate</q-tooltip>
           </q-btn>
-        <q-btn v-if="isInProject && (this.currentProjType === 'Sequence Labelling')" flat round dense icon="label" class="q-mr-sm" clickable to="/datalabelling/labelspage">
+        <q-btn v-if="isInProject && (this.currentProjType === 'Sequence Labelling')" flat round dense icon="label" class="q-mr-sm" clickable :to="{ name: 'LabelsPage' }">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Labels</q-tooltip>
           </q-btn>
-        <q-btn v-if="isInProject" flat round dense icon="description" class="q-mr-sm" clickable to="/datalabelling/documentspage">
+        <q-btn v-if="isInProject" flat round dense icon="description" class="q-mr-sm" clickable :to="{ name: 'DocumentsPage' }">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Documents</q-tooltip>
           </q-btn>
         <!-- <q-btn flat round dense icon="folder" class="q-mr-md" clickable to="/datalabelling/projectspage">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Projects</q-tooltip>
           </q-btn> -->
           <q-separator vertical dark />
-        <q-btn v-if="!isLoggedIn" outline color="primary" icon="account_box" label="Login" class="q-mr-md q-ml-md" clickable to="/auth">
+        <q-btn v-if="!isLoggedIn" outline color="primary" icon="account_box" label="Login" class="q-mr-md q-ml-md" clickable :to="{ name: 'AuthPage' }">
           <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Login</q-tooltip>
           </q-btn>
         <q-btn-dropdown v-if="isLoggedIn" outline color="primary" icon="account_box" :label="username" class="q-mr-md q-ml-md">
           <!-- <q-tooltip anchor="bottom middle" self="center middle" :offset="[15, 15]">Account Settings</q-tooltip> -->
             <q-list bordered separator>
-              <q-item clickable to="/datalabelling/projectspage" v-close-popup>
+              <q-item clickable :to="{ name: 'ProjectsPage' }" v-close-popup>
                 <q-item-section avatar>
                   <q-icon name="folder"/>
                 </q-item-section>
@@ -199,6 +216,9 @@ export default {
       this.$store.dispatch('projects/resetState')
       this.$store.dispatch('classify/resetState')
       this.$store.dispatch('settings/resetState')
+    },
+    whichProjectName () {
+      return this.currentProjName ? ` (${this.currentProjName})` : ''
     }
   }
 }

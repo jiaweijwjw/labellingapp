@@ -26,7 +26,6 @@ const mutations = {
         return true
       }
     })
-    console.log(state.projects)
   },
   updateProjectList (state, payload) {
     state.projects = payload.slice()
@@ -55,21 +54,20 @@ const actions = {
       .then((res) => {
         commit('deleteProjects', payload.selectedProjsId)
       })
-      .catch((err) => {
-        console.log(err)
+      .then(() => {
+        let currentProjId = rootGetters['general/currentProjId']
+        let isCurrentProjDeleted = () => {
+          if (payload.selectedProjsId.includes(currentProjId)) {
+            return true
+          } else { return false }
+        }
+        if (isCurrentProjDeleted) {
+          dispatch('general/updateCurrentProjId', { token: payload.token, details: { id: -1 } }, { root: true })
+            .then(() => {
+              dispatch('documents/resetState', '', { root: true })
+            })
+        }
       })
-    let currentProjId = rootGetters['general/currentProjId']
-    let isCurrentProjDeleted = () => {
-      if (payload.selectedProjsId.includes(currentProjId)) {
-        return true
-      } else { return false }
-    }
-    if (isCurrentProjDeleted) {
-      dispatch('general/updateCurrentProjId', { token: payload.token, details: { id: -1 } }, { root: true })
-        .then(() => {
-          dispatch('documents/resetState', '', { root: true })
-        })
-    }
   },
   getProjectList ({ commit }, token) {
     ProjectService.getProjectList(token)
@@ -93,16 +91,18 @@ const getters = {
   currentProjName: (state, getters, rootState, rootGetters) => {
     let currentProjId = rootGetters['general/currentProjId']
     if (currentProjId === null) {
+      console.log('currentprojid is null already')
       return null
     } else {
+      console.log('currentprojid is not yet null when it is supposed to be')
       const proj = state.projects.find(proj => proj.id === currentProjId)
-      return proj.name
+      return proj ? proj.name : null
     }
   },
   currentProjType: (state, getters, rootState, rootGetters) => {
     let currentProjId = rootGetters['general/currentProjId']
     const proj = state.projects.find(proj => proj.id === currentProjId)
-    return currentProjId ? proj.proj_type : null
+    return currentProjId && proj ? proj.proj_type : null
   }
 }
 
