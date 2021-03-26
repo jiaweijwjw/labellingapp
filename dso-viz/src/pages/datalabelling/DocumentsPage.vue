@@ -89,12 +89,12 @@ export default {
     ...mapGetters('documents', ['currentDoc', 'selectedDocs']),
     ...mapState('general', ['currentUserId', 'currentProjId', 'access_token']),
     ...mapGetters('documents', ['currentDocId', 'currentSelectedDocsId']),
-    getCurrentDocId: { // Vuex getters are not reactive, have to use computed porperty
-      get: function () { return this.currentDocId }
-    },
-    getCurrentSelectedDocsId: { // Vuex getters are not reactive, have to use computed porperty
-      get: function () { return this.currentSelectedDocsId }
-    },
+    // getCurrentDocId: { // Vuex getters are not reactive, have to use computed porperty
+    //   get: function () { return this.currentDocId }
+    // },
+    // getCurrentSelectedDocsId: { // Vuex getters are not reactive, have to use computed porperty
+    //   get: function () { return this.currentSelectedDocsId }
+    // },
     currentProj () {
       return this.currentProjId
     },
@@ -146,10 +146,10 @@ export default {
         console.log('currProjId: ' + this.currentProjId)
         const currDocPromise = this.updateCurrentDocId(docIdPayload)
         const currSelectedDocsPromise = this.updateCurrentSelectedDocsId(selectedDocsIdPayload)
-        Promise.all([currDocPromise, currSelectedDocsPromise]).then(res => {
+        Promise.all([currDocPromise, currSelectedDocsPromise]).then(console.log('promise done')).then(res => {
           this.$router.push({ name: 'AnnotatePage' })
-          console.log(this.getCurrentDocId)
-          console.log(this.getCurrentSelectedDocsId)
+          console.log(this.currentDocId)
+          console.log(this.currentSelectedDocsId)
         })
         //  this.updateSelectedDocs(this.selected) // Only when user starts annotating then update annotate page.
       } catch (error) {

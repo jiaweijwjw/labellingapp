@@ -189,11 +189,14 @@ const actions = {
   },
   updateCurrentDocId ({ commit }, payload) {
     console.log('currdocid: ' + payload.id)
-    ProjectService.updateCurrentDocId(payload.token, payload.id, payload.proj_id)
-      .then((res) => {
-        commit('setCurrentDocId', payload.id)
-        // console.log(util.inspect(res.data, false, null, true /* enable colors */)) // to view [object]
-      }).catch((err) => { console.log(err) })
+    return new Promise((resolve, reject) => {
+      ProjectService.updateCurrentDocId(payload.token, payload.id, payload.proj_id)
+        .then((res) => {
+          commit('setCurrentDocId', payload.id)
+          resolve(res)
+          // console.log(util.inspect(res.data, false, null, true /* enable colors */)) // to view [object]
+        }, err => { reject(err) })
+    })
   },
   updateCurrentSelectedDocsId ({ commit }, payload) {
     console.log('currseldocsid: ' + payload.ids)

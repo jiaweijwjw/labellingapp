@@ -131,7 +131,7 @@
     </q-drawer> -->
 
     <!-- pages will be inserted here -->
-    <q-page-container>
+    <q-page-container class="fixed-center">
       <router-view />
     </q-page-container>
   </q-layout>
