@@ -150,9 +150,6 @@ export default {
         this.$emit('focus-on')
         this.$emit('fast-on')
       } else if (isFocus) {
-        console.log('currentprojtype: ' + this.currentProjType)
-        console.log(this.currentProjType !== 'Document Classification')
-        console.log(this.currentProjType === 'Document Classification')
         this.$emit('focus-on')
         this.$emit('fast-off')
       } else if (isFast) {

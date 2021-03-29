@@ -1,5 +1,5 @@
 <template>
-  <q-page v-shortkey="{left: ['arrowleft'], right: ['arrowright']}" @shortkey="slideCarousel" class="page">
+  <q-page ref="annotatepage" v-shortkey="{left: ['arrowleft'], right: ['arrowright']}" @shortkey="slideCarousel" class="page">
     <div>
       <!-- LABELS -->
       <labelctrls
@@ -185,25 +185,68 @@ export default {
       }
       this.addSentiment(details)
     },
-    toggle (e) {
-      const target = e.target.parentNode.parentNode.parentNode
-      this.$q.fullscreen.toggle(target)
-        .then(() => {
-          // success!
+    toggle () {
+      if (this.$q.fullscreen.isCapable) {
+        this.$q.fullscreen.toggle(this.$refs.annotatepage.$el)
+          .then(() => {
+            // success!
+          })
+          .catch((err) => {
+            alert(err)
+            // uh, oh, error!!
+            // console.error(err)
+          })
+      } else {
+        this.$q.notify({
+          type: 'warning',
+          message: `Browser does not support fullscreen.`,
+          caption: 'Try another browser if you wish to annotate in fullscreen mode.',
+          position: 'top',
+          timeout: '3000'
         })
-        .catch((err) => {
-          alert(err)
-          // uh, oh, error!!
-          // console.error(err)
-        })
+      }
+    },
+    handleUnableToFullscreen () {
+      this.$q.notify({
+        type: 'warning',
+        message: `Browser does not support fullscreen.`,
+        caption: 'Try another browser if you wish to annotate in fullscreen mode.',
+        position: 'top',
+        timeout: '3000'
+      })
     },
     enterFullscreen () {
       console.log('enterfullscreen')
+      if (this.$q.fullscreen.isCapable && !this.$q.fullscreen.isActive) {
+        this.$q.fullscreen.request(this.$refs.annotatepage.$el)
+          .then(() => {
+          })
+          .catch((err) => {
+            alert(err)
+          })
+      } else if (!this.$q.fullscreen.isCapable) {
+        this.handleUnableToFullscreen()
+      } else if (this.$q.fullscreen.isActive) {
+        console.error('app is already in fullscreen mode.')
+      }
     },
     exitFullscreen () {
       console.log('exitfullscreen')
+      if (this.$q.fullscreen.isCapable && this.$q.fullscreen.isActive) {
+        this.$q.fullscreen.exit()
+          .then(() => {
+          })
+          .catch((err) => {
+            alert(err)
+          })
+      } else if (!this.$q.fullscreen.isCapable) {
+        this.handleUnableToFullscreen()
+      } else if (!this.$q.fullscreen.isActive) {
+        console.error('app is not in fullscreen.')
+      }
     },
     enterFastMode () {
+      // current implementation reads direction the fast mode toggle from the vuex store.+
       console.log('enterfastmode')
     },
     exitFastMode () {
