@@ -1,5 +1,5 @@
 <template>
-  <q-page ref="annotatepage" v-shortkey="{left: ['arrowleft'], right: ['arrowright']}" @shortkey="slideCarousel" class="page">
+  <q-page id="annotatepage" ref="annotatepage" v-shortkey="{left: ['arrowleft'], right: ['arrowright']}" @shortkey="slideCarousel" class="page">
     <div>
       <!-- LABELS -->
       <labelctrls
@@ -45,7 +45,6 @@
             <annotationbar :marked="document.is_marked" :currentDocId="document.id"
             @focus-on="enterFullscreen" @fast-on="enterFastMode"
             @focus-off="exitFullscreen" @fast-off="exitFastMode"/>
-            <div><q-btn class="text-primary" label="testfullscreen" @click="toggle"/></div>
         </q-card-section>
         <q-card-section class="words-container no-margin no-padding">
             <entitynaming
@@ -76,6 +75,18 @@ export default {
   mounted () {
     console.log('currentDocId on mount annotatepage: ' + this.currentDocId)
     this.slide = this.currentDocId // OR currentDoc.id???
+    document.addEventListener('fullscreenchange', (event) => {
+      // document.fullscreenElement will point to the element that
+      // is in fullscreen mode if there is one. If there isn't one,
+      // the value of the property is null.
+      if (document.fullscreenElement) {
+        console.log(`Element: ${document.fullscreenElement.id} entered full-screen mode.`)
+      } else {
+        console.log('Leaving full-screen mode.')
+        let withoutFocus = this.getAnnotationSettings.filter(option => option !== 'focus')
+        this.setAnnotationSettings(withoutFocus)
+      }
+    })
   },
   data () {
     return {
@@ -96,6 +107,7 @@ export default {
     ...mapGetters('documents', ['currentDoc', 'selectedDocs', 'currentDocId', 'currentSelectedDocsId']),
     ...mapGetters('labels', ['labels']),
     ...mapGetters('projects', ['currentProjType']),
+    ...mapGetters('settings', ['getAnnotationSettings']),
     selectedDocuments: { // Vuex getters are not reactive, have to use computed porperty
       get: function () { return this.selectedDocs }
     },
@@ -115,6 +127,7 @@ export default {
   methods: {
     ...mapActions('documents', ['updateCurrent', 'deleteAnnotation', 'addAnnotation', 'updateAnnotation']),
     ...mapActions('documents', ['updateCurrentDocId', 'addSentiment']),
+    ...mapActions('settings', ['setAnnotationSettings']),
     switchSlide (newSlideName, oldSlideName) {
       console.log('entered switch slide')
       console.log('newSlideName: ' + newSlideName + ' oldSlideName: ' + oldSlideName)
@@ -185,27 +198,6 @@ export default {
       }
       this.addSentiment(details)
     },
-    toggle () {
-      if (this.$q.fullscreen.isCapable) {
-        this.$q.fullscreen.toggle(this.$refs.annotatepage.$el)
-          .then(() => {
-            // success!
-          })
-          .catch((err) => {
-            alert(err)
-            // uh, oh, error!!
-            // console.error(err)
-          })
-      } else {
-        this.$q.notify({
-          type: 'warning',
-          message: `Browser does not support fullscreen.`,
-          caption: 'Try another browser if you wish to annotate in fullscreen mode.',
-          position: 'top',
-          timeout: '3000'
-        })
-      }
-    },
     handleUnableToFullscreen () {
       this.$q.notify({
         type: 'warning',
@@ -216,9 +208,9 @@ export default {
       })
     },
     enterFullscreen () {
-      console.log('enterfullscreen')
+      let target = this.$refs.annotatepage.$el
       if (this.$q.fullscreen.isCapable && !this.$q.fullscreen.isActive) {
-        this.$q.fullscreen.request(this.$refs.annotatepage.$el)
+        this.$q.fullscreen.request(target)
           .then(() => {
           })
           .catch((err) => {
@@ -231,7 +223,6 @@ export default {
       }
     },
     exitFullscreen () {
-      console.log('exitfullscreen')
       if (this.$q.fullscreen.isCapable && this.$q.fullscreen.isActive) {
         this.$q.fullscreen.exit()
           .then(() => {
