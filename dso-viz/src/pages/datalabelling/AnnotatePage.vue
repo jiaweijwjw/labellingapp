@@ -15,7 +15,7 @@
         :classifyDocument="classifyDocument"
       ></classificationctrls>
       <div v-if="this.currentProjType === null">
-      </div>
+    </div>
       <!-- ANNOTATOR -->
     <q-carousel
       @before-transition="switchSlide"
@@ -94,6 +94,13 @@ export default {
       thumbStyle: {
         borderRadius: '10px'
       }
+    }
+  },
+  watch: {
+    currentDocId: function (newId, oldId) {
+      this.slide = newId
+      console.log(newId)
+      console.log(oldId)
     }
   },
   components: {
@@ -282,6 +289,7 @@ export default {
   max-width: 100vw
 .carousel
   width: 100vw
+  min-height: 45vw
   height: 45vw
   background-color: $body-background
 .words-container

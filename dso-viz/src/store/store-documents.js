@@ -229,6 +229,7 @@ const actions = {
     let documentId = state.currentDocId
     let isFastMode = rootGetters['settings/getFastMode']
     let currentDocStatus = getters['currentDoc'].is_marked
+    let newCurrentSelectedDocsId = state.currentSelectedDocsId.filter(id => id !== documentId)
     console.log(userId, projectId, documentId)
     DocumentService.addSentiment(details.token, details.classificationId, documentId, projectId, userId)
       .then(res => {
@@ -240,6 +241,11 @@ const actions = {
             documentId
           }
           dispatch('updateDocStatus', payload)
+            .then(res => { // removeFromCurrentSelectedDocsId()
+              dispatch('updateCurrentSelectedDocsId', { token: details.token, ids: newCurrentSelectedDocsId, proj_id: projectId })
+            }).then(res => {
+              dispatch('updateCurrentDocId', { token: details.token, id: newCurrentSelectedDocsId[0], proj_id: projectId })
+            })
         }
       }).catch(err => { console.log(err) })
   }

@@ -1,10 +1,10 @@
 <template>
   <q-layout view="hHh lpr fff">
-    <q-header v-if="this.$route.name !== 'AuthPage'" elevated class="bg-black">
+    <q-header v-if="this.$route.name !== 'AuthPage'" elevated>
       <q-toolbar class="q-pa-sm">
         <!-- <q-btn flat @click="miniState = !miniState" round dense icon="menu" /> -->
         <q-toolbar-title class="q-ml-lg">
-          Hello
+          DSOViz
         </q-toolbar-title>
         <div class="q-mr-sm">
           <q-breadcrumbs gutter="xs">
@@ -228,6 +228,8 @@ export default {
   .q-layout
     background-color: $body-background !important
     overflow: auto
+  .q-header
+    background-color: $toolbar-color
   .q-toolbar
     background-color: $toolbar-color
   .q-drawer__content
