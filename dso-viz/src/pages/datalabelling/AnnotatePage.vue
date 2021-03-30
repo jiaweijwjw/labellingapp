@@ -100,6 +100,16 @@ export default {
   watch: {
     currentDocId: function (newId, oldId) {
       this.slide = newId
+      if (newId === null) {
+        this.$router.push({ name: 'DocumentsPage' })
+        this.$q.notify({
+          type: 'info',
+          message: `You have annotated all the selected documents`,
+          caption: 'Select more documents to annotate!',
+          position: 'top',
+          timeout: '3000'
+        })
+      }
     },
     currentSelectedDocsId: function (newIds, oldIds) {
       if (newIds.length === 0) {
