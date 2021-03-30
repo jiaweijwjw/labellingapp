@@ -86,7 +86,7 @@ const mutations = {
     let documentId = fullDoc.id
     const document = state.documents.find(doc => doc.id === documentId)
     if (!fullDoc.sentiment) {
-      document.sentiment = ''
+      document.sentiment = null
     } else {
       document.sentiment = fullDoc.sentiment
     }

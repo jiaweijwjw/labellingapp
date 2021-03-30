@@ -2,7 +2,7 @@
 <div>
     <q-bar class="row">
         <q-checkbox class="col-2" dark v-model="docStatus" :label="this.status ? 'Checked' : 'Unchecked'" color="primary"/>
-        <q-chip  v-if="docSentiment !== ''"
+        <q-chip  v-if="docSentiment !== null"
         :icon="whichIcon()"
         dense
         :style="'background-color:'+getSentimentColor()+';'+'color:'+autoTextColor(getSentimentColor())+';' + 'max-width:15vw'"
