@@ -100,7 +100,7 @@ export default {
   watch: {
     currentDocId: function (newId, oldId) {
       this.slide = newId
-      if (newId === null) {
+      if (newId === null && this.currentUserId) { // how to prevent logout from annotate page from activating this notify?
         this.$router.push({ name: 'DocumentsPage' })
         this.$q.notify({
           type: 'info',
@@ -124,7 +124,7 @@ export default {
     classificationctrls: require('components/datalabelling/classification/ClassificationCtrls.vue').default
   },
   computed: {
-    ...mapState('general', ['access_token', 'currentProjId']),
+    ...mapState('general', ['access_token', 'currentProjId', 'currentUserId']),
     ...mapGetters('documents', ['currentDoc', 'selectedDocs', 'currentDocId', 'currentSelectedDocsId']),
     ...mapGetters('labels', ['labels']),
     ...mapGetters('projects', ['currentProjType']),
