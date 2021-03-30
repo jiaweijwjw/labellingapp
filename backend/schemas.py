@@ -60,7 +60,7 @@ class DocumentBase(BaseModel):
 class Document(DocumentBase):
     id: int
     is_marked: bool
-    sentiment: str
+    sentiment: Optional[str]
     content: bytes
     content_size: int
     proj_id: int

@@ -85,7 +85,11 @@ const mutations = {
   updateSentiment (state, fullDoc) {
     let documentId = fullDoc.id
     const document = state.documents.find(doc => doc.id === documentId)
-    document.sentiment = fullDoc.sentiment
+    if (!fullDoc.sentiment) {
+      document.sentiment = ''
+    } else {
+      document.sentiment = fullDoc.sentiment
+    }
   }
 }
 
@@ -229,16 +233,16 @@ const actions = {
     let documentId = state.currentDocId
     let isFastMode = rootGetters['settings/getFastMode']
     let currentDocStatus = getters['currentDoc'].is_marked
-    let newCurrentSelectedDocsId = state.documents.filter(doc => doc.id !== documentId && !doc.is_marked).map(doc => doc.id)
+    let uncheckedCurrentSelectedDocsId = state.documents.filter(doc => doc.id !== documentId && !doc.is_marked).map(doc => doc.id)
     DocumentService.addSentiment(details.token, details.classificationId, documentId, projectId, userId)
       .then(res => {
         commit('updateSentiment', res.data)
         if (isFastMode) {
           if (!currentDocStatus) { dispatch('updateDocStatus', { newStatus: true, token: details.token, documentId }) }
-          dispatch('updateCurrentSelectedDocsId', { token: details.token, ids: newCurrentSelectedDocsId, proj_id: projectId })
+          dispatch('updateCurrentSelectedDocsId', { token: details.token, ids: uncheckedCurrentSelectedDocsId, proj_id: projectId })
             .then(res => {
               if (state.currentSelectedDocsId.length !== 0) {
-                dispatch('updateCurrentDocId', { token: details.token, id: newCurrentSelectedDocsId[0], proj_id: projectId })
+                dispatch('updateCurrentDocId', { token: details.token, id: uncheckedCurrentSelectedDocsId[0], proj_id: projectId })
               } else {
                 dispatch('updateCurrentDocId', { token: details.token, id: -1, proj_id: projectId })
               }

@@ -43,7 +43,10 @@ def update_doc_status(db: Session, user: schemas.User, document_id: int, status:
 def update_sentiment(db: Session, user: schemas.User, document_id: int, project_id: int, user_id: int, sentiment: str):
     db_document = db.query(db_models.Document).filter(db_models.Document.id == document_id).filter(
         db_models.Document.proj_id == project_id).first()
-    db_document.sentiment = sentiment
+    if db_document.sentiment == sentiment:
+        db_document.sentiment = None
+    else:
+        db_document.sentiment = sentiment
     db.commit()
     db.refresh(db_document)
     return db_document
