@@ -18,6 +18,7 @@
     </div>
       <!-- ANNOTATOR -->
     <q-carousel
+      v-if="this.currentSelectedDocsId.length !== 0"
       @before-transition="switchSlide"
       class="carousel text-white rounded-borders no-padding no-margin"
       v-model="currentSlide"
@@ -99,8 +100,11 @@ export default {
   watch: {
     currentDocId: function (newId, oldId) {
       this.slide = newId
-      console.log(newId)
-      console.log(oldId)
+    },
+    currentSelectedDocsId: function (newIds, oldIds) {
+      if (newIds.length === 0) {
+        console.log('empty already')
+      }
     }
   },
   components: {
