@@ -21,3 +21,7 @@ project_create_exception = HTTPException(
     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
     detail="Unable to created project."
 )
+test_exception = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail="just testing"
+)

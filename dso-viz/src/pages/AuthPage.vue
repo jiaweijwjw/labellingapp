@@ -37,6 +37,7 @@ import qs from 'qs'
 import { mapActions, mapState, mapGetters } from 'vuex'
 import AuthService from '../services/auth.service'
 import UserService from '../services/user.service'
+import TokenService from '../services/token.service'
 
 export default {
   beforeDestroy () {
@@ -88,6 +89,8 @@ export default {
     },
     getuser (res) {
       this.loginFailed = false
+      TokenService.setToken(res.data.access_token)
+      console.log('Token service token: ' + TokenService.getToken())
       this.updateAccessToken(res.data.access_token)
       this.showLoading()
       UserService.getMe(this.access_token)

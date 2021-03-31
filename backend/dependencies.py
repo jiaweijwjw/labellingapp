@@ -10,7 +10,7 @@ from .exceptions import credentials_exception
 
 def check_token(token: str = Depends(auth.oauth2_scheme)):
     try:
-        payload = jwt.decode(token, auth.SECRET_KEY,
+        payload = jwt.decode(token, auth.ACCESS_SECRET_KEY,
                              algorithms=[auth.ALGORITHM])
         username: str = payload.get("sub")
         if username is None:

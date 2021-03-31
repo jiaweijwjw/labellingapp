@@ -1,5 +1,6 @@
 from typing import List, Optional
 from pydantic import BaseModel
+from datetime import datetime
 
 # Pydantic models
 # Order of declaration matters!!
@@ -12,6 +13,7 @@ from pydantic import BaseModel
 class Token(BaseModel):
     access_token: str
     token_type: str
+    access_token_expiry: datetime
 
 
 class TokenData(BaseModel):

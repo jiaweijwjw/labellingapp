@@ -8,9 +8,11 @@ from .cruds import user_crud
 
 
 # openssl rand -hex 32
-SECRET_KEY = "ff3bcdbd4bd7ded2824f3536f48dbdc1388348ef40172a7018853b2d97699575"
+ACCESS_SECRET_KEY = "ff3bcdbd4bd7ded2824f3536f48dbdc1388348ef40172a7018853b2d97699575"
+REFRESH_SECRET_KEY = "c1dce9834f651332b901e7e183817b2ff5aa5165ecae3f6a59af0de00bb54065"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 300
+ACCESS_TOKEN_EXPIRE_MINUTES = 15
+REFRESH_TOKEN_EXPIRE_DAYS = 60
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")  # ./token (relative)
 
@@ -34,12 +36,35 @@ def get_hashed_password(password):
     return pwd_context.hash(password)
 
 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+def create_access_token(data: dict, expire_time: datetime):
     to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    to_encode.update({"exp": expire_time})
+    encoded_jwt = jwt.encode(to_encode, ACCESS_SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+# def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+#     to_encode = data.copy()
+#     if expires_delta:
+#         expire = datetime.utcnow() + expires_delta
+#     else:
+#         expire = datetime.utcnow() + timedelta(minutes=15)
+#     to_encode.update({"exp": expire})
+#     encoded_jwt = jwt.encode(to_encode, ACCESS_SECRET_KEY, algorithm=ALGORITHM)
+#     return encoded_jwt
+
+
+def create_refresh_token(data: dict, expire_time: datetime):
+    to_encode = data.copy()
+    to_encode.update({"exp": expire_time})
+    encoded_jwt = jwt.encode(
+        to_encode, REFRESH_SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+# def create_refresh_token(data: dict, expires_delta: Optional[timedelta] = None):
+#     to_encode = data.copy()
+#     if expires_delta:
+#         expire = datetime.utcnow() + expires_delta
+#     else:
+#         expire = datetime.utcnow() + timedelta(days=60)
+#     to_encode.update({"exp": expire})
+#     encoded_jwt = jwt.encode(
+#         to_encode, REFRESH_SECRET_KEY, algorithm=ALGORITHM)
+#     return encoded_jwt

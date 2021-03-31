@@ -12,17 +12,25 @@ router = APIRouter()
 
 @router.post("/token", response_model=schemas.Token)
 # response: Response (have to be the first argument)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+async def login_for_token(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = auth.authenticate_user(
         db, form_data.username, form_data.password)
     if not user:
         raise invalid_login_exception
-    access_token_expires = timedelta(minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires_in = timedelta(
+        minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expire_time = datetime.utcnow() + access_token_expires_in
+    refresh_token_expire_in = timedelta(days=auth.REFRESH_TOKEN_EXPIRE_DAYS)
+    refresh_token_expire_time = datetime.utcnow() + refresh_token_expire_in
     access_token = auth.create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        data={"sub": user.username}, expire_time=access_token_expire_time
     )
-    # response.set_cookie(key="access_token", value=access_token)
-    return {"access_token": access_token, "token_type": "bearer"}
+    refresh_token = auth.create_refresh_token(
+        data={"sub": user.username}, expire_time=refresh_token_expire_time
+    )
+    response.set_cookie(key="refresh_token",
+                        value=refresh_token, httponly=True)
+    return {"access_token": access_token, "token_type": "bearer", "access_token_expiry": access_token_expire_time}
 
 
 # @router.post("/token")
