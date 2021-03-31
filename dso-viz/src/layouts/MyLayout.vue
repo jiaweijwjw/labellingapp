@@ -156,7 +156,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-
+import TokenService from '../services/token.service'
 export default {
   name: 'MyLayout',
   data () {
@@ -175,7 +175,7 @@ export default {
         return this.username
       }
     },
-    isLoggedIn: function () { return (this.access_token && this.currentUserId && this.username) },
+    isLoggedIn: function () { return (TokenService.getToken() && this.currentUserId && this.username) },
     isReadyToAnnotate: function () { return (this.currentDocId && this.currentSelectedDocsId && this.currentDoc && this.currentProjId) },
     isInProject: function () { return this.currentProjId },
     title: function () {

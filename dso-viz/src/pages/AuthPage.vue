@@ -90,7 +90,8 @@ export default {
     getuser (res) {
       this.loginFailed = false
       TokenService.setToken(res.data.access_token)
-      console.log('Token service token: ' + TokenService.getToken())
+      // TokenService.setTokenExpiry(res.data.access_token_expiry)
+      // console.log('tokenexpiry: ' + typeof TokenService.getTokenExpiry())
       this.updateAccessToken(res.data.access_token)
       this.showLoading()
       UserService.getMe(this.access_token)

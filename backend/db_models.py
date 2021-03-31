@@ -10,6 +10,7 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     current_proj_id = Column(Integer)
+    refresh_token = Column(String)
 
     # email = Column(String, unique=True, index=True)
     # fullname = Column(String, index=True)

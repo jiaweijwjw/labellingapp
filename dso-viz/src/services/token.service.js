@@ -1,16 +1,26 @@
 class TokenService {
   constructor () {
-    this.ACCESS_TOKEN = ''
+    this.accessToken = ''
+    // this.accessTokenExpiry = null
   }
   setToken (token) {
-    this.ACCESS_TOKEN = token
+    this.accessToken = token
   }
   clearToken () {
-    this.ACCESS_TOKEN = ''
+    this.accessToken = ''
   }
   getToken () {
-    return this.ACCESS_TOKEN
+    return this.accessToken
   }
+  // setTokenExpiry (expiryDate) {
+  //   this.accessTokenExpiry = new Date(expiryDate)
+  // }
+  // clearTokenExpiry () {
+  //   this.accessTokenExpiry = null
+  // }
+  // getTokenExpiry () {
+  //   return this.accessTokenExpiry
+  // }
 }
 
 export default new TokenService()

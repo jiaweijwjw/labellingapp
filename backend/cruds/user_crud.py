@@ -17,7 +17,8 @@ def create_user(db: Session, user: schemas.UserCreate):
     hashed_password = auth.get_hashed_password(user.password)
     db_user = db_models.User(username=user.username,
                              hashed_password=hashed_password,
-                             current_proj_id=None)
+                             current_proj_id=None,
+                             refresh_token=None)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -26,6 +27,13 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 def get_all_users(db: Session):
     return db.query(db_models.User).all()
+
+
+def update_refresh_token(db: Session, user: schemas.UserInDB, refresh_token: str):
+    user.refresh_token = refresh_token
+    db.commit()
+    db.refresh(user)
+    return user
 
 
 def update_current_proj(db: Session, user: schemas.User, new_id: int):

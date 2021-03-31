@@ -7,7 +7,6 @@ class GeneralService {
   }
 
   updateCurrentProjId (token, details) {
-    this.request.setHeader(token)
     return this.request.put('/users/me/currentproj/', details)
   }
 }

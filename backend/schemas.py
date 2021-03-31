@@ -14,6 +14,7 @@ class Token(BaseModel):
     access_token: str
     token_type: str
     access_token_expiry: datetime
+    test: str
 
 
 class TokenData(BaseModel):
@@ -130,16 +131,17 @@ class UserCreate(UserBase):  # UserIn
     password: str
 
 
-class UserInDB(UserBase):
-    hashed_password: str
-
-
 class User(UserBase):  # UserOut
     id: int
     current_proj_id: Optional[int] = None
 
     class Config:
         orm_mode = True
+
+
+class UserInDB(User):  # Unused
+    hashed_password: str
+    refresh_token: str
 
 
 class UserFull(User):

@@ -14,7 +14,6 @@ class DocumentService {
     formData.append('file', files[0])
     formData.append('doc_name', documentName)
     this.request.removeHeader()
-    this.request.setHeader(token)
     const config = {
       headers: { 'Content-Type': undefined } // IMPT TO SET TO UNDEFINED AND NOT MANUALLY SET MULTIPART/FORM_DATA
     }
@@ -22,22 +21,18 @@ class DocumentService {
   }
 
   getDocumentList (token) {
-    this.request.setHeader(token)
     return this.request.get(`/documents/`)
   }
 
   deleteDocuments (token, selectedDocsId) {
-    this.request.setHeader(token)
     return this.request.put(`/documents/`, selectedDocsId)
   }
 
   updateDocStatus (token, newStatus, documentId) {
-    this.request.setHeader(token)
     return this.request.put(`/documents/${documentId}/`, { bool_val: newStatus })
   }
 
   addSentiment (token, classificationId, documentId, projectId, userId) {
-    this.request.setHeader(token)
     let val = () => {
       switch (classificationId) {
         case 1:

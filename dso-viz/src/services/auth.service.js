@@ -5,16 +5,17 @@ class AuthService {
     this.request = ApiService
   }
 
-  login (data) {
+  login (credentials) {
     this.request.removeHeader()
     const config = {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     }
-    return this.request.post('/token', data, config)
+    return this.request.post('/token', credentials, config)
   }
-  register (data) {
+
+  register (credentials) {
     this.request.removeHeader()
-    return this.request.post('/users/register/', data)
+    return this.request.post('/users/register/', credentials)
   }
 }
 

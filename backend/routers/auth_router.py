@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from .. import schemas, db_models, auth
 from ..database import get_db
 from ..exceptions import invalid_login_exception
+from ..cruds import user_crud
 
 router = APIRouter()
 
@@ -30,9 +31,14 @@ async def login_for_token(response: Response, form_data: OAuth2PasswordRequestFo
     )
     response.set_cookie(key="refresh_token",
                         value=refresh_token, httponly=True)
-    return {"access_token": access_token, "token_type": "bearer", "access_token_expiry": access_token_expire_time}
+    test = user_crud.update_refresh_token(
+        db=db, user=user, refresh_token=refresh_token)
+    return {"access_token": access_token, "token_type": "bearer", "access_token_expiry": access_token_expire_time, "test": test.refresh_token}
 
 
+@router.get("/refresh/", response_model=schemas.Token)
+async def get_another_token(response: Response):
+    return {"nth": "nothing"}
 # @router.post("/token")
 # async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
 #     user_dict = crud.get_user_by_username(db=db, username=form_data.username)

@@ -3,21 +3,27 @@ import TokenService from '../services/token.service'
 
 class ApiService {
   constructor () {
-    // let token = TokenService.getToken()
     this.instance = axios.create({
       withCredentials: true,
       baseURL: 'http://localhost:8000'
     })
     this.instance.interceptors.request.use(req => {
+      const token = TokenService.getToken()
       if (!req.url.includes('token') && !req.url.includes('register')) {
-        req.headers = { 'Authorization': 'Bearer ' + TokenService.getToken() }
+        req.headers = { 'Authorization': `Bearer ${token}` }
       }
-      console.log(`${req.method} ${req.url} ${req.headers.Authorization}`)
-      // console.log(generalStore.getters.getAccessToken)
-      // req.headers = { 'Authorization': generalStore.getters }
-      // console.log(req.headers.Authorization = `Bearer ${storeGeneral.state.getters.access_token}`)
+      console.log(`${req.method} ${req.url}`)
       return req
     })
+    // this.instance.interceptors.response.use(res => res,
+    //   err => {
+    //     // if (err.response.status === 401) {
+    //     //   console.log(err.config)
+    //     // }
+    //     console.log('INTERCEPTOR ERROR' + err.response)
+    //     return Promise.reject(err)
+    //   }
+    // )
   }
 
   setHeader (token) {
