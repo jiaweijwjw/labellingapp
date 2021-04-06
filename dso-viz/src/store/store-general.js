@@ -5,6 +5,7 @@ const util = require('util')
 const defaultState = () => {
   return {
     access_token: '',
+    loggedIn: false,
     username: '',
     currentUserId: null,
     currentProjId: null
@@ -39,6 +40,9 @@ const mutations = {
     } else {
       state.currentProjId = newId
     }
+  },
+  updateLoggedIn (state, val) {
+    state.loggedIn = val
   }
 }
 
@@ -67,6 +71,9 @@ const actions = {
       .catch((err) => {
         console.log(err)
       })
+  },
+  updateLoggedIn ({ commit }, val) {
+    commit('updateLoggedIn', val)
   }
 }
 

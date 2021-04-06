@@ -11,7 +11,7 @@ from sqlalchemy import and_
 def create_upload_file(doc_name: str, db: Session, user: schemas.User, content: bytes):
     proj_id = user.current_proj_id
     db_document = db_models.Document(
-        name=doc_name, is_marked=False, sentiment='', content=content, content_size=len(content), proj_id=proj_id)
+        name=doc_name, is_marked=False, sentiment=None, content=content, content_size=len(content), proj_id=proj_id)
     db.add(db_document)
     db.commit()
     db.refresh(db_document)

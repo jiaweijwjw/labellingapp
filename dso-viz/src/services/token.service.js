@@ -1,3 +1,4 @@
+
 class TokenService {
   constructor () {
     this.accessToken = ''

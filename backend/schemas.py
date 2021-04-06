@@ -13,13 +13,17 @@ from datetime import datetime
 class Token(BaseModel):
     access_token: str
     token_type: str
-    access_token_expiry: datetime
-    test: str
+    # access_token_expiry: datetime
 
 
 class TokenData(BaseModel):
     # username: Optional[str] = None
     username: str
+
+
+class BothTokens(BaseModel):
+    access_token: str
+    refresh_token: str
 
 
 class AnnotationBase(BaseModel):
@@ -63,7 +67,7 @@ class DocumentBase(BaseModel):
 class Document(DocumentBase):
     id: int
     is_marked: bool
-    sentiment: Optional[str]
+    sentiment: Optional[str] = None
     content: bytes
     content_size: int
     proj_id: int

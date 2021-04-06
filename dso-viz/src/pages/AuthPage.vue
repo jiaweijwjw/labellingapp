@@ -38,6 +38,7 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 import AuthService from '../services/auth.service'
 import UserService from '../services/user.service'
 import TokenService from '../services/token.service'
+// import API from '../boot/axios'
 
 export default {
   beforeDestroy () {
@@ -70,7 +71,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('general', ['updateAccessToken', 'updateUserDetails']),
+    ...mapActions('general', ['updateAccessToken', 'updateUserDetails', 'updateLoggedIn']),
     register (username, password) {
       let credentials = {
         username: username,
@@ -83,6 +84,8 @@ export default {
           this.registerFailed = false
         })
         .catch(error => {
+          console.log(error.response.data.detail)
+          // console.log(error.response.config._retry)
           console.log(error.response.status)
           this.failedRegister()
         })
@@ -90,6 +93,7 @@ export default {
     getuser (res) {
       this.loginFailed = false
       TokenService.setToken(res.data.access_token)
+      this.updateLoggedIn(true)
       // TokenService.setTokenExpiry(res.data.access_token_expiry)
       // console.log('tokenexpiry: ' + typeof TokenService.getTokenExpiry())
       this.updateAccessToken(res.data.access_token)

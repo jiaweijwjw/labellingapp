@@ -1,6 +1,6 @@
 // import Vue from 'vue'
 import { uid } from 'quasar'
-import DocumentService from '../services/document.service'
+import DocumentService from '../boot/services/document.service'
 
 const state = {
   start: 0, // start of selection

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Cookie
+from fastapi import APIRouter, Depends, HTTPException, status
 from jose import JWTError, jwt
 from .. import schemas, auth
 from ..cruds import user_crud
@@ -31,7 +31,6 @@ def get_current_user(token_data: schemas.TokenData = Depends(check_token), db: S
 
 @router.get("/me/", response_model=schemas.UserFull)
 # this has to be above the next route
-# , ads_id: Optional[str] = Cookie(None)
 def read_user(current_user: schemas.User = Depends(get_current_user)):
     return current_user
 

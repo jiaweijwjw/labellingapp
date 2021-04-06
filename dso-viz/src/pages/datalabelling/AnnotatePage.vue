@@ -70,7 +70,6 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex'
-
 export default {
   name: 'AnnotatePage',
   mounted () {

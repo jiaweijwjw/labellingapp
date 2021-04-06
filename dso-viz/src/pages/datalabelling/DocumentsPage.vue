@@ -55,7 +55,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-
+import TokenService from '../../services/token.service'
 export default {
   name: 'DocumentsPage',
   activated: function () { // testing keep alive. remove after
@@ -164,6 +164,7 @@ export default {
       console.log('currentSelectedDocsId: ' + this.currentSelectedDocsId)
       console.log(this.$route.name)
       console.log('docs here: ' + this.$store.getters['documents/selectedDocs'])
+      console.log('token: ' + TokenService.getToken())
       // console.log('labels here: ' + this.$store.getters['labels/labels'])
       // console.log('projs here: ' + this.$store.getters['projects/projects'])
       // this.$q.loading.show({ delay: 400 })
