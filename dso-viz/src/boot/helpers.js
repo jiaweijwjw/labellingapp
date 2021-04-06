@@ -1,6 +1,8 @@
 // import Vue from 'vue'
 // import { colors } from 'quasar'
 import { Loading } from 'quasar'
+import { store } from '../store/index'
+import { router } from '../router/index'
 
 const helperFunctions = {
   // Name validation
@@ -57,9 +59,22 @@ const helperFunctions = {
       Loading.hide()
       this.timer = void 0
     }, time)
+  },
+  async resetStore () {
+    store.dispatch('documents/resetState')
+    store.dispatch('general/resetState')
+    store.dispatch('labels/resetState')
+    store.dispatch('projects/resetState')
+    store.dispatch('classify/resetState')
+    store.dispatch('settings/resetState')
+  },
+  logout () {
+    this.resetStore().then(router.push({ name: 'AuthPage' }))
   }
 }
 
 export default ({ Vue }) => {
   Vue.prototype.$hf = helperFunctions
 }
+
+export { helperFunctions }

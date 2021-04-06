@@ -74,6 +74,9 @@ const actions = {
   },
   updateLoggedIn ({ commit }, val) {
     commit('updateLoggedIn', val)
+  },
+  testDispatch ({ commit }, val) {
+    console.log(val)
   }
 }
 

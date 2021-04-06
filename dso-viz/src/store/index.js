@@ -11,6 +11,7 @@ import settings from './store-settings'
 
 Vue.use(Vuex)
 
+let store = null
 /*
  * If not building with SSR mode, you can
  * directly export the Store instantiation
@@ -21,7 +22,8 @@ Vue.use(Vuex)
 //   paths: ['general']
 // })
 export default function (/* { ssrContext } */) {
-  const Store = new Vuex.Store({
+  // const Store
+  store = new Vuex.Store({
     modules: {
       labels,
       documents,
@@ -38,5 +40,6 @@ export default function (/* { ssrContext } */) {
     strict: process.env.DEV
   })
 
-  return Store
+  return store // Store
 }
+export { store }
