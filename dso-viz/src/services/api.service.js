@@ -17,7 +17,8 @@ class ApiService {
       console.log(`${req.method} ${req.url}`)
       return req
     })
-    const interceptor = this.instance.interceptors.response.use(res => res,
+    // const interceptor =
+    this.instance.interceptors.response.use(res => res,
       async function (error) {
         if (error.response.status !== 401) {
           return Promise.reject(error)
@@ -26,26 +27,18 @@ class ApiService {
           helperFunctions.logout()
         }
         const originalRequest = error.config
-        this.instance.interceptors.response.eject(interceptor) // FINALLY PUT THIS BACK
+        // this.instance.interceptors.response.eject(interceptor) // FINALLY PUT THIS BACK
         if (error.response.status === 401 && error.response.data.detail === 'Access token has expired.' && !originalRequest._retry) {
-          store.dispatch('auth/refreshAccessToken')
+          console.log('Access token expired')
+          store.dispatch('general/renewAccessToken')
             .then(res => {
-              console.log(res)
+              console.log('should be the new token: ' + res)
               originalRequest._retry = true
               this.instance.request(originalRequest)
                 .then(res => { return Promise.resolve(res) })
-                .catch(/* logout here also */)
+                .catch(helperFunctions.logout())
             })
-            .catch(/* error in getting new refresh token. EXIT  */)
-
-          // const accessToken = await
-
-          // refreshAccessToken() {
-          //   let projectId = store.getters['general/currentUserId']
-          //   return this.request.get(`/users/${projectId}/refresh/`)
-          // }
-          // axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
-          // return this.instance(originalRequest)
+            .catch(helperFunctions.logout())
         }
         return Promise.reject(error)
       }

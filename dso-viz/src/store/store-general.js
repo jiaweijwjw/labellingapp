@@ -1,4 +1,6 @@
 import GeneralService from '../services/general.service'
+import AuthService from '../services/auth.service'
+import TokenService from '../services/token.service'
 
 const util = require('util')
 
@@ -75,8 +77,16 @@ const actions = {
   updateLoggedIn ({ commit }, val) {
     commit('updateLoggedIn', val)
   },
-  testDispatch ({ commit }, val) {
-    console.log(val)
+  renewAccessToken ({ commit, state }) {
+    console.log('dispatch renewAccessToken')
+    return new Promise((resolve, reject) => {
+      AuthService.renewAccessToken(state.currentUserId)
+        .then(res => {
+          let newToken = res.data.access_token
+          TokenService.setToken(newToken)
+          resolve(newToken)
+        }, err => { reject(err) })
+    })
   }
 }
 

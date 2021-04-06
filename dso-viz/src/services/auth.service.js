@@ -18,6 +18,10 @@ class AuthService {
     this.request.removeHeader()
     return this.request.post('/users/register/', credentials)
   }
+
+  renewAccessToken (userId) {
+    return this.request.get(`/users/${userId}/refresh/`)
+  }
 }
 
 export default new AuthService()
