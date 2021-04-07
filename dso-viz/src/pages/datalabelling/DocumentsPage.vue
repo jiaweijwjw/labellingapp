@@ -144,12 +144,21 @@ export default {
 
       try {
         console.log('currProjId: ' + this.currentProjId)
+        // const currDocPromise = this.updateCurrentDocId(docIdPayload) // this action already returns a promise explicitly
+        // const currSelectedDocsPromise = this.updateCurrentSelectedDocsId(selectedDocsIdPayload)
+        // Promise.all([currDocPromise, currSelectedDocsPromise]).then(console.log('promise done')).then(res => {
+        //   this.$router.push({ name: 'AnnotatePage' })
+        //   console.log(this.currentDocId)
+        //   console.log(this.currentSelectedDocsId)
+        // })
         const currDocPromise = this.updateCurrentDocId(docIdPayload)
-        const currSelectedDocsPromise = this.updateCurrentSelectedDocsId(selectedDocsIdPayload)
-        Promise.all([currDocPromise, currSelectedDocsPromise]).then(console.log('promise done')).then(res => {
-          this.$router.push({ name: 'AnnotatePage' })
-          console.log(this.currentDocId)
-          console.log(this.currentSelectedDocsId)
+        currDocPromise.then(() => {
+          const currSelectedDocsPromise = this.updateCurrentSelectedDocsId(selectedDocsIdPayload)
+          currSelectedDocsPromise.then(() => {
+            this.$router.push({ name: 'AnnotatePage' })
+            console.log(this.currentDocId)
+            console.log(this.currentSelectedDocsId)
+          })
         })
         //  this.updateSelectedDocs(this.selected) // Only when user starts annotating then update annotate page.
       } catch (error) {

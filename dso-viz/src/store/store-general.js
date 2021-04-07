@@ -65,14 +65,17 @@ const actions = {
     // INPUT:
     // let details = { id: rowProj.id }
     // let payload = { token: this.access_token, details: details }
-    GeneralService.updateCurrentProjId(payload.token, payload.details)
-      .then((res) => {
-        commit('updateCurrentProjId', payload.details.id)
-        console.log(util.inspect(res.data, false, null, true /* enable colors */)) // to view [object]
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    return new Promise((resolve, reject) => {
+      GeneralService.updateCurrentProjId(payload.token, payload.details)
+        .then((res) => {
+          commit('updateCurrentProjId', payload.details.id)
+          resolve(res)
+          console.log(util.inspect(res.data, false, null, true /* enable colors */)) // to view [object]
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
   },
   updateLoggedIn ({ commit }, val) {
     commit('updateLoggedIn', val)
@@ -99,6 +102,9 @@ const getters = {
   },
   currentProjId: (state) => {
     return state.currentProjId
+  },
+  getLoggedIn: (state) => {
+    return state.loggedIn
   }
 }
 

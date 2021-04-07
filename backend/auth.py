@@ -14,7 +14,7 @@ from sqlalchemy.orm import Session
 ACCESS_SECRET_KEY = "ff3bcdbd4bd7ded2824f3536f48dbdc1388348ef40172a7018853b2d97699575"
 REFRESH_SECRET_KEY = "c1dce9834f651332b901e7e183817b2ff5aa5165ecae3f6a59af0de00bb54065"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 1
+ACCESS_TOKEN_EXPIRE_MINUTES = 3
 REFRESH_TOKEN_EXPIRE_DAYS = 60
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")  # ./token (relative)

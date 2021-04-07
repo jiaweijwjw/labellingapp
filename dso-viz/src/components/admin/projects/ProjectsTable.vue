@@ -101,14 +101,39 @@ export default {
     getSelectedString () { // there is a @selection event
       return this.selected.length === 0 ? '' : `${this.selected.length} project${this.selected.length > 1 ? 's' : ''} selected of ${this.projects.length}`
     },
+    // async enterProject (evt, rowProj, index) {
+    //   this.$hf.showLoadingForTime(3000)
+    //   let details = { id: rowProj.id }
+    //   let payload = { token: this.access_token, details: details }
+    //   const updateCurrentProjIdPromise = await this.updateCurrentProjId(payload)
+    //   console.log(updateCurrentProjIdPromise)
+    //   updateCurrentProjIdPromise.then(() => {
+    //     ProjectService.getProject(this.access_token, rowProj.id)
+    //       .then(res => {
+    //         this.loadProject(res)
+    //       })
+    //       .catch(err => {
+    //         console.log(err)
+    //       })
+    //   })
+    //   // ProjectService.getProject(this.access_token, rowProj.id)
+    //   //   .then(res => {
+    //   //     this.loadProject(res)
+    //   //   })
+    // },
     async enterProject (evt, rowProj, index) {
       this.$hf.showLoadingForTime(3000)
       let details = { id: rowProj.id }
       let payload = { token: this.access_token, details: details }
       this.updateCurrentProjId(payload)
-      ProjectService.getProject(this.access_token, rowProj.id)
-        .then(res => {
-          this.loadProject(res)
+        .then(() => {
+          ProjectService.getProject(this.access_token, rowProj.id)
+            .then(res => {
+              this.loadProject(res)
+            })
+            .catch(err => {
+              console.log(err)
+            })
         })
     },
     async loadProject (res) {
