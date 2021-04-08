@@ -93,7 +93,7 @@ export default {
     }
   },
   mounted () {
-    this.getLabelList(this.access_token)
+    this.getLabelList()
   },
   computed: {
     ...mapState('general', ['currentUserId', 'currentDocId', 'access_token']),

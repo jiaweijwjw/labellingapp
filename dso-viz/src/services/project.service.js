@@ -1,4 +1,3 @@
-// import ApiService from './api.service'
 import ApiService from './api.service'
 
 class ProjectService {
@@ -10,23 +9,23 @@ class ProjectService {
     return this.request.post('/projects/', data.project)
   }
 
-  getProjectList (token) {
+  getProjectList () {
     return this.request.get('/projects/')
   }
 
-  deleteProjects (token, selectedProjsId) {
+  deleteProjects (selectedProjsId) {
     return this.request.put(`/projects/`, selectedProjsId)
   }
 
-  getProject (token, projectId) {
+  getProject (projectId) {
     return this.request.get(`/projects/${projectId}/`)
   }
 
-  updateCurrentDocId (token, id, projectId) {
+  updateCurrentDocId (id, projectId) {
     return this.request.put(`/projects/${projectId}/currentdoc/`, { id: id })
   }
 
-  updateCurrentSelectedDocsId (token, ids, projectId) {
+  updateCurrentSelectedDocsId (ids, projectId) {
     return this.request.put(`/projects/${projectId}/currentselecteddocs/`, { ids: ids })
   }
 }

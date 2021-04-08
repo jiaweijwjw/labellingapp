@@ -1,7 +1,3 @@
-// import axios from 'axios'
-// import TokenService from './token.service'
-// import { store } from '../store/index'
-// import { helperFunctions } from '../boot/helpers'
 import { api } from '../boot/axios'
 
 class ApiService {
@@ -9,9 +5,9 @@ class ApiService {
     this.instance = api
   }
 
-  setHeader (token) {
-    this.instance.defaults.headers.common.Authorization = `Bearer ${token}`
-  }
+  // setHeader (token) {
+  //   this.instance.defaults.headers.common.Authorization = `Bearer ${token}`
+  // }
 
   removeHeader () {
     this.instance.defaults.headers.common = {}

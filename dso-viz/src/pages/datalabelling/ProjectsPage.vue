@@ -54,8 +54,8 @@ export default {
   methods: {
     ...mapActions('projects', ['getProjectList', 'deleteSelectedProjects']),
     deleteSelected () {
-      let payload = { token: this.access_token, selectedProjsId: this.selected }
-      this.deleteSelectedProjects(payload)
+      let selectedProjsId = this.selected
+      this.deleteSelectedProjects(selectedProjsId)
       this.selected = []
       this.isCleared = true
     },

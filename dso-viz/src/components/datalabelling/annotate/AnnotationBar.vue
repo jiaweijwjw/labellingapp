@@ -110,8 +110,7 @@ export default {
     updateStatus (status) {
       let payload = {
         newStatus: status,
-        documentId: this.currentDocId,
-        token: this.$store.state.general.access_token
+        documentId: this.currentDocId
       }
       this.updateDocStatus(payload)
     },

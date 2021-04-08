@@ -12,7 +12,6 @@ let api = axios.create({
 
 export default ({ Vue, store, router }) => {
   api.interceptors.request.use(req => {
-    console.log(req)
     const token = TokenService.getToken()
     if (!req.url.includes('token') && !req.url.includes('register')) {
       req.headers = { 'Authorization': `Bearer ${token}` }
@@ -27,11 +26,9 @@ export default ({ Vue, store, router }) => {
     const originalRequest = error.config
     const status = error.response.status
     const message = error.response.data.detail
-    console.log(originalRequest)
     if (status !== 401) {
       return Promise.reject(error)
     } else if (status === 401 && message !== 'Access token has expired.') {
-      console.log('any other 401 errors')
       if (store.getters['general/getLoggedIn']) {
         helperFunctions.logout()
       }
@@ -41,7 +38,6 @@ export default ({ Vue, store, router }) => {
         .then(res => {
           originalRequest.baseURL = undefined
           originalRequest._retry = true
-          console.log(' this should be the new token: ' + res)
           return (api(originalRequest))
         })
     } else {

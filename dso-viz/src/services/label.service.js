@@ -1,4 +1,3 @@
-// import ApiService from './api.service'
 import ApiService from './api.service'
 
 class LabelService {
@@ -6,15 +5,15 @@ class LabelService {
     this.request = ApiService
   }
 
-  createLabel (token, newLabel) {
+  createLabel (newLabel) {
     return this.request.post('/labels/', newLabel)
   }
 
-  getLabelList (token) {
+  getLabelList () {
     return this.request.get(`/labels/`)
   }
 
-  deleteLabels (token, selectedLabelsId) {
+  deleteLabels (selectedLabelsId) {
     return this.request.put(`/labels/`, selectedLabelsId)
   }
 }

@@ -10,27 +10,55 @@ from ..cruds import project_crud, user_crud, annotation_crud
 from ..exceptions import credentials_exception, project_create_exception
 
 from ..dependencies import check_token, check_token_n_username
+
 router = APIRouter(prefix="/documents")
 
 
 @router.post("/{document_id}/annotations/", response_model=schemas.Annotation)
-def create_annotation(document_id: int, entity: schemas.AnnotationCreate, db: Session = Depends(get_db), user: schemas.User = Depends(check_token_n_username)):
-    db_annotation = annotation_crud.create_annotation(
-        document_id=document_id, entity=entity, db=db, user=user)
-    return db_annotation
+def create_annotation(
+    document_id: int,
+    entity: schemas.AnnotationCreate,
+    db: Session = Depends(get_db),
+    user: schemas.User = Depends(check_token_n_username),
+):
+    new_annotation = annotation_crud.create_annotation(
+        document_id=document_id, entity=entity, db=db, user=user
+    )
+    return new_annotation
 
 
-@router.delete("/{document_id}/annotations/{annotation_id}/", response_model=schemas.Annotation)
-def delete_annotation(document_id: int, annotation_id: int, db: Session = Depends(get_db), user: schemas.User = Depends(check_token_n_username)):
+@router.delete(
+    "/{document_id}/annotations/{annotation_id}/", response_model=schemas.Annotation
+)
+def delete_annotation(
+    document_id: int,
+    annotation_id: int,
+    db: Session = Depends(get_db),
+    user: schemas.User = Depends(check_token_n_username),
+):
     deleted_annotation = annotation_crud.delete_annotation(
-        document_id=document_id, annotation_id=annotation_id, db=db, user=user)
+        document_id=document_id, annotation_id=annotation_id, db=db, user=user
+    )
     return deleted_annotation
 
 
-@router.patch("/{document_id}/annotations/{annotation_id}/", response_model=schemas.Annotation)
-def update_annotation(document_id: int, annotation_id: int, new_label: schemas.Id, db: Session = Depends(get_db), user: schemas.User = Depends(check_token_n_username)):
+@router.patch(
+    "/{document_id}/annotations/{annotation_id}/", response_model=schemas.Annotation
+)
+def update_annotation(
+    document_id: int,
+    annotation_id: int,
+    new_label: schemas.Id,
+    db: Session = Depends(get_db),
+    user: schemas.User = Depends(check_token_n_username),
+):
     updated_annotation = annotation_crud.update_annotation(
-        document_id=document_id, annotation_id=annotation_id, new_label_id=new_label.id, db=db, user=user)
+        document_id=document_id,
+        annotation_id=annotation_id,
+        new_label_id=new_label.id,
+        db=db,
+        user=user,
+    )
     return updated_annotation
 
 

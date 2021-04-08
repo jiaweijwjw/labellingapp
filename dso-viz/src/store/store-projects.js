@@ -19,10 +19,10 @@ const mutations = {
   createProject (state, payload) {
     state.projects.push(payload)
   },
-  deleteProjects (state, payload) {
+  deleteProjects (state, selectedProjsId) {
     // for filter(), whatever is true will be in the new array
     state.projects = state.projects.filter(proj => {
-      if (!payload.includes(proj.id)) { // if the proj is not in the list of projs to be deleted, keep it
+      if (!selectedProjsId.includes(proj.id)) { // if the proj is not in the list of projs to be deleted, keep it
         return true
       }
     })
@@ -49,28 +49,29 @@ const actions = {
         console.log(error)
       })
   },
-  deleteSelectedProjects ({ commit, rootGetters, dispatch }, payload) {
-    ProjectService.deleteProjects(payload.token, payload.selectedProjsId)
+  deleteSelectedProjects ({ commit, rootGetters, dispatch }, selectedProjsId) {
+    ProjectService.deleteProjects(selectedProjsId)
       .then((res) => {
-        commit('deleteProjects', payload.selectedProjsId)
+        commit('deleteProjects', selectedProjsId)
       })
       .then(() => {
         let currentProjId = rootGetters['general/currentProjId']
         let isCurrentProjDeleted = () => {
-          if (payload.selectedProjsId.includes(currentProjId)) {
+          if (selectedProjsId.includes(currentProjId)) {
             return true
           } else { return false }
         }
         if (isCurrentProjDeleted) {
-          dispatch('general/updateCurrentProjId', { token: payload.token, details: { id: -1 } }, { root: true })
+          let details = { id: -1 }
+          dispatch('general/updateCurrentProjId', details, { root: true })
             .then(() => {
               dispatch('documents/resetState', '', { root: true })
             })
         }
       })
   },
-  getProjectList ({ commit }, token) {
-    ProjectService.getProjectList(token)
+  getProjectList ({ commit }) {
+    ProjectService.getProjectList()
       .then((res) => {
         console.log('res: ' + res)
         commit('updateProjectList', res.data)

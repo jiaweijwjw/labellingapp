@@ -61,14 +61,14 @@ const actions = {
   updateUserDetails ({ commit }, userDetails) {
     commit('updateUserDetails', userDetails)
   },
-  updateCurrentProjId ({ commit }, payload) {
+  updateCurrentProjId ({ commit }, details) {
     // INPUT:
     // let details = { id: rowProj.id }
     // let payload = { token: this.access_token, details: details }
     return new Promise((resolve, reject) => {
-      GeneralService.updateCurrentProjId(payload.token, payload.details)
+      GeneralService.updateCurrentProjId(details)
         .then((res) => {
-          commit('updateCurrentProjId', payload.details.id)
+          commit('updateCurrentProjId', details.id)
           resolve(res)
           console.log(util.inspect(res.data, false, null, true /* enable colors */)) // to view [object]
         })

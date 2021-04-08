@@ -1,8 +1,6 @@
-
 class TokenService {
   constructor () {
     this.accessToken = ''
-    // this.accessTokenExpiry = null
   }
   setToken (token) {
     this.accessToken = token
@@ -13,6 +11,7 @@ class TokenService {
   getToken () {
     return this.accessToken
   }
+  // If use expire to do refresh
   // setTokenExpiry (expiryDate) {
   //   this.accessTokenExpiry = new Date(expiryDate)
   // }

@@ -89,7 +89,7 @@ export default {
     }
   },
   mounted () {
-    this.getProjectList(this.access_token)
+    this.getProjectList()
   },
   computed: {
     ...mapState('general', ['currentUserId', 'currentDocId', 'access_token']),
@@ -124,10 +124,9 @@ export default {
     async enterProject (evt, rowProj, index) {
       this.$hf.showLoadingForTime(3000)
       let details = { id: rowProj.id }
-      let payload = { token: this.access_token, details: details }
-      this.updateCurrentProjId(payload)
+      this.updateCurrentProjId(details)
         .then(() => {
-          ProjectService.getProject(this.access_token, rowProj.id)
+          ProjectService.getProject(rowProj.id)
             .then(res => {
               this.loadProject(res)
             })

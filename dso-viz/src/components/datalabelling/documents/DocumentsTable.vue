@@ -78,7 +78,7 @@ export default {
   },
   mounted () {
     console.log('doc table mounted')
-    this.getDocumentList(this.access_token)
+    this.getDocumentList()
     if (this.currentProjType === 'Document Classification') {
       this.columns = {
         name: 'sentiment',

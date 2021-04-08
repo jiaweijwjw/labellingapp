@@ -98,7 +98,7 @@ export default {
       // console.log('tokenexpiry: ' + typeof TokenService.getTokenExpiry())
       this.updateAccessToken(res.data.access_token)
       this.showLoading()
-      UserService.getMe(this.access_token)
+      UserService.getMe()
         .then((res) => {
           setTimeout(() => this.initialLoadUser(res).catch(() => this.handleLoginError()), 1000) // just to test loading screen. can remove
           // this.initialLoadUser(res)

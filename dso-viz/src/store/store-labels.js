@@ -21,13 +21,13 @@ const mutations = {
     // https://github.com/vuejs/vuex/issues/1118
     Object.assign(state, defaultState())
   },
-  createLabel (state, payload) {
-    state.labels.push(payload)
+  createLabel (state, label) {
+    state.labels.push(label)
   },
-  deleteLabels (state, payload) {
+  deleteLabels (state, selectedLabelsId) {
     // for filter, whatever is true will be in the new array
     state.labels = state.labels.filter(label => {
-      if (!payload.includes(label.id)) { // if the proj is not in the list of projs to be deleted, keep it
+      if (!selectedLabelsId.includes(label.id)) { // if the proj is not in the list of projs to be deleted, keep it
         return true
       }
     })
@@ -44,24 +44,24 @@ const actions = {
   setLabels ({ commit }, labels) {
     commit('updateLabelList', labels)
   },
-  createLabel ({ commit }, payload) {
-    LabelService.createLabel(payload.token, payload.newLabel)
+  createLabel ({ commit }, newLabel) {
+    LabelService.createLabel(newLabel)
       .then(res => {
         commit('createLabel', res.data)
       })
   },
-  deleteSelectedLabels ({ commit, dispatch }, payload) {
-    LabelService.deleteLabels(payload.token, payload.selectedLabelsId)
+  deleteSelectedLabels ({ commit, dispatch }, selectedLabelsId) {
+    LabelService.deleteLabels(selectedLabelsId)
       .then((res) => {
-        commit('deleteLabels', payload.selectedLabelsId)
-        dispatch('documents/getDocumentList', payload.token, { root: true })
+        commit('deleteLabels', selectedLabelsId)
+        dispatch('documents/getDocumentList', { root: true })
       })
       .catch((err) => {
         console.log(err)
       })
   },
-  getLabelList ({ commit }, token) {
-    LabelService.getLabelList(token)
+  getLabelList ({ commit }) {
+    LabelService.getLabelList()
       .then(res => {
         commit('updateLabelList', res.data)
       })

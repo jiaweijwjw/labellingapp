@@ -1,4 +1,3 @@
-// import ApiService from './api.service'
 import ApiService from './api.service'
 
 class DocumentService {
@@ -6,7 +5,7 @@ class DocumentService {
     this.request = ApiService
   }
 
-  uploadDocument (token, documentName, files) {
+  uploadDocument (documentName, files) {
     console.log(files[0])
     let formData = new FormData()
     // for (let i = 0; i < files.length; i++) {
@@ -21,19 +20,19 @@ class DocumentService {
     return this.request.post('/documents/upload/', formData, config)
   }
 
-  getDocumentList (token) {
+  getDocumentList () {
     return this.request.get(`/documents/`)
   }
 
-  deleteDocuments (token, selectedDocsId) {
+  deleteDocuments (selectedDocsId) {
     return this.request.put(`/documents/`, selectedDocsId)
   }
 
-  updateDocStatus (token, newStatus, documentId) {
+  updateDocStatus (newStatus, documentId) {
     return this.request.put(`/documents/${documentId}/`, { bool_val: newStatus })
   }
 
-  addSentiment (token, classificationId, documentId, projectId, userId) {
+  addSentiment (classificationId, documentId, projectId, userId) {
     let val = () => {
       switch (classificationId) {
         case 1:
@@ -48,26 +47,6 @@ class DocumentService {
     }
     return this.request.post(`/documents/${documentId}/sentiment/${projectId}/${userId}`, { string_val: val() })
   }
-  // addDocument (projectId, payload) {
-  //   return this.request.post(`/projects/${projectId}/docs`, payload)
-  // }
-
-  // deleteAllDocuments (projectId) {
-  //   return this.request.delete(`/projects/${projectId}/docs`)
-  // }
-
-  // deleteDocument (projectId, docId) {
-  //   return this.request.delete(`/projects/${projectId}/docs/${docId}`)
-  // }
-
-  // updateDocument (projectId, docId, payload) {
-  //   return this.request.patch(`/projects/${projectId}/docs/${docId}`, payload)
-  // }
-
-  // uploadFile (projectId, payload, config = {}) {
-  //   return this.request.post(`/projects/${projectId}/docs/upload`, payload, config)
-  // }
-
   // exportFile (projectId, format, onlyApproved) {
   //   const headers = {}
   //   if (format === 'csv') {
@@ -86,10 +65,6 @@ class DocumentService {
   //     headers
   //   }
   //   return this.request.get(`/projects/${projectId}/docs/download`, config)
-  // }
-
-  // approveDocument (projectId, docId, payload) {
-  //   return this.request.post(`/projects/${projectId}/docs/${docId}/approve-labels`, payload)
   // }
 }
 

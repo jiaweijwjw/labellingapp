@@ -116,8 +116,8 @@ export default {
   methods: {
     ...mapActions('documents', ['updateCurrentDocId', 'updateCurrentSelectedDocsId', 'deleteSelectedDocuments']),
     deleteSelected () {
-      let payload = { token: this.access_token, selectedDocsId: this.selected }
-      this.deleteSelectedDocuments(payload) // Only when user starts annotating then update annotate page.
+      let selectedDocsId = this.selected
+      this.deleteSelectedDocuments(selectedDocsId) // Only when user starts annotating then update annotate page.
       this.selected = []
       this.isCleared = true
     },
@@ -131,13 +131,11 @@ export default {
       // let details = { id: this.selected[0] }
       // let docIdPayload = { token: this.access_token, details: details }
       let docIdPayload = {
-        token: this.access_token,
         id: this.selected[0],
         proj_id: this.currentProjId
       }
       // let selectedDocsIdPayload = { token: this.access_token, details: { ids: this.selected } }
       let selectedDocsIdPayload = {
-        token: this.access_token,
         ids: this.selected,
         proj_id: this.currentProjId
       }

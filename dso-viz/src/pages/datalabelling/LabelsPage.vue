@@ -82,8 +82,8 @@ export default {
   methods: {
     ...mapActions('labels', ['deleteSelectedLabels']),
     deleteSelected () {
-      let payload = { token: this.access_token, selectedLabelsId: this.selected }
-      this.deleteSelectedLabels(payload) // Only when user starts annotating then update annotate page.
+      let selectedLabelsId = this.selected
+      this.deleteSelectedLabels(selectedLabelsId) // Only when user starts annotating then update annotate page.
       this.selected = []
       this.isCleared = true
     },

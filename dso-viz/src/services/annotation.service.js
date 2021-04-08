@@ -1,4 +1,3 @@
-// import ApiService from './api.service'
 import ApiService from './api.service'
 
 class AnnotationService {
@@ -6,26 +5,22 @@ class AnnotationService {
     this.request = ApiService
   }
 
-  addAnnotation (payload, token, documentId) {
-    return this.request.post(`/documents/${documentId}/annotations/`, payload)
+  addAnnotation (details, documentId) {
+    return this.request.post(`/documents/${documentId}/annotations/`, details)
   }
 
-  deleteAnnotation (token, documentId, annotationId) {
+  deleteAnnotation (documentId, annotationId) {
     return this.request.delete(`/documents/${documentId}/annotations/${annotationId}/`)
   }
 
-  updateAnnotation (token, documentId, annotationId, newLabelId) {
+  updateAnnotation (documentId, annotationId, newLabelId) {
     let data = { id: newLabelId }
     return this.request.patch(`/documents/${documentId}/annotations/${annotationId}/`, data)
   }
 
-  getAnnotationList (projectId, docId) {
-    return this.request.get(`/projects/${projectId}/docs/${docId}/annotations`)
-  }
-
-  clearAnnotations (projectId, docid) {
-    return this.request.delete(`/projects/${projectId}/docs/${docid}/annotations`)
-  }
+  // getAnnotationList (projectId, docId) {
+  //   return this.request.get(`/projects/${projectId}/docs/${docId}/annotations`)
+  // }
 }
 
 export default new AnnotationService()

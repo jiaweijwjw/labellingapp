@@ -129,11 +129,8 @@ export default {
       console.log('submitted successfully')
       this.customLabelToSubmit.name = this.$hf.toTitleCase(this.customLabelToSubmit.name)
       let cloneLabelToSubmit = { ...this.customLabelToSubmit } // THIS LINE IS IMPT TO NOT COPY BY REFERENCE.
-      let payload = {
-        token: this.access_token,
-        newLabel: cloneLabelToSubmit
-      }
-      this.createLabel(payload)
+      let newLabel = cloneLabelToSubmit
+      this.createLabel(newLabel)
       this.$emit('close')
       this.customLabelToSubmit.name = ''
       this.customLabelToSubmit.shortcutkey = ''

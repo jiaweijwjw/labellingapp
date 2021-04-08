@@ -151,7 +151,7 @@ export default {
     switchSlide (newSlideName, oldSlideName) {
       console.log('entered switch slide')
       console.log('newSlideName: ' + newSlideName + ' oldSlideName: ' + oldSlideName)
-      this.updateCurrentDocId({ token: this.access_token, id: newSlideName, proj_id: this.currentProjId })
+      this.updateCurrentDocId({ id: newSlideName, proj_id: this.currentProjId })
       // this.updateCurrent(newSlideName)
       console.log('currentdoc.id: ' + this.currentDoc.id)
       console.log('currentDocId: ' + this.currentDocId)
@@ -187,36 +187,25 @@ export default {
       }
     },
     removeEntity (annotationId) {
-      const details = {
-        annotationId: annotationId,
-        token: this.access_token
-      }
-      this.deleteAnnotation(details)
+      this.deleteAnnotation(annotationId)
     },
     updateEntity (newLabelId, annotationId) {
       const details = {
         annotationId,
-        newLabelId,
-        token: this.access_token
+        newLabelId
       }
-      console.log(newLabelId, annotationId)
       this.updateAnnotation(details)
     },
     addEntity (startOffset, endOffset, labelId) {
       const details = {
         start_offset: startOffset,
         end_offset: endOffset,
-        label_id: labelId,
-        token: this.access_token
+        label_id: labelId
       }
       this.addAnnotation(details)
     },
     classifyDocument (classificationId) {
-      let details = {
-        token: this.access_token,
-        classificationId
-      }
-      this.addSentiment(details)
+      this.addSentiment(classificationId)
     },
     handleUnableToFullscreen () {
       this.$q.notify({
