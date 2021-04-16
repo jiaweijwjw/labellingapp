@@ -26,14 +26,20 @@ export default ({ Vue, store, router }) => {
     const originalRequest = error.config
     const status = error.response.status
     const message = error.response.data.detail
+    console.log('error msg: ' + message)
+    console.log(status === 401 && message !== ('Access token has expired.' || 'Access token is null.'))
+    console.log('should be false')
     if (status !== 401) {
       return Promise.reject(error)
-    } else if (status === 401 && message !== 'Access token has expired.') {
+    } else if (status === 401 && message !== ('Access token has expired.' || 'Access token is null.')) {
+      console.log('api logout')
       if (store.getters['general/getLoggedIn']) {
         helperFunctions.logout()
+      } else {
+        return Promise.reject(error)
       }
-    } else if (status === 401 && message === 'Access token has expired.' && !originalRequest._retry) {
-      console.log('Access token expired')
+    } else if (status === 401 && message === ('Access token has expired.' || 'Access token is null.') && !originalRequest._retry) {
+      console.log('Access token expired or null')
       return store.dispatch('general/renewAccessToken')
         .then(res => {
           originalRequest.baseURL = undefined

@@ -6,6 +6,12 @@ credentials_exception = HTTPException(
     headers={"WWW-Authenticate": "Bearer"},
 )
 
+empty_access_token_exception = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Access token is null.",
+    headers={"WWW-Authenticate": "Bearer"},
+)
+
 invalid_login_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="Incorrect username or password.",
@@ -30,15 +36,13 @@ refresh_token_not_found_exception = HTTPException(
 )
 
 invalid_refresh_token_exception = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Invalid refresh token."
+    status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token."
 )
 registration_exception = HTTPException(
-    status_code=status.HTTP_400_BAD_REQUEST,
-    detail="Username is already registered."
+    status_code=status.HTTP_400_BAD_REQUEST, detail="Username is already registered."
 )
 
 project_create_exception = HTTPException(
     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-    detail="Unable to created project."
+    detail="Unable to created project.",
 )

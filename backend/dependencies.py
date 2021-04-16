@@ -9,10 +9,13 @@ from .exceptions import (
     credentials_exception,
     user_not_found_exception,
     expired_access_token_exception,
+    empty_access_token_exception,
 )
 
 
 def check_token(token: str = Depends(auth.oauth2_scheme)):
+    if token == "":
+        raise empty_access_token_exception
     try:
         payload = jwt.decode(token, auth.ACCESS_SECRET_KEY, algorithms=[auth.ALGORITHM])
         username: str = payload.get("sub")
