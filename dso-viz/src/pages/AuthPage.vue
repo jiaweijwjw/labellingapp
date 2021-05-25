@@ -26,9 +26,6 @@
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
-    <div>
-    <q-btn color="primary" label="testnotify" @click="handleLoginError"/>
-    </div>
   </q-page>
 </template>
 

@@ -36,7 +36,6 @@
     <div class="page-item table-container">
       <documentstable :isInProject="isInProject" :isCleared="isCleared" @clearSelection="clearDocSelection" @updateSelection="updateDocSelection($event)"/>
     </div>
-    <q-btn color="primary" label="test" @click="test"/>
         <!-- TEXT INPUT -->
       <!-- <texteditor> </texteditor>
       <div class="row">
